@@ -15,14 +15,14 @@ const ThemedApp = () => {
     const colorScheme = useThemeStore((state) => state.colorScheme);
 
     useEffect(() => {
-        // Dynamically load PrimeReact theme
+        // Dynamically load PrimeReact theme - hacky we store this locally instead of using the npm package, need to update on builds...
         const themeLink = document.getElementById(
-            "primereact-theme"
+            "primereact-theme",
         ) as HTMLLinkElement;
         const themePath =
             colorScheme === "dark"
-                ? "/node_modules/primereact/resources/themes/lara-dark-indigo/theme.css"
-                : "/node_modules/primereact/resources/themes/lara-light-indigo/theme.css";
+                ? "/themes/lara-dark-indigo/theme.css"
+                : "/themes/lara-light-indigo/theme.css";
 
         if (themeLink) {
             themeLink.href = themePath;
@@ -49,5 +49,5 @@ const ThemedApp = () => {
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ThemedApp />
-    </StrictMode>
+    </StrictMode>,
 );
