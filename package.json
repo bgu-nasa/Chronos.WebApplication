@@ -8,7 +8,10 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "create-module": "node scripts/create-module.js"
+        "create-module": "node scripts/create-module.js",
+        "docker:build": "docker build -t chronos-portal .",
+        "docker:run": "docker run --env-file .local.env -p 3000:3000 chronos-portal",
+        "docker:start": "npm run docker:build && npm run docker:run"
     },
     "dependencies": {
         "@mantine/core": "^8.3.10",
