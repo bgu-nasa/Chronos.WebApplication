@@ -5,8 +5,9 @@ This is the monorepo for Chronos Portal, tech-lead: aaroni@post.bgu.ac.il / aron
 ## Table of contents
 
 1. Docker
-2. Libraries we use
-3. Contribution Rules
+2. Release
+3. Libraries we use
+4. Contribution Rules
     - Css and Styling
     - File Exports & Imports
     - File Naming
@@ -14,11 +15,11 @@ This is the monorepo for Chronos Portal, tech-lead: aaroni@post.bgu.ac.il / aron
     - Changing the `module.config.ts` file
     - Making requests to external APIs
     - Code Styling
-3. Working with modules
+5. Working with modules
     - Creating a new module
     - Mapping a page to a route
     - Adding navigation items
-4. Common & Infra
+6. Common & Infra
 
 ## Docker
 
@@ -36,6 +37,22 @@ npm run docker:run     # Run the container with .local.env
 ```
 
 Make sure `.local.env` exists in the project root. See `.env.example` for the required variables.
+
+## Release
+
+The project uses a GitHub Actions workflow to publish a Docker image to GitHub Container Registry (ghcr.io).
+
+The published image is available at: `ghcr.io/bgu-nasa/chronos-web:latest`
+
+To trigger a release:
+
+1. Go to the **Actions** tab in GitHub
+2. Select the **Chronos.Portal.Publish** workflow
+3. Click **Run workflow**
+
+Each release is tagged with both `latest` and the commit SHA for traceability.
+
+You should visit [Chronos.ServiceProxy](https://github.com/bgu-nasa/Chronos.ServiceProxy) for more info.
 
 ## Libraries we use
 
