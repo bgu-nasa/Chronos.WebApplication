@@ -4,8 +4,9 @@ This is the monorepo for Chronos Portal, tech-lead: aaroni@post.bgu.ac.il / aron
 
 ## Table of contents
 
-1. Libraries we use
-2. Contribution Rules
+1. Docker
+2. Libraries we use
+3. Contribution Rules
     - Css and Styling
     - File Exports & Imports
     - File Naming
@@ -18,6 +19,23 @@ This is the monorepo for Chronos Portal, tech-lead: aaroni@post.bgu.ac.il / aron
     - Mapping a page to a route
     - Adding navigation items
 4. Common & Infra
+
+## Docker
+
+To run the app in a Docker container on port 3000:
+
+```bash
+npm run docker:start
+```
+
+This builds the image and runs the container, injecting environment variables from `.local.env`. You can also run the steps separately:
+
+```bash
+npm run docker:build   # Build the Docker image
+npm run docker:run     # Run the container with .local.env
+```
+
+Make sure `.local.env` exists in the project root. See `.env.example` for the required variables.
 
 ## Libraries we use
 
