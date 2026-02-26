@@ -30,7 +30,10 @@ class LoggerService implements ILogger {
     private isFlushing: boolean = false;
 
     constructor() {
-        this.webhookUrl = import.meta.env.VITE_DISCORD_WEBHOOK_URL || null;
+        this.webhookUrl =
+            window.__ENV__?.VITE_DISCORD_WEBHOOK_URL ||
+            import.meta.env.VITE_DISCORD_WEBHOOK_URL ||
+            null;
         this.startFlushInterval();
     }
 
@@ -159,7 +162,7 @@ class LoggerService implements ILogger {
 
         // Format all entries as plain text (each log separated with new line)
         const logLines = entries.map((entry) =>
-            this.formatLogEntry(entry, orgId)
+            this.formatLogEntry(entry, orgId),
         );
         const content = logLines.join("\n");
 
@@ -203,7 +206,7 @@ class LoggerService implements ILogger {
 
             if (!response.ok) {
                 throw new Error(
-                    `Discord webhook failed: ${response.status} ${response.statusText}`
+                    `Discord webhook failed: ${response.status} ${response.statusText}`,
                 );
             }
 
