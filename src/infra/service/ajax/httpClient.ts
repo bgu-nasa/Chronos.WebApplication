@@ -8,7 +8,7 @@ import { tokenService } from "./token.service";
 import type { ApiError } from "./types";
 
 // Base URL can be configured via environment variable
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/";
+const BASE_URL = window.__ENV__?.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/";
 
 // Refresh endpoint
 const REFRESH_ENDPOINT = "/api/auth/refresh";
