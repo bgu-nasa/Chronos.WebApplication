@@ -1,0 +1,21 @@
+{
+    "title": "Resource Attributes Management",
+    "createButton": "Create",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "titleColumn": "Title",
+    "descriptionColumn": "Description",
+    "emptyStateMessage": "No resource attributes yet. Get started by creating your first attribute!",
+    "editorCreateTitle": "Create Resource Attribute",
+    "editorEditTitle": "Edit Resource Attribute",
+    "editorTitleLabel": "Title",
+    "editorTitlePlaceholder": "Enter attribute title",
+    "editorDescriptionLabel": "Description",
+    "editorDescriptionPlaceholder": "Enter attribute description (optional)",
+    "editorCreateButton": "Create",
+    "editorSaveButton": "Save",
+    "deleteConfirmTitle": "Delete Resource Attribute",
+    "deleteConfirmMessage": "Are you sure you want to delete the attribute \"{title}\"? This action cannot be undone.",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel"
+}

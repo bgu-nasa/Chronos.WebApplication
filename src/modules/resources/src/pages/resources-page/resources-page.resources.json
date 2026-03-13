@@ -3,6 +3,7 @@
     "createButton": "Create",
     "editButton": "Edit",
     "deleteButton": "Delete",
+    "assignAttributesButton": "Assign Attributes",
     "identifierColumn": "Identifier",
     "resourceTypeColumn": "Type",
     "locationColumn": "Location",

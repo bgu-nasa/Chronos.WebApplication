@@ -1,40 +1,34 @@
 import { Button, Group } from "@mantine/core";
-import resources from "../resource-types-page.resources.json";
+import resources from "../resource-attributes-page.resources.json";
 
-interface ResourceTypeActionsProps {
-    selectedResourceType: any | null;
+interface ResourceAttributeActionsProps {
+    selectedResourceAttribute: any | null;
     onCreateClick: () => void;
     onEditClick: () => void;
     onDeleteClick: () => void;
 }
 
-export function ResourceTypeActions({
-    selectedResourceType,
+export function ResourceAttributeActions({
+    selectedResourceAttribute,
     onCreateClick,
     onEditClick,
     onDeleteClick,
-}: ResourceTypeActionsProps) {
-    // Check if user has ResourceManager role for create/edit/delete operations
-    const isResourceManager = $app.organization.isResourceManager();
-    
+}: ResourceAttributeActionsProps) {
     return (
         <Group mb="md">
-            <Button 
-                onClick={onCreateClick}
-                disabled={!isResourceManager}
-            >
+            <Button onClick={onCreateClick}>
                 {resources.createButton}
             </Button>
             <Button
                 onClick={onEditClick}
-                disabled={!selectedResourceType || !isResourceManager}
+                disabled={!selectedResourceAttribute}
                 variant="outline"
             >
                 {resources.editButton}
             </Button>
             <Button
                 onClick={onDeleteClick}
-                disabled={!selectedResourceType || !isResourceManager}
+                disabled={!selectedResourceAttribute}
                 variant="outline"
             >
                 {resources.deleteButton}

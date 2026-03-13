@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Container, Divider, Title, Tabs } from "@mantine/core";
 import { ConfirmationDialog, useConfirmation } from "@/common";
-import { ResourceActions, ResourceTable, ResourceCreator, ResourceEditor, type ResourceData } from "./components";
-import type { UpdateResourceRequest, UpdateResourceTypeRequest } from "@/modules/resources/src/data";
+import { ResourceActions, ResourceTable, ResourceCreator, ResourceEditor, ResourceAttributeAssignmentModal, type ResourceData } from "./components";
+import type { UpdateResourceRequest, UpdateResourceTypeRequest, CreateResourceAttributeRequest, UpdateResourceAttributeRequest } from "@/modules/resources/src/data";
 import {
     useResources,
     useCreateResource,
@@ -12,10 +12,16 @@ import {
     useCreateResourceType,
     useUpdateResourceType,
     useDeleteResourceType,
+    useResourceAttributes,
+    useCreateResourceAttribute,
+    useUpdateResourceAttribute,
+    useDeleteResourceAttribute,
 } from "@/modules/resources/src/hooks";
 import { ResourceTypeActions, ResourceTypeTable, ResourceTypeCreator, ResourceTypeEditor, type ResourceTypeData } from "../resource-types-page/components";
+import { ResourceAttributeActions, ResourceAttributeTable, ResourceAttributeCreator, ResourceAttributeEditor, type ResourceAttributeData } from "../resource-attributes-page/components";
 import resourcesJson from "./resources-page.resources.json";
 import resourceTypesJson from "../resource-types-page/resource-types-page.resources.json";
+import resourceAttributesJson from "../resource-attributes-page/resource-attributes-page.resources.json";
 import styles from "./resources-page.module.css";
 
 export function ResourcesPage() {
@@ -25,11 +31,17 @@ export function ResourcesPage() {
     const [selectedResource, setSelectedResource] = useState<ResourceData | null>(null);
     const [resourceCreateModalOpened, setResourceCreateModalOpened] = useState(false);
     const [resourceEditModalOpened, setResourceEditModalOpened] = useState(false);
+    const [resourceAttributeAssignmentModalOpened, setResourceAttributeAssignmentModalOpened] = useState(false);
 
     // Resource Types state
     const [selectedResourceType, setSelectedResourceType] = useState<ResourceTypeData | null>(null);
     const [resourceTypeCreateModalOpened, setResourceTypeCreateModalOpened] = useState(false);
     const [resourceTypeEditModalOpened, setResourceTypeEditModalOpened] = useState(false);
+
+    // Resource Attributes state
+    const [selectedResourceAttribute, setSelectedResourceAttribute] = useState<ResourceAttributeData | null>(null);
+    const [resourceAttributeCreateModalOpened, setResourceAttributeCreateModalOpened] = useState(false);
+    const [resourceAttributeEditModalOpened, setResourceAttributeEditModalOpened] = useState(false);
 
     // Resources hooks
     const { resources: resourcesList, fetchResources } = useResources();
@@ -43,6 +55,12 @@ export function ResourcesPage() {
     const { updateResourceType, isLoading: isEditingResourceType } = useUpdateResourceType();
     const { deleteResourceType } = useDeleteResourceType();
 
+    // Resource Attributes hooks
+    const { resourceAttributes, fetchResourceAttributes } = useResourceAttributes();
+    const { createResourceAttribute, isLoading: isCreatingResourceAttribute } = useCreateResourceAttribute();
+    const { updateResourceAttribute, isLoading: isEditingResourceAttribute } = useUpdateResourceAttribute();
+    const { deleteResourceAttribute } = useDeleteResourceAttribute();
+
     const {
         confirmationState,
         openConfirmation,
@@ -55,7 +73,8 @@ export function ResourcesPage() {
     useEffect(() => {
         fetchResources();
         fetchResourceTypes();
-    }, [fetchResources, fetchResourceTypes]);
+        fetchResourceAttributes();
+    }, [fetchResources, fetchResourceTypes, fetchResourceAttributes]);
 
     // Resources handlers
     const handleResourceCreateClick = () => {
@@ -175,6 +194,13 @@ export function ResourcesPage() {
         });
     };
 
+    const handleResourceAssignAttributesClick = () => {
+        $app.logger.info("[ResourcesPage] handleResourceAssignAttributesClick called");
+        if (selectedResource) {
+            setResourceAttributeAssignmentModalOpened(true);
+        }
+    };
+
     // Resource Types handlers
     const handleResourceTypeCreateClick = () => {
         $app.logger.info("[ResourcesPage] handleResourceTypeCreateClick called");
@@ -276,6 +302,104 @@ export function ResourcesPage() {
         });
     };
 
+    // Resource Attributes handlers
+    const handleResourceAttributeCreateClick = () => {
+        $app.logger.info("[ResourcesPage] handleResourceAttributeCreateClick called");
+        setResourceAttributeCreateModalOpened(true);
+    };
+
+    const handleResourceAttributeCreateSubmit = async (data: { title: string; description: string | null }) => {
+        $app.logger.info("[ResourcesPage] handleResourceAttributeCreateSubmit called with:", data);
+
+        const org = $app.organization.getOrganization();
+        $app.logger.info("[ResourcesPage] Organization from context:", org);
+
+        const request = {
+            id: crypto.randomUUID(),
+            organizationId: org?.id!,
+            title: data.title,
+            description: data.description,
+        };
+
+        $app.logger.info("[ResourcesPage] Sending create request:", request);
+
+        try {
+            const result = await createResourceAttribute(request);
+            $app.logger.info("[ResourcesPage] Create resource attribute result:", result);
+
+            if (result) {
+                setResourceAttributeCreateModalOpened(false);
+                $app.notifications.showSuccess("Success", "Resource attribute created successfully");
+            } else {
+                $app.logger.error("[ResourcesPage] Create resource attribute returned null");
+                $app.notifications.showError("Error", "Failed to create resource attribute. Check console for details.");
+            }
+        } catch (error) {
+            $app.logger.error("[ResourcesPage] Error creating resource attribute:", error);
+            $app.notifications.showError("Error", `Error creating resource attribute: ${error instanceof Error ? error.message : "Unknown error"}`);
+        }
+    };
+
+    const handleResourceAttributeEditClick = () => {
+        $app.logger.info("[ResourcesPage] handleResourceAttributeEditClick called");
+        if (selectedResourceAttribute) {
+            setResourceAttributeEditModalOpened(true);
+        }
+    };
+
+    const handleResourceAttributeEditSubmit = async (data: { title: string; description: string | null }) => {
+        $app.logger.info("[ResourcesPage] handleResourceAttributeEditSubmit called with:", data);
+
+        if (!selectedResourceAttribute) {
+            $app.logger.error("[ResourcesPage] Missing selectedResourceAttribute");
+            $app.notifications.showWarning("Warning", "Missing resource attribute context for edit.");
+            return;
+        }
+
+        const request = {
+            title: data.title,
+            description: data.description,
+        };
+
+        $app.logger.info("[ResourcesPage] Sending update request:", request);
+
+        try {
+            const success = await updateResourceAttribute(selectedResourceAttribute.id, request);
+            $app.logger.info("[ResourcesPage] Update resource attribute result:", success);
+
+            if (success) {
+                setResourceAttributeEditModalOpened(false);
+                setSelectedResourceAttribute(null);
+                $app.notifications.showSuccess("Success", "Resource attribute updated successfully");
+            } else {
+                $app.logger.error("[ResourcesPage] Update resource attribute returned false");
+                $app.notifications.showError("Error", "Failed to update resource attribute. Check console for details.");
+            }
+        } catch (error) {
+            $app.logger.error("[ResourcesPage] Error updating resource attribute:", error);
+            $app.notifications.showError("Error", `Error updating resource attribute: ${error instanceof Error ? error.message : "Unknown error"}`);
+        }
+    };
+
+    const handleResourceAttributeDeleteClick = () => {
+        $app.logger.info("[ResourcesPage] handleResourceAttributeDeleteClick called");
+        if (!selectedResourceAttribute) return;
+
+        openConfirmation({
+            title: resourceAttributesJson.deleteConfirmTitle,
+            message: resourceAttributesJson.deleteConfirmMessage.replace(
+                "{title}",
+                selectedResourceAttribute.title
+            ),
+            onConfirm: async () => {
+                const success = await deleteResourceAttribute(selectedResourceAttribute.id);
+                if (success) {
+                    setSelectedResourceAttribute(null);
+                }
+            },
+        });
+    };
+
     // Prepare data for display
     const resourceData: ResourceData[] = resourcesList.map((resource) => {
         const resourceType = resourceTypes.find((rt) => rt.id === resource.resourceTypeId);
@@ -294,6 +418,12 @@ export function ResourcesPage() {
         type: resourceType.type,
     }));
 
+    const resourceAttributeData: ResourceAttributeData[] = resourceAttributes.map((attribute) => ({
+        id: attribute.id,
+        title: attribute.title,
+        description: attribute.description,
+    }));
+
     return (
         <Container size="xl" py="xl">
             <div className={styles.container}>
@@ -304,6 +434,7 @@ export function ResourcesPage() {
                     <Tabs.List>
                         <Tabs.Tab value="resources">Resources</Tabs.Tab>
                         <Tabs.Tab value="resource-types">Resource Types</Tabs.Tab>
+                        <Tabs.Tab value="resource-attributes">Resource Attributes</Tabs.Tab>
                     </Tabs.List>
 
                     <Tabs.Panel value="resources" pt="md">
@@ -312,6 +443,7 @@ export function ResourcesPage() {
                             onCreateClick={handleResourceCreateClick}
                             onEditClick={handleResourceEditClick}
                             onDeleteClick={handleResourceDeleteClick}
+                            onAssignAttributesClick={handleResourceAssignAttributesClick}
                         />
 
                         <ResourceTable
@@ -333,6 +465,21 @@ export function ResourcesPage() {
                             resourceTypes={resourceTypeData}
                             selectedResourceType={selectedResourceType}
                             onSelectionChange={setSelectedResourceType}
+                        />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="resource-attributes" pt="md">
+                        <ResourceAttributeActions
+                            selectedResourceAttribute={selectedResourceAttribute}
+                            onCreateClick={handleResourceAttributeCreateClick}
+                            onEditClick={handleResourceAttributeEditClick}
+                            onDeleteClick={handleResourceAttributeDeleteClick}
+                        />
+
+                        <ResourceAttributeTable
+                            resourceAttributes={resourceAttributeData}
+                            selectedResourceAttribute={selectedResourceAttribute}
+                            onSelectionChange={setSelectedResourceAttribute}
                         />
                     </Tabs.Panel>
                 </Tabs>
@@ -382,6 +529,37 @@ export function ResourcesPage() {
                     }
                 />
 
+                {/* Resource Attribute Modals */}
+                <ResourceAttributeCreator
+                    opened={resourceAttributeCreateModalOpened}
+                    onClose={() => setResourceAttributeCreateModalOpened(false)}
+                    onSubmit={handleResourceAttributeCreateSubmit}
+                    loading={isCreatingResourceAttribute}
+                />
+
+                <ResourceAttributeEditor
+                    opened={resourceAttributeEditModalOpened}
+                    onClose={() => setResourceAttributeEditModalOpened(false)}
+                    onSubmit={handleResourceAttributeEditSubmit}
+                    loading={isEditingResourceAttribute}
+                    initialData={
+                        selectedResourceAttribute
+                            ? { 
+                                title: selectedResourceAttribute.title,
+                                description: selectedResourceAttribute.description
+                            }
+                            : undefined
+                    }
+                />
+
+                {/* Resource Attribute Assignment Modal */}
+                <ResourceAttributeAssignmentModal
+                    opened={resourceAttributeAssignmentModalOpened}
+                    onClose={() => setResourceAttributeAssignmentModalOpened(false)}
+                    resourceId={selectedResource?.id || null}
+                    resourceIdentifier={selectedResource?.identifier}
+                />
+
                 <ConfirmationDialog
                     opened={confirmationState.isOpen}
                     onClose={closeConfirmation}
@@ -391,12 +569,16 @@ export function ResourcesPage() {
                     confirmText={
                         activeTab === "resources"
                             ? resourcesJson.deleteConfirmButton
-                            : resourceTypesJson.deleteConfirmButton
+                            : activeTab === "resource-types"
+                            ? resourceTypesJson.deleteConfirmButton
+                            : resourceAttributesJson.deleteConfirmButton
                     }
                     cancelText={
                         activeTab === "resources"
                             ? resourcesJson.deleteCancelButton
-                            : resourceTypesJson.deleteCancelButton
+                            : activeTab === "resource-types"
+                            ? resourceTypesJson.deleteCancelButton
+                            : resourceAttributesJson.deleteCancelButton
                     }
                     loading={isDeleting}
                 />
