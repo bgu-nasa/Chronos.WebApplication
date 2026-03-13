@@ -87,8 +87,8 @@ export function OrganizationPolicyEditor({
         } catch (error) {
             $app.logger.error("[OrganizationPolicyEditor] Error submitting policy:", error);
             $app.notifications.showError(
-                "Failed to Save Policy",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.organizationPolicies.failedToSavePolicy,
+                error instanceof Error ? error.message : resources.notifications.organizationPolicies.unexpectedError
             );
         }
     };

@@ -201,8 +201,8 @@ export function UserConstraintEditor({
         } catch (error) {
             $app.logger.error("[UserConstraintEditor] Error submitting constraint:", error);
             $app.notifications.showError(
-                "Failed to Save Constraint",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.userConstraints.failedToSaveConstraint,
+                error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
             );
         }
     };

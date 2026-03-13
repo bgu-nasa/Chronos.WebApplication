@@ -28,6 +28,22 @@ export function serializeForbiddenTimeRange(entries: ForbiddenTimeRangeEntry[]):
 }
 
 /**
+ * Serializes preferred_timerange form entries into backend format
+ * 
+ * IMPORTANT: Users input times in their LOCAL timezone.
+ * This function converts local time to UTC before saving to the database.
+ * 
+ * Input: [{ weekday: "Monday", startTime: "09:30", endTime: "11:00" }] (in user's local timezone)
+ * Output: "Monday 09:30 - 11:00" (in UTC, may be split across multiple entries if timezone conversion causes day change)
+ * 
+ * Note: Uses the same serialization logic as forbidden_timerange since the format is identical
+ */
+export function serializePreferredTimeRange(entries: ForbiddenTimeRangeEntry[]): string {
+    // Reuse the same serialization logic as forbidden_timerange
+    return serializeForbiddenTimeRange(entries);
+}
+
+/**
  * Serializes preferred_weekdays array into backend format
  * Input: ["Monday", "Wednesday", "Friday"]
  * Output: "Monday,Wednesday,Friday"

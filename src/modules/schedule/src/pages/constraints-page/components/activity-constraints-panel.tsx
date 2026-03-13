@@ -72,14 +72,14 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
                     // Show success notification
                     $app.notifications.showSuccess(
-                        "Deleted",
-                        "The activity constraint has been deleted successfully"
+                        resources.notifications.activityConstraints.deleted,
+                        resources.notifications.activityConstraints.deletedMessage
                     );
                 } catch (error) {
                     $app.logger.error("[ActivityConstraintsPanel] Error deleting constraint:", error);
                     $app.notifications.showError(
-                        "Failed to Delete",
-                        error instanceof Error ? error.message : "An unexpected error occurred"
+                        resources.notifications.activityConstraints.failedToDelete,
+                        error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
                     );
                 }
             },
@@ -96,18 +96,18 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
             // Show success notification
             $app.notifications.showSuccess(
-                editingItem ? "Constraint Updated" : "Constraint Created",
+                editingItem ? resources.notifications.activityConstraints.updated : resources.notifications.activityConstraints.created,
                 editingItem
-                    ? "The activity constraint has been updated successfully"
-                    : "The activity constraint has been created successfully"
+                    ? resources.notifications.activityConstraints.updatedMessage
+                    : resources.notifications.activityConstraints.createdMessage
             );
 
             setModalOpened(false);
         } catch (error) {
             $app.logger.error("[ActivityConstraintsPanel] Error saving constraint:", error);
             $app.notifications.showError(
-                "Failed to Save Constraint",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.activityConstraints.failedToSaveConstraint,
+                error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
             );
         }
     };

@@ -180,8 +180,8 @@ export function ActivityConstraintEditor({
         } catch (error) {
             $app.logger.error("[ActivityConstraintEditor] Error submitting constraint:", error);
             $app.notifications.showError(
-                "Failed to Save Constraint",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.activityConstraints.failedToSaveConstraint,
+                error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
             );
         }
     };
@@ -230,7 +230,7 @@ export function ActivityConstraintEditor({
 
                 <Select
                     label={resources.labels.key}
-                    placeholder="Select constraint type"
+                    placeholder={resources.placeholders.selectConstraintType}
                     data={constraintTypeOptions}
                     required
                     mb="md"

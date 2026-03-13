@@ -63,6 +63,7 @@
         "enterMaxCapacity": "Enter maximum capacity",
         "enterLocations": "Enter locations (comma-separated or press Enter)",
         "enterResourceTypes": "Enter resource types (comma-separated or press Enter)",
+        "selectConstraintType": "Select constraint type",
         "keyExamples": {
             "user": "e.g., preferred_time, max_hours_per_day",
             "activity": "e.g., required_room_type, max_students",
@@ -184,5 +185,41 @@
         "saveUserConstraint": "Error saving user constraint:",
         "saveActivityConstraint": "Error saving activity constraint:",
         "saveOrganizationPolicy": "Error saving organization policy:"
+    },
+    "notifications": {
+        "userConstraints": {
+            "deleted": "Deleted",
+            "deletedMessage": "The {type} has been deleted successfully",
+            "updated": "Updated",
+            "created": "Created",
+            "updatedMessage": "The {type} has been updated successfully",
+            "createdMessage": "The {type} has been created successfully",
+            "failedToDelete": "Failed to Delete",
+            "failedToSave": "Failed to Save",
+            "failedToSaveConstraint": "Failed to Save Constraint",
+            "unexpectedError": "An unexpected error occurred"
+        },
+        "activityConstraints": {
+            "deleted": "Deleted",
+            "deletedMessage": "The activity constraint has been deleted successfully",
+            "updated": "Constraint Updated",
+            "created": "Constraint Created",
+            "updatedMessage": "The activity constraint has been updated successfully",
+            "createdMessage": "The activity constraint has been created successfully",
+            "failedToDelete": "Failed to Delete",
+            "failedToSaveConstraint": "Failed to Save Constraint",
+            "unexpectedError": "An unexpected error occurred"
+        },
+        "organizationPolicies": {
+            "deleted": "Deleted",
+            "deletedMessage": "The organization policy has been deleted successfully",
+            "updated": "Policy Updated",
+            "created": "Policy Created",
+            "updatedMessage": "The organization policy has been updated successfully",
+            "createdMessage": "The organization policy has been created successfully",
+            "failedToDelete": "Failed to Delete",
+            "failedToSavePolicy": "Failed to Save Policy",
+            "unexpectedError": "An unexpected error occurred"
+        }
     }
 }

@@ -123,16 +123,16 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
 
                     await refetchData(isPreferenceType);
 
-                    const itemType = isPreferenceType ? "preference" : "constraint";
+                    const itemType = isPreferenceType ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
                     $app.notifications.showSuccess(
-                        "Deleted",
-                        `The ${itemType} has been deleted successfully`
+                        resources.notifications.userConstraints.deleted,
+                        resources.notifications.userConstraints.deletedMessage.replace("{type}", itemType)
                     );
                 } catch (error) {
                     $app.logger.error("[UserConstraintsPanel] Error deleting constraint/preference:", error);
                     $app.notifications.showError(
-                        "Failed to Delete",
-                        error instanceof Error ? error.message : "An unexpected error occurred"
+                        resources.notifications.userConstraints.failedToDelete,
+                        error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
                     );
                 }
             },
@@ -166,10 +166,11 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
             await refetchData(isPreference);
 
             const isUpdate = !!editingItem;
-            const itemType = isPreference ? "preference" : "constraint";
-            const action = isUpdate ? "updated" : "created";
-            const title = isUpdate ? "Updated" : "Created";
-            const message = `The ${itemType} has been ${action} successfully`;
+            const itemType = isPreference ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
+            const title = isUpdate ? resources.notifications.userConstraints.updated : resources.notifications.userConstraints.created;
+            const message = isUpdate 
+                ? resources.notifications.userConstraints.updatedMessage.replace("{type}", itemType)
+                : resources.notifications.userConstraints.createdMessage.replace("{type}", itemType);
 
             $app.notifications.showSuccess(title, message);
 
@@ -177,8 +178,8 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
         } catch (error) {
             $app.logger.error("[UserConstraintsPanel] Error saving constraint/preference:", error);
             $app.notifications.showError(
-                "Failed to Save",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.userConstraints.failedToSave,
+                error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
             );
         }
     };
