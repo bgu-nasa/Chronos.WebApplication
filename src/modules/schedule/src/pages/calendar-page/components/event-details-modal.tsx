@@ -14,6 +14,7 @@ interface EventBlock {
     assignmentId?: string;
     slotId?: string;
     resourceId?: string;
+    expectedStudents?: number | null;
 }
 
 interface EventDetailsModalProps {
@@ -97,6 +98,20 @@ export function EventDetailsModal({
                         {timeRange}
                     </Text>
                 </div>
+
+                {eventBlock.expectedStudents !== null && eventBlock.expectedStudents !== undefined && (
+                    <>
+                        <Divider />
+                        <div>
+                            <Text size="sm" c="dimmed" mb={4}>
+                                {resources.eventDetailsModal.labels.expectedStudents}
+                            </Text>
+                            <Text fw={500}>
+                                {eventBlock.expectedStudents}
+                            </Text>
+                        </div>
+                    </>
+                )}
 
                 {resource && (
                     <>

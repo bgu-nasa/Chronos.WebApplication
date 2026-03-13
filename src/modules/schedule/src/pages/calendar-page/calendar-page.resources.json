@@ -15,16 +15,17 @@
             "subject": "Subject",
             "activityType": "Activity Type",
             "schedule": "Schedule",
-            "resource": "Resource",
+            "resource": "Room",
             "location": "Location:",
-            "capacity": "Capacity:"
+            "capacity": "Capacity:",
+            "expectedStudents": "Expected Students"
         },
         "unknown": {
             "day": "Unknown Day",
             "subject": "Unknown Subject",
             "activityType": "Unknown"
         },
-        "loading": "Loading resource details...",
+        "loading": "Loading room details...",
         "closeButton": "Close"
     },
     "timeRangeSelectionModal": {
