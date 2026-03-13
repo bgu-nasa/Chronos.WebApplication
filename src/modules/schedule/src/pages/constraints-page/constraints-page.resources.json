@@ -48,13 +48,14 @@
         "minCapacity": "Minimum Capacity",
         "maxCapacity": "Maximum Capacity",
         "locations": "Locations",
-        "resourceTypes": "Resource Types",
+        "resourceTypes": "Room Types",
         "addTimeRange": "Add Time Range",
         "removeTimeRange": "Remove"
     },
     "placeholders": {
         "selectUser": "Select user",
         "selectSchedulingPeriod": "Select scheduling period",
+        "selectSubject": "Select subject",
         "selectActivity": "Select activity",
         "selectWeekday": "Select weekday",
         "selectStartTime": "Select start time",
@@ -62,7 +63,7 @@
         "enterMinCapacity": "Enter minimum capacity",
         "enterMaxCapacity": "Enter maximum capacity",
         "enterLocations": "Enter locations (comma-separated or press Enter)",
-        "enterResourceTypes": "Enter resource types (comma-separated or press Enter)",
+        "enterResourceTypes": "Enter room types (comma-separated or press Enter)",
         "selectConstraintType": "Select constraint type",
         "keyExamples": {
             "user": "e.g., preferred_time, max_hours_per_day",
@@ -88,6 +89,7 @@
     "validationMessages": {
         "userRequired": "User is required",
         "schedulingPeriodRequired": "Scheduling period is required",
+        "subjectRequired": "Subject is required",
         "activityRequired": "Activity is required",
         "keyRequired": "Key is required",
         "valueRequired": "Value is required",
@@ -98,14 +100,14 @@
         "atLeastOneTimeRange": "At least one time range is required",
         "atLeastOneWeekday": "At least one weekday is required",
         "atLeastOneLocation": "At least one location is required",
-        "atLeastOneResourceType": "At least one resource type is required",
+        "atLeastOneResourceType": "At least one room type is required",
         "minOrMaxRequired": "At least one of minimum or maximum capacity is required",
         "minGreaterThanMax": "Minimum capacity cannot be greater than maximum capacity",
         "invalidForbiddenTimeRange": "Invalid format. Expected: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries can be separated by commas.",
         "invalidPreferredWeekdays": "Invalid format. Expected comma-separated weekday names (e.g., 'Monday,Wednesday,Friday')",
         "invalidRequiredCapacity": "Invalid format. Expected JSON: {\"min\": number} or {\"max\": number} or {\"min\": number, \"max\": number}",
         "invalidLocationPreference": "Invalid format. Expected comma-separated location names (e.g., 'Building A,Building B')",
-        "invalidCompatibleResourceTypes": "Invalid format. Expected comma-separated resource type names (e.g., 'Lecture Hall,Seminar Room')"
+        "invalidCompatibleResourceTypes": "Invalid format. Expected comma-separated room type names (e.g., 'Lecture Hall,Seminar Room')"
     },
     "constraintTypeOptions": {
         "userConstraints": [
@@ -118,6 +120,10 @@
             {
                 "value": "preferred_weekdays",
                 "label": "Preferred Weekdays"
+            },
+            {
+                "value": "preferred_timerange",
+                "label": "Preferred Time Range"
             }
         ],
         "activityConstraints": [
@@ -131,16 +137,17 @@
             },
             {
                 "value": "compatible_resource_types",
-                "label": "Compatible Resource Types"
+                "label": "Compatible Room Types"
             }
         ]
     },
     "valueFormatGuidance": {
         "forbidden_timerange": "Format: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries separated by commas.",
         "preferred_weekdays": "Format: Comma-separated weekday names (e.g., 'Monday,Wednesday,Friday')",
+        "preferred_timerange": "Format: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries separated by commas.",
         "required_capacity": "Format: JSON object with 'min' and/or 'max' (e.g., {\"min\": 30} or {\"min\": 20, \"max\": 50})",
         "location_preference": "Format: Comma-separated location names (e.g., 'Building A,Building B')",
-        "compatible_resource_types": "Format: Comma-separated resource type names (e.g., 'Lecture Hall,Seminar Room')"
+        "compatible_resource_types": "Format: Comma-separated room type names (e.g., 'Lecture Hall,Seminar Room')"
     },
     "deleteMessages": {
         "deleteConstraint": "Delete Constraint",

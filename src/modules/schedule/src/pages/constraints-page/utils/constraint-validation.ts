@@ -150,6 +150,9 @@ export function validateConstraintValue(key: string, value: string): string | nu
     switch (key) {
         case 'forbidden_timerange':
             return validateForbiddenTimeRange(value);
+        case 'preferred_timerange':
+            // Preferred timerange uses the same format as forbidden_timerange
+            return validateForbiddenTimeRange(value);
         case 'preferred_weekdays':
             return validatePreferredWeekdays(value);
         case 'required_capacity':

@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import {
     Modal, Button, Group, Text,
     Select, MultiSelect, NumberInput
 } from "@mantine/core";
 
 import { useActivities, useSubjects } from "@/modules/resources/src/hooks";
+import { useResourceTypes } from "@/modules/resources/src/hooks/use-resource-types";
 
 import resources from "../constraints-page.resources.json";
 import {
@@ -35,37 +36,93 @@ export function ActivityConstraintEditor({
     initialData,
     loading = false,
 }: ActivityConstraintEditorProps) {
-    const { activities, fetchActivities } = useActivities();
-    const { subjects, fetchSubjects } = useSubjects();
+    const { activities, fetchActivities, setCurrentDepartment: setActivityDepartment } = useActivities();
+    const { subjects, fetchSubjects, setCurrentDepartment: setSubjectDepartment } = useSubjects();
+    const { resourceTypes, fetchResourceTypes } = useResourceTypes();
 
+    // Filter constraint types to only allow required_capacity and compatible_resource_types
     const constraintTypeOptions = useMemo(() => {
-        return resources.constraintTypeOptions.activityConstraints.map(opt => ({
-            value: opt.value,
-            label: opt.label
-        }));
+        return resources.constraintTypeOptions.activityConstraints
+            .filter(opt => opt.value === "required_capacity" || opt.value === "compatible_resource_types")
+            .map(opt => ({
+                value: opt.value,
+                label: opt.label
+            }));
     }, []);
 
     // Form state for required_capacity: min and max numbers
     const [capacityData, setCapacityData] = useState<RequiredCapacityFormData>({});
 
-    // Form state for location_preference and compatible_resource_types: array of strings
-    const [locationValues, setLocationValues] = useState<string[]>([]);
+    // Form state for compatible_resource_types: array of strings
     const [resourceTypeValues, setResourceTypeValues] = useState<string[]>([]);
 
     // Form state
     const [formValues, setFormValues] = useState({
+        subjectId: initialData ? (() => {
+            // Find the subject ID from the initial activity
+            const activity = activities.find(a => a.id === initialData.activityId);
+            return activity?.subjectId || "";
+        })() : "",
         activityId: initialData?.activityId || "",
         key: initialData?.key || "",
     });
 
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+    const initializedRef = useRef<string | null>(null);
 
+    // Load data when modal opens
     useEffect(() => {
-        if (opened) {
-            fetchActivities();
-            fetchSubjects();
-            if (initialData) {
+        if (!opened) return;
+        
+        fetchResourceTypes();
+        
+        // Set department and fetch both activities and subjects
+        const loadData = async () => {
+            try {
+                // Get department ID from organization context (same way as activityDataRepository does)
+                const departments = $app.organization.getActiveDepartments();
+                if (departments && departments.length > 0) {
+                    const departmentId = departments[0].id;
+                    // Set department for both hooks
+                    setActivityDepartment(departmentId);
+                    setSubjectDepartment(departmentId);
+                    // Fetch both in parallel
+                    await Promise.all([
+                        fetchActivities(),
+                        fetchSubjects()
+                    ]);
+                } else {
+                    $app.logger.error("[ActivityConstraintEditor] No departments available");
+                }
+            } catch (error) {
+                $app.logger.error("[ActivityConstraintEditor] Error fetching data:", error);
+            }
+        };
+        loadData();
+    }, [opened, fetchActivities, fetchResourceTypes, setActivityDepartment, setSubjectDepartment, fetchSubjects]);
+
+    // Initialize form values when modal opens or initialData changes
+    // Use a ref to track initialization and prevent infinite loops
+    useEffect(() => {
+        if (!opened) {
+            initializedRef.current = null;
+            return;
+        }
+        
+        // Create a unique key for this initialData to track if we've already initialized
+        const initKey = initialData ? `${initialData.activityId}-${initialData.key}` : "new";
+        
+        // Skip if we've already initialized for this data
+        if (initializedRef.current === initKey) {
+            return;
+        }
+        
+        if (initialData) {
+            // Find the subject ID from the initial activity
+            const activity = activities.find(a => a.id === initialData.activityId);
+            if (activity) {
                 setFormValues({
+                    subjectId: activity.subjectId,
                     activityId: initialData.activityId,
                     key: initialData.key,
                 });
@@ -75,25 +132,57 @@ export function ActivityConstraintEditor({
                 if (initialData.key === "required_capacity") {
                     const parsed = parseRequiredCapacity(initialData.value);
                     setCapacityData(parsed);
-                } else if (initialData.key === "location_preference") {
-                    const parsed = parseCommaSeparated(initialData.value);
-                    setLocationValues(parsed);
                 } else if (initialData.key === "compatible_resource_types") {
                     const parsed = parseCommaSeparated(initialData.value);
                     setResourceTypeValues(parsed);
                 }
-            } else {
+                initializedRef.current = initKey;
+            }
+            // If activity not found yet, wait for activities to load
+        } else {
+            setFormValues({
+                subjectId: "",
+                activityId: "",
+                key: "",
+            });
+            setFormErrors({});
+            setCapacityData({});
+            setResourceTypeValues([]);
+            initializedRef.current = initKey;
+        }
+        // Only depend on opened and initialData, not activities to prevent infinite loops
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [opened, initialData?.activityId, initialData?.key, initialData?.value]);
+    
+    // Separate effect to update form when activities load (for edit mode)
+    // This only runs when activities array changes, but uses the ref to prevent loops
+    useEffect(() => {
+        if (!opened || !initialData || activities.length === 0) return;
+        
+        const initKey = `${initialData.activityId}-${initialData.key}`;
+        // Only update if we haven't initialized yet
+        if (initializedRef.current !== initKey) {
+            const activity = activities.find(a => a.id === initialData.activityId);
+            if (activity) {
                 setFormValues({
-                    activityId: "",
-                    key: "",
+                    subjectId: activity.subjectId,
+                    activityId: initialData.activityId,
+                    key: initialData.key,
                 });
                 setFormErrors({});
-                setCapacityData({});
-                setLocationValues([]);
-                setResourceTypeValues([]);
+
+                // Parse the value based on constraint type
+                if (initialData.key === "required_capacity") {
+                    const parsed = parseRequiredCapacity(initialData.value);
+                    setCapacityData(parsed);
+                } else if (initialData.key === "compatible_resource_types") {
+                    const parsed = parseCommaSeparated(initialData.value);
+                    setResourceTypeValues(parsed);
+                }
+                initializedRef.current = initKey;
             }
         }
-    }, [opened, initialData]);
+    }, [opened, initialData, activities]);
 
     const handleKeyChange = (value: string | null) => {
         setFormValues({ ...formValues, key: value || "" });
@@ -103,7 +192,6 @@ export function ActivityConstraintEditor({
         // Clear form data when key changes (only when creating new, not editing)
         if (!initialData && value) {
             setCapacityData({});
-            setLocationValues([]);
             setResourceTypeValues([]);
         }
     };
@@ -117,10 +205,6 @@ export function ActivityConstraintEditor({
             if (capacityData.min !== undefined && capacityData.max !== undefined && capacityData.min > capacityData.max) {
                 return resources.validationMessages.minGreaterThanMax;
             }
-        } else if (formValues.key === "location_preference") {
-            if (locationValues.length === 0) {
-                return resources.validationMessages.atLeastOneLocation;
-            }
         } else if (formValues.key === "compatible_resource_types") {
             if (resourceTypeValues.length === 0) {
                 return resources.validationMessages.atLeastOneResourceType;
@@ -132,6 +216,9 @@ export function ActivityConstraintEditor({
     const handleSubmit = async () => {
         // Validate form fields
         const errors: Record<string, string> = {};
+        if (!formValues.subjectId) {
+            errors.subjectId = resources.validationMessages.subjectRequired;
+        }
         if (!formValues.activityId) {
             errors.activityId = resources.validationMessages.activityRequired;
         }
@@ -156,8 +243,6 @@ export function ActivityConstraintEditor({
 
             if (formValues.key === "required_capacity") {
                 serializedValue = serializeRequiredCapacity(capacityData);
-            } else if (formValues.key === "location_preference") {
-                serializedValue = serializeCommaSeparated(locationValues);
             } else if (formValues.key === "compatible_resource_types") {
                 serializedValue = serializeCommaSeparated(resourceTypeValues);
             }
@@ -169,12 +254,12 @@ export function ActivityConstraintEditor({
 
             // Reset form
             setFormValues({
+                subjectId: "",
                 activityId: "",
                 key: "",
             });
             setFormErrors({});
             setCapacityData({});
-            setLocationValues([]);
             setResourceTypeValues([]);
             onClose();
         } catch (error) {
@@ -192,16 +277,38 @@ export function ActivityConstraintEditor({
         handleSubmit();
     };
 
-    // Group activities by subject for better UX
-    const activityOptions = activities.map((activity) => {
-        const subject = subjects.find((s) => s.id === activity.subjectId);
-        return {
+    // Filter activities by selected subject
+    const filteredActivities = useMemo(() => {
+        if (!formValues.subjectId) {
+            return [];
+        }
+        const filtered = activities.filter(activity => activity.subjectId === formValues.subjectId);
+        return filtered;
+    }, [activities, formValues.subjectId]);
+
+    // Subject options
+    const subjectOptions = useMemo(() => {
+        return subjects.map(subject => ({
+            value: subject.id,
+            label: subject.name,
+        }));
+    }, [subjects]);
+
+    // Activity options filtered by selected subject
+    const activityOptions = useMemo(() => {
+        return filteredActivities.map((activity) => ({
             value: activity.id,
-            label: subject
-                ? `${subject.name} - ${activity.activityType}`
-                : activity.activityType,
-        };
-    });
+            label: activity.activityType,
+        }));
+    }, [filteredActivities]);
+
+    // Resource type options
+    const resourceTypeOptions = useMemo(() => {
+        return resourceTypes.map(rt => ({
+            value: rt.type,
+            label: rt.type,
+        }));
+    }, [resourceTypes]);
 
     return (
         <Modal
@@ -212,11 +319,36 @@ export function ActivityConstraintEditor({
         >
             <form onSubmit={handleFormSubmit}>
                 <Select
+                    label={resources.labels.subject}
+                    placeholder={resources.placeholders.selectSubject || "Select subject"}
+                    data={subjectOptions}
+                    searchable
+                    required
+                    mb="md"
+                    value={formValues.subjectId}
+                    onChange={(value) => {
+                        setFormValues({ 
+                            ...formValues, 
+                            subjectId: value || "",
+                            activityId: "", // Clear activity when subject changes
+                        });
+                        if (formErrors.subjectId) {
+                            setFormErrors({ ...formErrors, subjectId: "" });
+                        }
+                        if (formErrors.activityId) {
+                            setFormErrors({ ...formErrors, activityId: "" });
+                        }
+                    }}
+                    error={formErrors.subjectId}
+                />
+
+                <Select
                     label={resources.labels.activity}
                     placeholder={resources.placeholders.selectActivity}
                     data={activityOptions}
                     searchable
                     required
+                    disabled={!formValues.subjectId}
                     mb="md"
                     value={formValues.activityId}
                     onChange={(value) => {
@@ -277,25 +409,6 @@ export function ActivityConstraintEditor({
                     </>
                 )}
 
-                {formValues.key === "location_preference" && (
-                    <MultiSelect
-                        label={resources.labels.locations}
-                        placeholder={resources.placeholders.enterLocations}
-                        value={locationValues}
-                        onChange={(value) => {
-                            setLocationValues(value);
-                            if (formErrors.value) {
-                                setFormErrors({ ...formErrors, value: "" });
-                            }
-                        }}
-                        data={locationValues.map(v => ({ value: v, label: v }))}
-                        searchable
-                        required
-                        error={formErrors.value}
-                        mb="md"
-                    />
-                )}
-
                 {formValues.key === "compatible_resource_types" && (
                     <MultiSelect
                         label={resources.labels.resourceTypes}
@@ -307,7 +420,7 @@ export function ActivityConstraintEditor({
                                 setFormErrors({ ...formErrors, value: "" });
                             }
                         }}
-                        data={resourceTypeValues.map(v => ({ value: v, label: v }))}
+                        data={resourceTypeOptions}
                         searchable
                         required
                         error={formErrors.value}

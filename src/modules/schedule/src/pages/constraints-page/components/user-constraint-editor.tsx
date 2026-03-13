@@ -13,8 +13,9 @@ import { useSchedulingPeriods } from "@/modules/schedule/src/hooks";
 
 import resources from "../constraints-page.resources.json";
 import {
-    parseForbiddenTimeRange, parsePreferredWeekdays, serializeForbiddenTimeRange,
-    serializePreferredWeekdays, type ForbiddenTimeRangeEntry
+    parseForbiddenTimeRange, parsePreferredWeekdays, parsePreferredTimeRange,
+    serializeForbiddenTimeRange, serializePreferredWeekdays, serializePreferredTimeRange,
+    type ForbiddenTimeRangeEntry
 } from "../utils";
 
 interface UserConstraintEditorProps {
@@ -53,35 +54,43 @@ export function UserConstraintEditor({
     const { users, fetchUsers } = useUsers();
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
 
-    // Determine the constraint key based on isPreference
-    const constraintKey = useMemo(() => {
-        if (initialData?.key) {
-            return initialData.key;
-        }
-        return isPreference ? "preferred_weekdays" : "forbidden_timerange";
-    }, [initialData?.key, isPreference]);
-
-    // Get the constraint type label
-    const constraintTypeLabel = useMemo(() => {
-        const options = isPreference
-            ? resources.constraintTypeOptions.userPreferences
-            : resources.constraintTypeOptions.userConstraints;
-        return options.find(opt => opt.value === constraintKey)?.label || constraintKey;
-    }, [constraintKey, isPreference]);
-
     // Form state for forbidden_timerange: array of time range entries with unique IDs
     const [timeRangeEntries, setTimeRangeEntries] = useState<Array<ForbiddenTimeRangeEntry & { id: string }>>([]);
 
     // Form state for preferred_weekdays: array of selected weekdays
     const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
 
-    // Form state
+    // Determine default constraint key based on isPreference
+    const defaultConstraintKey = isPreference ? "preferred_weekdays" : "forbidden_timerange";
+
+    // Form state - must be declared before constraintKey useMemo
     const [formValues, setFormValues] = useState({
         userId: initialData?.userId || currentUserId || "",
         schedulingPeriodId: initialData?.schedulingPeriodId || "",
-        key: constraintKey,
+        key: initialData?.key || defaultConstraintKey,
         isPreference: initialData?.isPreference ?? isPreference,
     });
+
+    // Determine the constraint key based on isPreference
+    // When editing, use initialData.key; when creating, use formValues.key (which can be changed by user)
+    const constraintKey = useMemo(() => {
+        if (initialData?.key) {
+            return initialData.key;
+        }
+        // Use formValues.key if set, otherwise default based on isPreference
+        return formValues.key || defaultConstraintKey;
+    }, [initialData?.key, isPreference, formValues.key]);
+
+    // Get the constraint type options and label
+    const constraintTypeOptions = useMemo(() => {
+        return isPreference
+            ? resources.constraintTypeOptions.userPreferences
+            : resources.constraintTypeOptions.userConstraints;
+    }, [isPreference]);
+
+    const constraintTypeLabel = useMemo(() => {
+        return constraintTypeOptions.find(opt => opt.value === constraintKey)?.label || constraintKey;
+    }, [constraintKey, constraintTypeOptions]);
 
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
@@ -108,8 +117,10 @@ export function UserConstraintEditor({
         setFormErrors({});
 
         // Parse the value based on constraint type
-        if (initialData.key === "forbidden_timerange") {
-            const entries = parseForbiddenTimeRange(initialData.value);
+        if (initialData.key === "forbidden_timerange" || initialData.key === "preferred_timerange") {
+            const entries = initialData.key === "forbidden_timerange"
+                ? parseForbiddenTimeRange(initialData.value)
+                : parsePreferredTimeRange(initialData.value);
             const entriesWithIds = entries.length > 0
                 ? entries.map(e => ({ ...e, id: generateEntryId() }))
                 : [{ weekday: "", startTime: "", endTime: "", id: generateEntryId() }];
@@ -131,7 +142,7 @@ export function UserConstraintEditor({
         setFormErrors({});
 
         // Initialize empty form data based on constraint type
-        if (constraintKey === "forbidden_timerange") {
+        if (constraintKey === "forbidden_timerange" || constraintKey === "preferred_timerange") {
             setTimeRangeEntries([{ weekday: "", startTime: "", endTime: "", id: generateEntryId() }]);
         } else if (constraintKey === "preferred_weekdays") {
             setSelectedWeekdays([]);
@@ -177,6 +188,10 @@ export function UserConstraintEditor({
                 // Remove id field before serializing
                 const entriesWithoutIds = timeRangeEntries.map(({ id, ...entry }) => entry);
                 serializedValue = serializeForbiddenTimeRange(entriesWithoutIds);
+            } else if (constraintKey === "preferred_timerange") {
+                // Remove id field before serializing
+                const entriesWithoutIds = timeRangeEntries.map(({ id, ...entry }) => entry);
+                serializedValue = serializePreferredTimeRange(entriesWithoutIds);
             } else if (constraintKey === "preferred_weekdays") {
                 serializedValue = serializePreferredWeekdays(selectedWeekdays);
             }
@@ -223,7 +238,7 @@ export function UserConstraintEditor({
 
     // Validation for form submission
     const validateForm = (): string | null => {
-        if (constraintKey === "forbidden_timerange") {
+        if (constraintKey === "forbidden_timerange" || constraintKey === "preferred_timerange") {
             const validEntries = timeRangeEntries.filter(e => e.weekday && e.startTime && e.endTime);
             if (validEntries.length === 0) {
                 return resources.validationMessages.atLeastOneTimeRange;
@@ -331,14 +346,40 @@ export function UserConstraintEditor({
                     error={formErrors.schedulingPeriodId}
                 />
 
-                <TextInput
-                    label={resources.labels.key}
-                    value={constraintTypeLabel}
-                    disabled
-                    mb="md"
-                />
+                {initialData ? (
+                    <TextInput
+                        label={resources.labels.key}
+                        value={constraintTypeLabel}
+                        disabled
+                        mb="md"
+                    />
+                ) : (
+                    <Select
+                        label={resources.labels.key}
+                        placeholder={resources.placeholders.selectConstraintType}
+                        data={constraintTypeOptions}
+                        value={constraintKey}
+                        onChange={(value) => {
+                            if (value) {
+                                setFormValues({ ...formValues, key: value });
+                                // Reset form data when constraint type changes
+                                if (value === "forbidden_timerange" || value === "preferred_timerange") {
+                                    setTimeRangeEntries([{ weekday: "", startTime: "", endTime: "", id: generateEntryId() }]);
+                                    setSelectedWeekdays([]);
+                                } else if (value === "preferred_weekdays") {
+                                    setTimeRangeEntries([]);
+                                    setSelectedWeekdays([]);
+                                }
+                                if (formErrors.value) {
+                                    setFormErrors({ ...formErrors, value: "" });
+                                }
+                            }
+                        }}
+                        mb="md"
+                    />
+                )}
 
-                {constraintKey === "forbidden_timerange" && (
+                {(constraintKey === "forbidden_timerange" || constraintKey === "preferred_timerange") && (
                     <Stack gap="md" mb="md">
                         {formErrors.value && (
                             <Text size="sm" c="red" mb="xs">

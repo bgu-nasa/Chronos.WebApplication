@@ -196,3 +196,146 @@ function getDateForWeekday(weekdayIndex: number): Date {
 function formatTime(hours: number, minutes: number): string {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
 }
+
+/**
+ * Slot timezone conversion utilities
+ * Similar to constraint conversion but returns arrays since slots can split across days
+ */
+
+export interface SlotTimeEntry {
+    weekday: string;
+    fromTime: string; // HH:mm format
+    toTime: string; // HH:mm format
+}
+
+/**
+ * Converts a local slot time to UTC
+ * May split into multiple entries if the time range crosses a day boundary in UTC
+ * 
+ * @param weekday - Local weekday (e.g., "Sunday")
+ * @param fromTime - Local start time (e.g., "08:00")
+ * @param toTime - Local end time (e.g., "09:00")
+ * @returns Array of UTC slot entries (may be 1 or 2 entries if split across days)
+ */
+export function convertSlotLocalToUtc(weekday: string, fromTime: string, toTime: string): SlotTimeEntry[] {
+    // Parse times
+    const [startHours, startMinutes] = fromTime.split(':').map(Number);
+    const [endHours, endMinutes] = toTime.split(':').map(Number);
+
+    // Create a date object for the weekday in local timezone
+    const weekdayIndex = getWeekdayIndex(weekday);
+    const localDate = getDateForWeekday(weekdayIndex);
+    localDate.setHours(startHours, startMinutes, 0, 0);
+
+    // Calculate duration in milliseconds
+    const durationMs = ((endHours - startHours) * 60 + (endMinutes - startMinutes)) * 60000;
+
+    // Get UTC equivalent
+    const utcStartDate = new Date(localDate);
+    const utcEndDate = new Date(localDate.getTime() + durationMs);
+
+    // Get UTC weekday and time
+    const utcStartWeekday = getWeekdayName(utcStartDate.getUTCDay());
+    const utcEndWeekday = getWeekdayName(utcEndDate.getUTCDay());
+    const utcStartTime = formatTime(utcStartDate.getUTCHours(), utcStartDate.getUTCMinutes());
+    const utcEndTime = formatTime(utcEndDate.getUTCHours(), utcEndDate.getUTCMinutes());
+
+    // If same weekday in UTC, return single entry
+    if (utcStartWeekday === utcEndWeekday) {
+        return [{
+            weekday: utcStartWeekday,
+            fromTime: utcStartTime,
+            toTime: utcEndTime,
+        }];
+    }
+
+    // Split across two weekdays
+    // First part: from start to end of start day
+    const startDayEnd = new Date(utcStartDate);
+    startDayEnd.setUTCHours(23, 59, 59, 999);
+    const startDayEndTime = formatTime(23, 59);
+
+    // Second part: from start of end day to end
+    const endDayStart = new Date(utcEndDate);
+    endDayStart.setUTCHours(0, 0, 0, 0);
+    const endDayStartTime = formatTime(0, 0);
+
+    return [
+        {
+            weekday: utcStartWeekday,
+            fromTime: utcStartTime,
+            toTime: startDayEndTime,
+        },
+        {
+            weekday: utcEndWeekday,
+            fromTime: endDayStartTime,
+            toTime: utcEndTime,
+        },
+    ];
+}
+
+/**
+ * Converts a UTC slot time to local time
+ * May split into multiple entries if the time range crosses a day boundary in local time
+ * 
+ * @param weekday - UTC weekday (e.g., "Sunday")
+ * @param fromTime - UTC start time (e.g., "06:00")
+ * @param toTime - UTC end time (e.g., "07:00")
+ * @returns Array of local slot entries (may be 1 or 2 entries if split across days)
+ */
+export function convertSlotUtcToLocal(weekday: string, fromTime: string, toTime: string): SlotTimeEntry[] {
+    // Parse times
+    const [startHours, startMinutes] = fromTime.split(':').map(Number);
+    const [endHours, endMinutes] = toTime.split(':').map(Number);
+
+    // Create a date object for the weekday in UTC
+    const weekdayIndex = getWeekdayIndex(weekday);
+    const utcDate = getDateForWeekday(weekdayIndex);
+    utcDate.setUTCHours(startHours, startMinutes, 0, 0);
+
+    // Calculate duration in milliseconds
+    const durationMs = ((endHours - startHours) * 60 + (endMinutes - startMinutes)) * 60000;
+
+    // Get local equivalent
+    const localStartDate = new Date(utcDate);
+    const localEndDate = new Date(utcDate.getTime() + durationMs);
+
+    // Get local weekday and time
+    const localStartWeekday = getWeekdayName(localStartDate.getDay());
+    const localEndWeekday = getWeekdayName(localEndDate.getDay());
+    const localStartTime = formatTime(localStartDate.getHours(), localStartDate.getMinutes());
+    const localEndTime = formatTime(localEndDate.getHours(), localEndDate.getMinutes());
+
+    // If same weekday in local time, return single entry
+    if (localStartWeekday === localEndWeekday) {
+        return [{
+            weekday: localStartWeekday,
+            fromTime: localStartTime,
+            toTime: localEndTime,
+        }];
+    }
+
+    // Split across two weekdays
+    // First part: from start to end of start day
+    const startDayEnd = new Date(localStartDate);
+    startDayEnd.setHours(23, 59, 59, 999);
+    const startDayEndTime = formatTime(23, 59);
+
+    // Second part: from start of end day to end
+    const endDayStart = new Date(localEndDate);
+    endDayStart.setHours(0, 0, 0, 0);
+    const endDayStartTime = formatTime(0, 0);
+
+    return [
+        {
+            weekday: localStartWeekday,
+            fromTime: localStartTime,
+            toTime: startDayEndTime,
+        },
+        {
+            weekday: localEndWeekday,
+            fromTime: endDayStartTime,
+            toTime: localEndTime,
+        },
+    ];
+}
