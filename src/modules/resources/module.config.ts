@@ -4,7 +4,7 @@ import { ResourcesPage, SubjectsPage, ActivitiesPage } from "./src/pages";
 import { ResourcesIcon, CoursesIcon, ResourceManagementIcon } from "@/common/icons";
 
 export const moduleConfig: ModuleConfig = {
-    name: "Resources",
+    name: "Rooms",
     owner: "",
     basePath: "/resources",
     routes: [
@@ -41,7 +41,7 @@ export const moduleConfig: ModuleConfig = {
                     icon: React.createElement(CoursesIcon),
                 },
                 {
-                    label: "Resources",
+                    label: "Rooms",
                     href: "/resources/manage",
                     location: "dashboard",
                     requiredRoles: ["Administrator", "Viewer", "ResourceManager"],

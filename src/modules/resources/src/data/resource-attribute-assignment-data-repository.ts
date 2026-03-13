@@ -153,7 +153,7 @@ export class ResourceAttributeAssignmentDataRepository {
     ): Promise<ResourceAttributeAssignmentResponse> {
         $app.logger.info(
             "[ResourceAttributeAssignmentDataRepository] Updating assignment",
-            { resourceId, resourceAttributeId, ...request },
+            { resourceId, resourceAttributeId, request },
         );
 
         try {

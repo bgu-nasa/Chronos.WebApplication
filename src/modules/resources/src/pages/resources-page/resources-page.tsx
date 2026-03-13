@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Divider, Title, Tabs } from "@mantine/core";
 import { ConfirmationDialog, useConfirmation } from "@/common";
 import { ResourceActions, ResourceTable, ResourceCreator, ResourceEditor, ResourceAttributeAssignmentModal, type ResourceData } from "./components";
-import type { UpdateResourceRequest, UpdateResourceTypeRequest, CreateResourceAttributeRequest, UpdateResourceAttributeRequest } from "@/modules/resources/src/data";
+import type { UpdateResourceRequest, UpdateResourceTypeRequest } from "@/modules/resources/src/data";
 import {
     useResources,
     useCreateResource,
@@ -23,6 +23,8 @@ import resourcesJson from "./resources-page.resources.json";
 import resourceTypesJson from "../resource-types-page/resource-types-page.resources.json";
 import resourceAttributesJson from "../resource-attributes-page/resource-attributes-page.resources.json";
 import styles from "./resources-page.module.css";
+
+const resources = resourcesJson;
 
 export function ResourcesPage() {
     const [activeTab, setActiveTab] = useState<string | null>("resources");
@@ -427,14 +429,14 @@ export function ResourcesPage() {
     return (
         <Container size="xl" py="xl">
             <div className={styles.container}>
-                <Title order={1}>Resources Management</Title>
+                <Title order={1}>{resources.title}</Title>
                 <Divider className={styles.divider} />
 
                 <Tabs value={activeTab} onChange={setActiveTab}>
                     <Tabs.List>
-                        <Tabs.Tab value="resources">Resources</Tabs.Tab>
-                        <Tabs.Tab value="resource-types">Resource Types</Tabs.Tab>
-                        <Tabs.Tab value="resource-attributes">Resource Attributes</Tabs.Tab>
+                        <Tabs.Tab value="resources">Rooms</Tabs.Tab>
+                        <Tabs.Tab value="resource-types">Room Types</Tabs.Tab>
+                        <Tabs.Tab value="resource-attributes">Room Attributes</Tabs.Tab>
                     </Tabs.List>
 
                     <Tabs.Panel value="resources" pt="md">
