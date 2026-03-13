@@ -1,0 +1,46 @@
+{
+    "notifications": {
+        "constraintCreated": {
+            "title": "Constraint Created",
+            "message": "Unavailable time range has been set successfully"
+        },
+        "constraintCreateFailed": {
+            "title": "Failed to Create Constraint",
+            "message": "An unexpected error occurred"
+        }
+    },
+    "eventDetailsModal": {
+        "title": "Event Details",
+        "labels": {
+            "subject": "Subject",
+            "activityType": "Activity Type",
+            "schedule": "Schedule",
+            "resource": "Resource",
+            "location": "Location:",
+            "capacity": "Capacity:"
+        },
+        "unknown": {
+            "day": "Unknown Day",
+            "subject": "Unknown Subject",
+            "activityType": "Unknown"
+        },
+        "loading": "Loading resource details...",
+        "closeButton": "Close"
+    },
+    "timeRangeSelectionModal": {
+        "title": "Set as Unavailable",
+        "message": "Create a forbidden time range constraint for:",
+        "cancelButton": "Cancel",
+        "confirmButton": "Set as Unavailable"
+    },
+    "userSelect": {
+        "label": "User",
+        "placeholder": "Select user to view constraints",
+        "nothingFoundMessage": "No users found"
+    },
+    "schedulingPeriodSelect": {
+        "label": "Scheduling Period",
+        "placeholder": "Select period",
+        "nothingFoundMessage": "No periods found"
+    }
+}

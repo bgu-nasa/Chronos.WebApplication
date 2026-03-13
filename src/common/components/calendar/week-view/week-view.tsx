@@ -15,22 +15,35 @@ interface ConstraintVisualization {
   endTime: string;
 }
 
+interface EventBlock extends ConstraintVisualization {
+  activityId?: string;
+  activityType?: string;
+  subjectName?: string;
+  assignmentId?: string;
+  slotId?: string;
+  resourceId?: string;
+}
+
 interface WeekViewProps {
   initialDate?: Date;
   events: CalendarEvent[];
   constraints?: ConstraintVisualization[];
+  eventBlocks?: EventBlock[];
   dayStartHour?: number;
   dayEndHour?: number;
   onTimeRangeSelect?: (selection: { date: Date; startTime: string; endTime: string }) => void;
+  onEventBlockClick?: (eventBlock: EventBlock) => void;
 }
 
 export const WeekView: React.FC<WeekViewProps> = ({
   initialDate = new Date(),
   events,
   constraints = [],
+  eventBlocks = [],
   dayStartHour = resources.config.defaultStartHour,
   dayEndHour = resources.config.defaultEndHour,
-  onTimeRangeSelect
+  onTimeRangeSelect,
+  onEventBlockClick
 }) => {
   const [currentDate, setCurrentDate] = useState(initialDate);
 
@@ -94,10 +107,12 @@ export const WeekView: React.FC<WeekViewProps> = ({
           weekDates={weekDates}
           events={events}
           constraints={constraints}
+          eventBlocks={eventBlocks}
           dayStartHour={dayStartHour}
           hoursPerDay={hoursPerDay}
           hourHeight={resources.config.hourHeight || 60}
           onTimeRangeSelect={onTimeRangeSelect}
+          onEventBlockClick={onEventBlockClick}
         />
       </Box>
     </Paper>

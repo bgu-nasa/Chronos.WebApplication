@@ -1,0 +1,31 @@
+.eventBlockItem {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: var(--mantine-color-blue-3);
+    border: 2px solid var(--mantine-color-blue-6);
+    border-radius: 4px;
+    opacity: 0.85;
+    cursor: pointer;
+    z-index: 3;
+    padding: 2px 4px;
+    display: flex;
+    align-items: flex-start;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+.eventBlockItem:hover {
+    opacity: 1;
+    transform: scale(1.02);
+    z-index: 4;
+}
+
+.eventBlockText {
+    color: var(--mantine-color-blue-9);
+    line-height: 1.2;
+    padding: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}

@@ -13,24 +13,37 @@ interface ConstraintVisualization {
   endTime: string;
 }
 
+interface EventBlock extends ConstraintVisualization {
+  activityId?: string;
+  activityType?: string;
+  subjectName?: string;
+  assignmentId?: string;
+  slotId?: string;
+  resourceId?: string;
+}
+
 interface TimeGridProps {
   weekDates: Date[];
   events: CalendarEvent[];
   constraints?: ConstraintVisualization[];
+  eventBlocks?: EventBlock[];
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
   onTimeRangeSelect?: (selection: { date: Date; startTime: string; endTime: string }) => void;
+  onEventBlockClick?: (eventBlock: EventBlock) => void;
 }
 
 export const TimeGrid: React.FC<TimeGridProps> = ({
   weekDates,
   events,
   constraints = [],
+  eventBlocks = [],
   hourHeight,
   dayStartHour = 0,
   hoursPerDay = 24,
-  onTimeRangeSelect
+  onTimeRangeSelect,
+  onEventBlockClick
 }) => {
   return (
     <ScrollArea className={styles.scrollArea} type="auto">
@@ -47,10 +60,12 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
             date={date}
             events={events}
             constraints={constraints}
+            eventBlocks={eventBlocks}
             hourHeight={hourHeight}
             dayStartHour={dayStartHour}
             hoursPerDay={hoursPerDay}
             onTimeRangeSelect={onTimeRangeSelect}
+            onEventBlockClick={onEventBlockClick}
           />
         ))}
       </Box>
