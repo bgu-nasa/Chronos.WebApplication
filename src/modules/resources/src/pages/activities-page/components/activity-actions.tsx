@@ -16,19 +16,19 @@ export function ActivityActions({
 }: ActivityActionsProps) {
     return (
         <Group mb="md">
-            <Button 
+            <Button
                 onClick={onCreateClick}
             >
                 {resources.createButton}
             </Button>
-            <Button 
-                onClick={onEditClick} 
+            <Button
+                onClick={onEditClick}
                 disabled={!selectedActivity}
             >
                 {resources.editButton}
             </Button>
-            <Button 
-                onClick={onDeleteClick} 
+            <Button
+                onClick={onDeleteClick}
                 disabled={!selectedActivity}
                 variant={selectedActivity ? "filled" : "default"}
             >
