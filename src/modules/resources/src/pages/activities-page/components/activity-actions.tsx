@@ -14,26 +14,22 @@ export function ActivityActions({
     onEditClick,
     onDeleteClick,
 }: ActivityActionsProps) {
-    // Check if user has ResourceManager or Administrator role for create/edit/delete operations
-    const canManage = $app.organization.isResourceManager() || $app.organization.isAdministrator();
-    
     return (
         <Group mb="md">
-            <Button 
+            <Button
                 onClick={onCreateClick}
-                disabled={!canManage}
             >
                 {resources.createButton}
             </Button>
-            <Button 
-                onClick={onEditClick} 
-                disabled={!selectedActivity || !canManage}
+            <Button
+                onClick={onEditClick}
+                disabled={!selectedActivity}
             >
                 {resources.editButton}
             </Button>
-            <Button 
-                onClick={onDeleteClick} 
-                disabled={!selectedActivity || !canManage}
+            <Button
+                onClick={onDeleteClick}
+                disabled={!selectedActivity}
                 variant={selectedActivity ? "filled" : "default"}
             >
                 {resources.deleteButton}
