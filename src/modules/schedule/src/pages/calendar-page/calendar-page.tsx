@@ -6,6 +6,7 @@ import { useUsers } from "@/modules/auth/src/hooks";
 import { useUserConstraints, useSchedulingPeriods } from "@/modules/schedule/src/hooks";
 import { serializeForbiddenTimeRange, parseForbiddenTimeRange, type ForbiddenTimeRangeEntry } from "@/modules/schedule/src/pages/constraints-page/utils";
 import { assignmentDataRepository, activityDataRepository, slotDataRepository, type AssignmentResponse, type ActivityResponse, type SubjectResponse, type SlotResponse } from "@/modules/schedule/src/data";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import { SchedulingPeriodSelect, TimeRangeSelectionModal, UserSelect, EventDetailsModal } from "./components";
 import styles from "./calendar-page.module.css";
 import resources from "./calendar-page.resources.json";
@@ -38,6 +39,7 @@ export function CalendarPage() {
     assignmentId?: string;
     slotId?: string;
     resourceId?: string;
+    expectedStudents?: number | null;
   }
   const [selectedEvent, setSelectedEvent] = useState<EventBlock | null>(null);
   const [eventModalOpened, setEventModalOpened] = useState(false);
@@ -195,30 +197,43 @@ export function CalendarPage() {
     );
 
     // Get slots for user's assignments with activity and subject info
-    const userEventBlocks = assignments
+    // Convert UTC slot times to local time for display
+    const userEventBlocks: EventBlock[] = [];
+    
+    assignments
       .filter(a => userActivityIds.has(a.activityId))
-      .map(a => {
+      .forEach(a => {
         const slot = slotMap.get(a.slotId);
         const activity = activityMap.get(a.activityId);
         const subject = activity ? subjectMap.get(activity.subjectId) : undefined;
 
         if (!slot || slot?.schedulingPeriodId !== selectedPeriodId) {
-          return null;
+          return;
         }
 
-        return {
-          weekday: slot.weekday,
-          startTime: slot.fromTime,
-          endTime: slot.toTime,
-          activityId: a.activityId,
-          activityType: activity?.activityType,
-          subjectName: subject?.name,
-          assignmentId: a.id,
-          slotId: slot.id,
-          resourceId: a.resourceId,
-        };
-      })
-      .filter((block): block is NonNullable<typeof block> => block !== null);
+        // Remove seconds if present (format: HH:mm:ss or HH:mm)
+        const fromTime = slot.fromTime.split(':').slice(0, 2).join(':');
+        const toTime = slot.toTime.split(':').slice(0, 2).join(':');
+        
+        // Convert UTC slot times to local time (may split across days)
+        const localSlots = convertSlotUtcToLocal(slot.weekday, fromTime, toTime);
+        
+        // Create an event block for each local slot (in case it splits across days)
+        localSlots.forEach((localSlot) => {
+          userEventBlocks.push({
+            weekday: localSlot.weekday,
+            startTime: localSlot.fromTime,
+            endTime: localSlot.toTime,
+            activityId: a.activityId,
+            activityType: activity?.activityType,
+            subjectName: subject?.name,
+            assignmentId: a.id,
+            slotId: slot.id,
+            resourceId: a.resourceId,
+            expectedStudents: activity?.expectedStudents,
+          });
+        });
+      });
 
     return userEventBlocks;
   }, [assignments, activities, slots, subjects, isAdmin, selectedUserId, currentUserId, selectedPeriodId]);
