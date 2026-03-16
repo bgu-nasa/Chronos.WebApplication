@@ -1,4 +1,5 @@
 import { Modal, Button, Group, Text, Stack } from "@mantine/core";
+import resources from "../calendar-page.resources.json";
 
 interface TimeRangeSelectionModalProps {
     readonly opened: boolean;
@@ -30,12 +31,12 @@ export function TimeRangeSelectionModal({
         <Modal
             opened={opened}
             onClose={onClose}
-            title="Set as Unavailable"
+            title={resources.timeRangeSelectionModal.title}
             size="md"
         >
             <Stack gap="md">
                 <Text>
-                    Create a forbidden time range constraint for:
+                    {resources.timeRangeSelectionModal.message}
                 </Text>
                 <Text fw={600}>
                     {weekdayName}, {dateString}
@@ -45,10 +46,10 @@ export function TimeRangeSelectionModal({
                 </Text>
                 <Group justify="flex-end" mt="xl">
                     <Button variant="subtle" onClick={onClose} disabled={loading}>
-                        Cancel
+                        {resources.timeRangeSelectionModal.cancelButton}
                     </Button>
                     <Button onClick={onConfirm} loading={loading}>
-                        Set as Unavailable
+                        {resources.timeRangeSelectionModal.confirmButton}
                     </Button>
                 </Group>
             </Stack>

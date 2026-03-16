@@ -7,6 +7,7 @@ import type { CalendarEvent } from "@/common/types";
 
 import { EventItem } from './event-item';
 import { ConstraintItem } from './constraint-item';
+import { EventBlockItem } from './event-block-item';
 import styles from './day-column.module.css';
 import resources from './day-column.resources.json';
 
@@ -21,24 +22,37 @@ interface ConstraintVisualization {
   endTime: string;
 }
 
+interface EventBlock extends ConstraintVisualization {
+  activityId?: string;
+  activityType?: string;
+  subjectName?: string;
+  assignmentId?: string;
+  slotId?: string;
+  resourceId?: string;
+}
+
 interface DayColumnProps {
   date: Date;
   events: CalendarEvent[];
   constraints?: ConstraintVisualization[];
+  eventBlocks?: EventBlock[];
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
   onTimeRangeSelect?: (selection: { date: Date; startTime: string; endTime: string }) => void;
+  onEventBlockClick?: (eventBlock: EventBlock) => void;
 }
 
 export const DayColumn: React.FC<DayColumnProps> = ({
   date,
   events,
   constraints = [],
+  eventBlocks = [],
   hourHeight = 60,
   dayStartHour = 8,
   hoursPerDay = 24,
-  onTimeRangeSelect
+  onTimeRangeSelect,
+  onEventBlockClick
 }) => {
   const [now, setNow] = useState(new Date());
   const [isSelecting, setIsSelecting] = useState(false);
@@ -46,6 +60,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   const originalStartTimeRef = useRef<number | null>(null);
   const currentEndTimeRef = useRef<number | null>(null);
   const columnRef = useRef<HTMLDivElement>(null);
+  const hasMovedRef = useRef<boolean>(false);
 
   const interval = useInterval(() => setNow(new Date()), resources.intervals.nowUpdate);
 
@@ -80,9 +95,10 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     const startTime = getTimeFromY(y);
 
     setIsSelecting(true);
+    hasMovedRef.current = false;
     originalStartTimeRef.current = startTime;
     currentEndTimeRef.current = startTime;
-    setSelection({ startTime, endTime: startTime });
+    setSelection(null); // Don't show selection until mouse moves
   }, [onTimeRangeSelect, getTimeFromY]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -92,6 +108,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     const y = e.clientY - rect.top;
     const endTime = getTimeFromY(y);
     currentEndTimeRef.current = endTime;
+    hasMovedRef.current = true; // Mark that mouse has moved
 
     setSelection({
       startTime: Math.min(originalStartTimeRef.current, endTime),
@@ -105,6 +122,17 @@ export const DayColumn: React.FC<DayColumnProps> = ({
       setSelection(null);
       originalStartTimeRef.current = null;
       currentEndTimeRef.current = null;
+      hasMovedRef.current = false;
+      return;
+    }
+
+    // Only trigger if mouse has actually moved (not just a click)
+    if (!hasMovedRef.current) {
+      setIsSelecting(false);
+      setSelection(null);
+      originalStartTimeRef.current = null;
+      currentEndTimeRef.current = null;
+      hasMovedRef.current = false;
       return;
     }
 
@@ -136,6 +164,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     setSelection(null);
     originalStartTimeRef.current = null;
     currentEndTimeRef.current = null;
+    hasMovedRef.current = false;
   }, [isSelecting, onTimeRangeSelect, date, dayStartHour]);
 
   // Handle mouse events on document for drag outside column
@@ -149,6 +178,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
       const y = e.clientY - rect.top;
       const endTime = getTimeFromY(y);
       currentEndTimeRef.current = endTime;
+      hasMovedRef.current = true; // Mark that mouse has moved
 
       setSelection({
         startTime: Math.min(originalStartTimeRef.current, endTime),
@@ -236,6 +266,11 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     return constraints.filter(c => c.weekday === weekdayName);
   }, [constraints, weekdayName]);
 
+  // Filter event blocks for this weekday
+  const dailyEventBlocks = useMemo(() => {
+    return eventBlocks.filter(eb => eb.weekday === weekdayName);
+  }, [eventBlocks, weekdayName]);
+
   return (
     <Box
       ref={columnRef}
@@ -274,6 +309,18 @@ export const DayColumn: React.FC<DayColumnProps> = ({
           endTime={constraint.endTime}
           hourHeight={hourHeight}
           dayStartHour={dayStartHour}
+        />
+      ))}
+
+      {dailyEventBlocks.map((eventBlock, index) => (
+        <EventBlockItem
+          key={`event-block-${index}-${eventBlock.startTime}-${eventBlock.endTime}`}
+          startTime={eventBlock.startTime}
+          endTime={eventBlock.endTime}
+          hourHeight={hourHeight}
+          dayStartHour={dayStartHour}
+          eventBlock={eventBlock}
+          onClick={() => onEventBlockClick?.(eventBlock)}
         />
       ))}
 

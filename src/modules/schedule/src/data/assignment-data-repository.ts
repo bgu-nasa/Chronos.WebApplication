@@ -49,6 +49,18 @@ export class AssignmentDataRepository {
     }
 
     /**
+     * Fetch all assignments
+     * @returns Array of all assignments
+     */
+    async getAllAssignments(): Promise<AssignmentResponse[]> {
+        const response = await $app.ajax.get<AssignmentResponse[]>(
+            `/api/schedule/scheduling/assignments`,
+            { headers: this.getHeaders() }
+        );
+        return response;
+    }
+
+    /**
      * Get a single assignment by ID
      * @param assignmentId - The ID of the assignment
      * @returns Assignment details

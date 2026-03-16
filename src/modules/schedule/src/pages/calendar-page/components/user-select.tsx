@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Select, Stack, Text } from "@mantine/core";
 
 import { useUsers } from "@/modules/auth/src/hooks";
+import resources from "../calendar-page.resources.json";
 
 interface UserSelectProps {
     readonly value: string | null;
@@ -32,15 +33,15 @@ export function UserSelect({ value, onChange, disabled = false }: UserSelectProp
     return (
         <Stack gap="xs">
             <Text size="sm" fw={500}>
-                User
+                {resources.userSelect.label}
             </Text>
             <Select
-                placeholder="Select user to view constraints"
+                placeholder={resources.userSelect.placeholder}
                 data={data}
                 value={value}
                 onChange={onChange}
                 disabled={isLoading || disabled}
-                nothingFoundMessage="No users found"
+                nothingFoundMessage={resources.userSelect.nothingFoundMessage}
                 searchable={!disabled}
                 clearable={!disabled}
             />

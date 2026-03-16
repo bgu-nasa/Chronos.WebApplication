@@ -106,6 +106,20 @@ export class SchedulingPeriodDataRepository {
             { headers: this.getHeaders() }
         );
     }
+
+    /**
+     * Trigger batch scheduling for a scheduling period
+     * @param schedulingPeriodId - The ID of the scheduling period to schedule
+     * @returns Response with success message
+     */
+    async triggerBatchScheduling(schedulingPeriodId: string): Promise<{ message: string }> {
+        const response = await $app.ajax.post<{ message: string }>(
+            `/api/schedule/scheduling/periods/${schedulingPeriodId}/batch-schedule`,
+            {},
+            { headers: this.getHeaders() }
+        );
+        return response;
+    }
 }
 
 // Export singleton instance
