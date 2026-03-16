@@ -87,9 +87,9 @@ export function convertUtcToLocal(entry: TimeRangeEntry): TimeRangeEntry[] {
     const [startHours, startMinutes] = startTime.split(':').map(Number);
     const [endHours, endMinutes] = endTime.split(':').map(Number);
 
-    // Create a date object for the weekday in UTC
+    // Create a date object for the weekday at UTC midnight (must use UTC, not local)
     const weekdayIndex = getWeekdayIndex(weekday);
-    const utcDate = getDateForWeekday(weekdayIndex);
+    const utcDate = getDateForWeekdayUtc(weekdayIndex);
     utcDate.setUTCHours(startHours, startMinutes, 0, 0);
 
     // Calculate duration in milliseconds
@@ -179,7 +179,8 @@ function getWeekdayName(index: number): string {
 }
 
 /**
- * Helper: Get a date object for a specific weekday (this week)
+ * Helper: Get a date object for a specific weekday at local midnight (this week)
+ * Use for convertLocalToUtc - user's local time input
  */
 function getDateForWeekday(weekdayIndex: number): Date {
     const today = new Date();
@@ -187,6 +188,20 @@ function getDateForWeekday(weekdayIndex: number): Date {
     const diff = weekdayIndex - currentDay;
     const date = new Date(today);
     date.setDate(today.getDate() + diff);
+    return date;
+}
+
+/**
+ * Helper: Get a date object for a specific weekday at UTC midnight (this week)
+ * Use for convertUtcToLocal - DB stores UTC, we need correct UTC day before converting to local
+ */
+function getDateForWeekdayUtc(weekdayIndex: number): Date {
+    const today = new Date();
+    const currentUtcDay = today.getUTCDay();
+    const diff = weekdayIndex - currentUtcDay;
+    const date = new Date(today);
+    date.setUTCDate(today.getUTCDate() + diff);
+    date.setUTCHours(0, 0, 0, 0);
     return date;
 }
 
@@ -288,9 +303,9 @@ export function convertSlotUtcToLocal(weekday: string, fromTime: string, toTime:
     const [startHours, startMinutes] = fromTime.split(':').map(Number);
     const [endHours, endMinutes] = toTime.split(':').map(Number);
 
-    // Create a date object for the weekday in UTC
+    // Create a date object for the weekday at UTC midnight (must use UTC, not local)
     const weekdayIndex = getWeekdayIndex(weekday);
-    const utcDate = getDateForWeekday(weekdayIndex);
+    const utcDate = getDateForWeekdayUtc(weekdayIndex);
     utcDate.setUTCHours(startHours, startMinutes, 0, 0);
 
     // Calculate duration in milliseconds

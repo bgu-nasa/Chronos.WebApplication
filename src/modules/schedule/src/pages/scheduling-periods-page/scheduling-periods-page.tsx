@@ -16,6 +16,7 @@ import {
     useSlots,
     useDeleteSlot,
 } from "@/modules/schedule/src/hooks";
+import { schedulingPeriodDataRepository } from "@/modules/schedule/src/data/scheduling-period-data-repository";
 import type { SlotResponse } from "@/modules/schedule/src/data";
 import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.module.css";
@@ -29,6 +30,7 @@ export function SchedulingPeriodsPage() {
     const [showSlots, setShowSlots] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState<SlotResponse | null>(null);
     const [showAssignments, setShowAssignments] = useState(false);
+    const [isBatchAssignmentLoading, setIsBatchAssignmentLoading] = useState(false);
 
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
     const { deleteSchedulingPeriod } = useDeleteSchedulingPeriod();
@@ -150,6 +152,42 @@ export function SchedulingPeriodsPage() {
         }
     };
 
+    const handleRunBatchAssignmentClick = () => {
+        if (!selectedPeriod || selectedPeriod.isExpired) return;
+
+        openConfirmation({
+            title: resources.batchAssignmentConfirmTitle,
+            message: resources.batchAssignmentConfirmMessage,
+            confirmText: resources.batchAssignmentConfirmButton,
+            cancelText: resources.deleteCancelButton,
+            onConfirm: async () => {
+                if (!selectedPeriod) return;
+
+                setIsBatchAssignmentLoading(true);
+                try {
+                    await schedulingPeriodDataRepository.triggerBatchScheduling(
+                        selectedPeriod.id
+                    );
+                    $app.notifications.showSuccess(
+                        resources.batchAssignmentSuccess,
+                        undefined
+                    );
+                } catch (error) {
+                    $app.logger.error(
+                        "[SchedulingPeriodsPage] Batch assignment failed:",
+                        error
+                    );
+                    $app.notifications.showError(
+                        resources.batchAssignmentFailed,
+                        error instanceof Error ? error.message : undefined
+                    );
+                } finally {
+                    setIsBatchAssignmentLoading(false);
+                }
+            },
+        });
+    };
+
     // Slot actions
     const handleCreateSlotClick = () => openCreateSlot();
 
@@ -193,6 +231,8 @@ export function SchedulingPeriodsPage() {
                             onEditClick={handleEditClick}
                             onDeleteClick={handleDeleteClick}
                             onViewSlotsClick={handleViewSlotsClick}
+                            onRunBatchAssignmentClick={handleRunBatchAssignmentClick}
+                            isBatchAssignmentLoading={isBatchAssignmentLoading}
                         />
 
                         <SchedulingPeriodTable
@@ -268,8 +308,8 @@ export function SchedulingPeriodsPage() {
                     onConfirm={handleConfirm}
                     title={confirmationState.title}
                     message={confirmationState.message}
-                    confirmText={resources.deleteConfirmButton}
-                    cancelText={resources.deleteCancelButton}
+                    confirmText={confirmationState.confirmText ?? resources.deleteConfirmButton}
+                    cancelText={confirmationState.cancelText ?? resources.deleteCancelButton}
                     loading={isConfirming}
                 />
             </div>

@@ -24,5 +24,11 @@
     "deleteConfirmMessage": "Are you sure you want to delete the semester \"{name}\"? This action cannot be undone.",
     "deleteConfirmButton": "Delete",
     "deleteCancelButton": "Cancel",
-    "emptyStateMessage": "No semesters found. Click \"Create\" to add one."
+    "emptyStateMessage": "No semesters found. Click \"Create\" to add one.",
+    "runBatchAssignmentButton": "Run Batch Assignment",
+    "batchAssignmentConfirmTitle": "Run Batch Assignment",
+    "batchAssignmentConfirmMessage": "This will delete all current assignments in this semester, then run batch scheduling to create new assignments. This cannot be undone. Continue?",
+    "batchAssignmentConfirmButton": "Run Batch",
+    "batchAssignmentSuccess": "Batch assignment has been submitted successfully. Assignments will be created shortly.",
+    "batchAssignmentFailed": "Failed to submit batch assignment."
 }

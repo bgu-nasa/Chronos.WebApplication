@@ -8,6 +8,8 @@ interface SchedulingPeriodActionsProps {
     onEditClick: () => void;
     onDeleteClick: () => void;
     onViewSlotsClick: () => void;
+    onRunBatchAssignmentClick: () => void;
+    isBatchAssignmentLoading?: boolean;
 }
 
 export function SchedulingPeriodActions({
@@ -17,6 +19,8 @@ export function SchedulingPeriodActions({
     onEditClick,
     onDeleteClick,
     onViewSlotsClick,
+    onRunBatchAssignmentClick,
+    isBatchAssignmentLoading = false,
 }: SchedulingPeriodActionsProps) {
     return (
         <Group mb="md">
@@ -43,6 +47,15 @@ export function SchedulingPeriodActions({
                 disabled={!selectedPeriod}
             >
                 View Slots
+            </Button>
+            <Button
+                variant="filled"
+                color="green"
+                onClick={onRunBatchAssignmentClick}
+                disabled={!selectedPeriod || isExpired || isBatchAssignmentLoading}
+                loading={isBatchAssignmentLoading}
+            >
+                {resources.runBatchAssignmentButton}
             </Button>
         </Group>
     );

@@ -12,6 +12,10 @@ export interface ConfirmationState {
     title: string;
     /** Message of the confirmation dialog */
     message: string;
+    /** Confirm button text (optional) */
+    confirmText?: string;
+    /** Cancel button text (optional) */
+    cancelText?: string;
     /** Callback to execute when confirmed */
     onConfirm: (() => void | Promise<void>) | null;
 }
@@ -23,6 +27,8 @@ export interface UseConfirmationReturn {
     openConfirmation: (params: {
         title: string;
         message: string;
+        confirmText?: string;
+        cancelText?: string;
         onConfirm: () => void | Promise<void>;
     }) => void;
     /** Close the confirmation dialog */
@@ -51,12 +57,16 @@ export function useConfirmation(): UseConfirmationReturn {
         (params: {
             title: string;
             message: string;
+            confirmText?: string;
+            cancelText?: string;
             onConfirm: () => void | Promise<void>;
         }) => {
             setConfirmationState({
                 isOpen: true,
                 title: params.title,
                 message: params.message,
+                confirmText: params.confirmText,
+                cancelText: params.cancelText,
                 onConfirm: params.onConfirm,
             });
         },
@@ -69,6 +79,8 @@ export function useConfirmation(): UseConfirmationReturn {
                 isOpen: false,
                 title: "",
                 message: "",
+                confirmText: undefined,
+                cancelText: undefined,
                 onConfirm: null,
             });
         }
