@@ -46,8 +46,99 @@ export function parseForbiddenTimeRange(value: string): ForbiddenTimeRangeEntry[
     }
 
     // Convert UTC entries to local timezone (may split across weekdays)
-    const localEntries = convertUtcEntriesToLocal(utcEntries);
+    let localEntries = convertUtcEntriesToLocal(utcEntries);
+    
+    // Merge consecutive ranges that can be merged (any consecutive ranges, not just full days)
+    localEntries = mergeConsecutiveRanges(localEntries);
+    
     return localEntries;
+}
+
+/**
+ * Merges consecutive time ranges on the same weekday
+ * This handles cases where timezone conversion splits a range into multiple parts
+ * Merges any consecutive ranges (where one range's end time is exactly 1 minute before the next range's start time)
+ */
+function mergeConsecutiveRanges(entries: ForbiddenTimeRangeEntry[]): ForbiddenTimeRangeEntry[] {
+    if (entries.length <= 1) {
+        return entries;
+    }
+
+    // Sort all entries by weekday and start time
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const sorted = [...entries].sort((a, b) => {
+        const aWeekdayIndex = weekdays.indexOf(a.weekday);
+        const bWeekdayIndex = weekdays.indexOf(b.weekday);
+        if (aWeekdayIndex !== bWeekdayIndex) {
+            return aWeekdayIndex - bWeekdayIndex;
+        }
+        const [aHours, aMinutes] = a.startTime.split(':').map(Number);
+        const [bHours, bMinutes] = b.startTime.split(':').map(Number);
+        return (aHours * 60 + aMinutes) - (bHours * 60 + bMinutes);
+    });
+
+    const merged: ForbiddenTimeRangeEntry[] = [];
+    let i = 0;
+
+    while (i < sorted.length) {
+        const current = sorted[i];
+        let mergedRange: ForbiddenTimeRangeEntry = { ...current };
+        let j = i;
+
+        // Look for consecutive ranges on the same weekday
+        while (j + 1 < sorted.length) {
+            const next = sorted[j + 1];
+            
+            // Only merge if on the same weekday
+            if (next.weekday !== mergedRange.weekday) {
+                break;
+            }
+            
+            const [lastEndHours, lastEndMinutes] = mergedRange.endTime.split(':').map(Number);
+            const [nextStartHours, nextStartMinutes] = next.startTime.split(':').map(Number);
+            
+            const lastEndMinutesTotal = lastEndHours * 60 + lastEndMinutes;
+            const nextStartMinutesTotal = nextStartHours * 60 + nextStartMinutes;
+            
+            // Check if consecutive (next start is exactly 1 minute after current end)
+            const isConsecutiveTime = nextStartMinutesTotal === lastEndMinutesTotal + 1;
+            
+            if (isConsecutiveTime) {
+                // Merge: extend the end time to the next range's end time
+                mergedRange = {
+                    weekday: mergedRange.weekday,
+                    startTime: mergedRange.startTime,
+                    endTime: next.endTime,
+                };
+                j++;
+            } else {
+                // Not consecutive, stop merging
+                break;
+            }
+        }
+
+        // Add the merged range (or single range if no merging occurred)
+        merged.push(mergedRange);
+        i = j + 1;
+    }
+
+    return merged;
+}
+
+/**
+ * Parses preferred_timerange value into form entries
+ * 
+ * IMPORTANT: Database stores times in UTC.
+ * This function converts UTC to the user's LOCAL timezone for display.
+ * 
+ * Input: "Monday 09:30 - 11:00, Tuesday 13:00 - 15:00" (in UTC from database)
+ * Output: Array of { weekday, startTime, endTime } (in user's local timezone for UI display)
+ * 
+ * Note: Uses the same parsing logic as forbidden_timerange since the format is identical
+ */
+export function parsePreferredTimeRange(value: string): ForbiddenTimeRangeEntry[] {
+    // Reuse the same parsing logic as forbidden_timerange
+    return parseForbiddenTimeRange(value);
 }
 
 /**

@@ -68,14 +68,14 @@ export function OrganizationPoliciesPanel({ openConfirmation }: Readonly<Omit<Or
 
                     // Show success notification
                     $app.notifications.showSuccess(
-                        "Deleted",
-                        "The organization policy has been deleted successfully"
+                        resources.notifications.organizationPolicies.deleted,
+                        resources.notifications.organizationPolicies.deletedMessage
                     );
                 } catch (error) {
                     $app.logger.error("[OrganizationPoliciesPanel] Error deleting policy:", error);
                     $app.notifications.showError(
-                        "Failed to Delete",
-                        error instanceof Error ? error.message : "An unexpected error occurred"
+                        resources.notifications.organizationPolicies.failedToDelete,
+                        error instanceof Error ? error.message : resources.notifications.organizationPolicies.unexpectedError
                     );
                 }
             },
@@ -92,18 +92,18 @@ export function OrganizationPoliciesPanel({ openConfirmation }: Readonly<Omit<Or
 
             // Show success notification
             $app.notifications.showSuccess(
-                editingItem ? "Policy Updated" : "Policy Created",
+                editingItem ? resources.notifications.organizationPolicies.updated : resources.notifications.organizationPolicies.created,
                 editingItem
-                    ? "The organization policy has been updated successfully"
-                    : "The organization policy has been created successfully"
+                    ? resources.notifications.organizationPolicies.updatedMessage
+                    : resources.notifications.organizationPolicies.createdMessage
             );
 
             setModalOpened(false);
         } catch (error) {
             $app.logger.error("[OrganizationPoliciesPanel] Error saving policy:", error);
             $app.notifications.showError(
-                "Failed to Save Policy",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.organizationPolicies.failedToSavePolicy,
+                error instanceof Error ? error.message : resources.notifications.organizationPolicies.unexpectedError
             );
         }
     };

@@ -26,17 +26,39 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
     // Initialize hooks
     const { activityConstraints, isLoading: constraintsLoading, fetchActivityConstraints, createActivityConstraint, updateActivityConstraint, deleteActivityConstraint } = useActivityConstraints();
-    const { activities, isLoading: activitiesLoading, fetchActivities } = useActivities();
-    const { subjects, isLoading: subjectsLoading, fetchSubjects } = useSubjects();
+    const { activities, isLoading: activitiesLoading, fetchActivities, setCurrentDepartment: setActivityDepartment } = useActivities();
+    const { subjects, isLoading: subjectsLoading, fetchSubjects, setCurrentDepartment: setSubjectDepartment } = useSubjects();
 
     const isLoading = constraintsLoading || activitiesLoading || subjectsLoading;
 
     // Initial fetch
     useEffect(() => {
         fetchActivityConstraints();
-        fetchActivities();
-        fetchSubjects();
-    }, []);
+        
+        // Set department and fetch both activities and subjects
+        const loadData = async () => {
+            try {
+                // Get department ID from organization context
+                const departments = $app.organization.getActiveDepartments();
+                if (departments && departments.length > 0) {
+                    const departmentId = departments[0].id;
+                    // Set department for both hooks
+                    setActivityDepartment(departmentId);
+                    setSubjectDepartment(departmentId);
+                    // Fetch both in parallel
+                    await Promise.all([
+                        fetchActivities(),
+                        fetchSubjects()
+                    ]);
+                } else {
+                    $app.logger.error("[ActivityConstraintsPanel] No departments available");
+                }
+            } catch (error) {
+                $app.logger.error("[ActivityConstraintsPanel] Error fetching data:", error);
+            }
+        };
+        loadData();
+    }, [fetchActivityConstraints, fetchActivities, fetchSubjects, setActivityDepartment, setSubjectDepartment]);
 
     // Enriched data
     const enrichedData = useMemo(() => {
@@ -72,14 +94,14 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
                     // Show success notification
                     $app.notifications.showSuccess(
-                        "Deleted",
-                        "The activity constraint has been deleted successfully"
+                        resources.notifications.activityConstraints.deleted,
+                        resources.notifications.activityConstraints.deletedMessage
                     );
                 } catch (error) {
                     $app.logger.error("[ActivityConstraintsPanel] Error deleting constraint:", error);
                     $app.notifications.showError(
-                        "Failed to Delete",
-                        error instanceof Error ? error.message : "An unexpected error occurred"
+                        resources.notifications.activityConstraints.failedToDelete,
+                        error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
                     );
                 }
             },
@@ -96,18 +118,18 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
             // Show success notification
             $app.notifications.showSuccess(
-                editingItem ? "Constraint Updated" : "Constraint Created",
+                editingItem ? resources.notifications.activityConstraints.updated : resources.notifications.activityConstraints.created,
                 editingItem
-                    ? "The activity constraint has been updated successfully"
-                    : "The activity constraint has been created successfully"
+                    ? resources.notifications.activityConstraints.updatedMessage
+                    : resources.notifications.activityConstraints.createdMessage
             );
 
             setModalOpened(false);
         } catch (error) {
             $app.logger.error("[ActivityConstraintsPanel] Error saving constraint:", error);
             $app.notifications.showError(
-                "Failed to Save Constraint",
-                error instanceof Error ? error.message : "An unexpected error occurred"
+                resources.notifications.activityConstraints.failedToSaveConstraint,
+                error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
             );
         }
     };
