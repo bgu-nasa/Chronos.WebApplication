@@ -16,8 +16,8 @@ import styles from "@/modules/schedule/src/pages/scheduling-periods-page/compone
 
 export function SchedulingPeriodEditor() {
     const { isOpen, mode, schedulingPeriod, close } = useSchedulingPeriodEditorStore();
-    const { createSchedulingPeriod, isLoading: isCreating, error: createError, clearError: clearCreateError } = useCreateSchedulingPeriod();
-    const { updateSchedulingPeriod, isLoading: isUpdating, error: updateError, clearError: clearUpdateError } = useUpdateSchedulingPeriod();
+    const { createSchedulingPeriod, isLoading: isCreating, clearError: clearCreateError } = useCreateSchedulingPeriod();
+    const { updateSchedulingPeriod, isLoading: isUpdating, clearError: clearUpdateError } = useUpdateSchedulingPeriod();
 
     const [name, setName] = useState("");
     const [fromDate, setFromDate] = useState<Date | null>(null);
@@ -79,8 +79,18 @@ export function SchedulingPeriodEditor() {
         if (mode === "create") {
             const result = await createSchedulingPeriod(request);
             success = result !== null;
+            if (success) {
+                $app.notifications.showSuccess("Success", "Semester created successfully");
+            } else {
+                $app.notifications.showError("Error", "Failed to create semester");
+            }
         } else if (mode === "edit" && schedulingPeriod) {
             success = await updateSchedulingPeriod(schedulingPeriod.id, request);
+            if (success) {
+                $app.notifications.showSuccess("Success", "Semester updated successfully");
+            } else {
+                $app.notifications.showError("Error", "Failed to update semester");
+            }
         }
 
         if (success) {
@@ -100,8 +110,6 @@ export function SchedulingPeriodEditor() {
     };
 
     const isLoading = isCreating || isUpdating;
-    // Combine local validation errors with API errors
-    const apiError = createError || updateError;
     const title =
         mode === "create"
             ? resources.editorCreateTitle
@@ -207,12 +215,6 @@ export function SchedulingPeriodEditor() {
                         <Text size="xs" c="var(--mantine-color-error)">{error}</Text>
                     )}
                 </Stack>
-
-                {apiError && (
-                    <Text size="sm" c="var(--mantine-color-error)" mb="md">
-                        {apiError}
-                    </Text>
-                )}
 
                 <Group justify="flex-end" mt="md">
                     <Button
