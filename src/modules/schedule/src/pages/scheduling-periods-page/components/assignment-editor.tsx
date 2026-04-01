@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState, useMemo } from "react";
-import { Modal, Select, Button, Group, Text, Stack } from "@mantine/core";
+import { Modal, Select, Button, Group, Stack } from "@mantine/core";
 import { useAssignmentEditorStore } from "@/modules/schedule/src/stores";
 import {
     useCreateAssignment,
@@ -15,8 +15,8 @@ import {
 
 export function AssignmentEditor() {
     const { isOpen, mode, assignment, slotId, close } = useAssignmentEditorStore();
-    const { createAssignment, isLoading: isCreating, error: createError, clearError: clearCreateError } = useCreateAssignment();
-    const { updateAssignment, isLoading: isUpdating, error: updateError, clearError: clearUpdateError } = useUpdateAssignment();
+    const { createAssignment, isLoading: isCreating, clearError: clearCreateError } = useCreateAssignment();
+    const { updateAssignment, isLoading: isUpdating, clearError: clearUpdateError } = useUpdateAssignment();
     const { resources, isLoading: isLoadingResources } = useResources();
     const { activities, isLoading: isLoadingActivities } = useActivities();
 
@@ -83,12 +83,22 @@ export function AssignmentEditor() {
                 activityId,
             });
             success = result !== null;
+            if (success) {
+                $app.notifications.showSuccess("Success", "Assignment created successfully");
+            } else {
+                $app.notifications.showError("Error", "Failed to create assignment");
+            }
         } else if (mode === "edit" && assignment && resourceId && activityId) {
             success = await updateAssignment(assignment.id, {
                 slotId: assignment.slotId,
                 resourceId,
                 activityId,
             });
+            if (success) {
+                $app.notifications.showSuccess("Success", "Assignment updated successfully");
+            } else {
+                $app.notifications.showError("Error", "Failed to update assignment");
+            }
         }
 
         if (success) {
@@ -106,7 +116,6 @@ export function AssignmentEditor() {
     };
 
     const isLoading = isCreating || isUpdating;
-    const apiError = createError || updateError;
     const title = mode === "create" ? "Add Assignment" : "Edit Assignment";
     const submitButtonLabel = mode === "create" ? "Create" : "Save";
 
@@ -163,12 +172,6 @@ export function AssignmentEditor() {
                         searchable
                         clearable
                     />
-
-                    {apiError && (
-                        <Text size="sm" c="var(--mantine-color-error)">
-                            {apiError}
-                        </Text>
-                    )}
 
                     <Group justify="flex-end" mt="md">
                         <Button

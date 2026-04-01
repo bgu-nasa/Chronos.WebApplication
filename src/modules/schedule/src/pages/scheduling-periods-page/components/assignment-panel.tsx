@@ -87,6 +87,9 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
                 const success = await deleteAssignment(selectedAssignment.id);
                 if (success) {
                     setSelectedAssignment(null);
+                    $app.notifications.showSuccess("Success", "Assignment deleted successfully");
+                } else {
+                    $app.notifications.showError("Error", "Failed to delete assignment");
                 }
             },
         });

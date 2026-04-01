@@ -140,6 +140,9 @@ export function SchedulingPeriodsPage() {
                 if (success) {
                     setSelectedPeriod(null);
                     setShowSlots(false);
+                    $app.notifications.showSuccess("Success", "Semester deleted successfully");
+                } else {
+                    $app.notifications.showError("Error", "Failed to delete semester");
                 }
             },
         });
@@ -203,7 +206,12 @@ export function SchedulingPeriodsPage() {
             message: "Are you sure you want to delete this slot?",
             onConfirm: async () => {
                 const success = await deleteSlot(selectedSlot.id);
-                if (success) setSelectedSlot(null);
+                if (success) {
+                    setSelectedSlot(null);
+                    $app.notifications.showSuccess("Success", "Slot deleted successfully");
+                } else {
+                    $app.notifications.showError("Error", "Failed to delete slot");
+                }
             },
         });
     };
