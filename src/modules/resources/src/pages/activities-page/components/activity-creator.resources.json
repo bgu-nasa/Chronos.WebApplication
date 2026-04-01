@@ -1,0 +1,24 @@
+{
+    "modalTitle": "Create Group",
+    "activityTypeLabel": "Activity Type",
+    "activityTypePlaceholder": "e.g. Lecture, Practice, Lab",
+    "assignedUserLabel": "Assigned User (Optional)",
+    "assignedUserPlaceholder": "Select user or leave unassigned",
+    "expectedStudentsLabel": "Expected Students",
+    "expectedStudentsPlaceholder": "Number of students",
+    "submitButton": "Create Group",
+    "notifications": {
+        "loadUsersError": {
+            "title": "Error",
+            "message": "Failed to load users"
+        }
+    },
+    "logger": {
+        "fetchedUsers": "Fetched users",
+        "errorFetchingUsers": "Error fetching users:",
+        "handleSubmitCalled": "handleSubmit called",
+        "validationFailed": "Validation failed - empty activity type",
+        "callingOnSubmit": "Calling onSubmit...",
+        "onSubmitCompleted": "onSubmit completed, resetting form"
+    }
+}

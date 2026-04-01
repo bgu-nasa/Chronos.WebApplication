@@ -1,0 +1,23 @@
+{
+    "title": "ניהול סוגי חדרים",
+    "createButton": "יצירה",
+    "editButton": "ערוך",
+    "deleteButton": "מחק",
+    "typeColumn": "סוג",
+    "emptyStateMessage": "אין סוגי חדרים עדיין. התחל על ידי יצירת סוג החדר הראשון שלך!",
+    "deleteConfirmTitle": "מחק סוג חדר",
+    "deleteConfirmMessage": "האם אתה בטוח שברצונך למחוק את סוג החדר \"{type}\"?",
+    "deleteConfirmButton": "מחק",
+    "deleteCancelButton": "ביטול",
+    "searchDepartmentLabel": "מחלקה",
+    "searchDepartmentPlaceholder": "בחר מחלקה",
+    "searchButton": "חיפוש",
+    "clearFiltersButton": "נקה מסננים",
+    "editorCreateTitle": "צור סוג חדר",
+    "editorEditTitle": "ערוך סוג חדר",
+    "editorTypeLabel": "סוג",
+    "editorTypePlaceholder": "לדוגמה Laboratory, Classroom, Auditorium",
+    "editorCancelButton": "ביטול",
+    "editorSaveButton": "שמור",
+    "editorCreateButton": "יצירה"
+}

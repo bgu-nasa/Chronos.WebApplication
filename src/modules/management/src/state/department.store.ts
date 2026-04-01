@@ -11,6 +11,14 @@ import type {
 } from "@/modules/management/src/data/department.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 
+const getErrorDetailsMessage = (details: unknown): string | undefined => {
+    if (details == null) {
+        return undefined;
+    }
+
+    return typeof details === "string" ? details : JSON.stringify(details);
+};
+
 interface DepartmentStore {
     // State
     departments: DepartmentResponse[];
@@ -49,7 +57,8 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to fetch departments";
+                apiError.message ||
+                $app.localization.t("notifications.department.error.fetch");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error fetching departments:", err);
         }
@@ -59,7 +68,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
     createDepartment: async (request: DepartmentRequest) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Creating department...",
+            $app.localization.t("notifications.department.loading.create"),
         );
         try {
             const newDepartment =
@@ -70,18 +79,21 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department created successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.department.success.create"),
+            );
             return newDepartment;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to create department";
+                apiError.message ||
+                $app.localization.t("notifications.department.error.create");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error creating department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to create department",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.department.error.create"),
+                getErrorDetailsMessage(apiError.details),
             );
             return null;
         }
@@ -94,7 +106,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
     ) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Updating department...",
+            $app.localization.t("notifications.department.loading.update"),
         );
         try {
             await departmentDataRepository.updateDepartment(
@@ -107,18 +119,21 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department updated successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.department.success.update"),
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to update department";
+                apiError.message ||
+                $app.localization.t("notifications.department.error.update");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error updating department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to update department",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.department.error.update"),
+                getErrorDetailsMessage(apiError.details),
             );
             return false;
         }
@@ -128,7 +143,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
     deleteDepartment: async (departmentId: string) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Deleting department...",
+            $app.localization.t("notifications.department.loading.delete"),
         );
         try {
             await departmentDataRepository.deleteDepartment(departmentId);
@@ -138,18 +153,21 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department deleted successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.department.success.delete"),
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to delete department";
+                apiError.message ||
+                $app.localization.t("notifications.department.error.delete");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error deleting department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to delete department",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.department.error.delete"),
+                getErrorDetailsMessage(apiError.details),
             );
             return false;
         }
@@ -159,7 +177,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
     restoreDepartment: async (departmentId: string) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Restoring department...",
+            $app.localization.t("notifications.department.loading.restore"),
         );
         try {
             await departmentDataRepository.restoreDepartment(departmentId);
@@ -169,18 +187,21 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department restored successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.department.success.restore"),
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to restore department";
+                apiError.message ||
+                $app.localization.t("notifications.department.error.restore");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error restoring department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to restore department",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.department.error.restore"),
+                getErrorDetailsMessage(apiError.details),
             );
             return false;
         }

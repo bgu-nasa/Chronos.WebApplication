@@ -1,0 +1,13 @@
+{
+    "title": "הגדרות פרופיל",
+    "description": "נהל את מידע הפרופיל שלך והגדרות החשבון",
+    "sections": {
+        "profileInfo": "מידע פרופיל",
+        "dangerZone": "אזור סכנה"
+    },
+    "dangerZone": {
+        "passwordTitle": "עדכן סיסמה",
+        "passwordDescription": "שנה את סיסמת החשבון שלך. ודא שהיא חזקה וייחודית.",
+        "passwordButton": "עדכן סיסמה"
+    }
+}

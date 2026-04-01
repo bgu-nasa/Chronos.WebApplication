@@ -278,8 +278,8 @@ export function RegisterPage() {
                             </Title>
 
                             <TextInput
-                                label="Invite Code"
-                                placeholder="Enter your invite code"
+                                label={resources.inviteCodeLabel}
+                                placeholder={resources.inviteCodePlaceholder}
                                 value={inviteCode}
                                 onChange={(e) =>
                                     setInviteCode(e.currentTarget.value)

@@ -1,0 +1,232 @@
+{
+    "title": "אילוצים",
+    "tabs": {
+        "user": {
+            "value": "משתמש",
+            "label": "אילוצים / העדפות משתמש"
+        },
+        "activity": {
+            "value": "פעילות",
+            "label": "אילוצי פעילות"
+        },
+        "organization": {
+            "value": "ארגון",
+            "label": "מדיניות ארגון"
+        }
+    },
+    "userConstraintsTab": "אילוצים / העדפות משתמש",
+    "activityConstraintsTab": "אילוצי פעילות",
+    "organizationConstraintsTab": "אילוצי ארגון",
+    "createConstraintButton": "צור אילוץ",
+    "createPreferenceButton": "צור העדפה",
+    "createButton": "יצירה",
+    "updateButton": "עדכון",
+    "editButton": "ערוך",
+    "deleteButton": "מחק",
+    "cancelButton": "ביטול",
+    "deleteConfirmTitle": "מחק אילוץ",
+    "deleteConfirmMessage": "האם אתה בטוח שברצונך למחוק את האילוץ הזה? לא ניתן לבטל פעולה זו.",
+    "deleteConfirmButton": "מחק",
+    "deleteCancelButton": "ביטול",
+    "noConstraintsMessage": "לא נמצאו אילוצים",
+    "loadingMessage": "טעינת אילוצים...",
+    "modalSize": "md",
+    "labels": {
+        "user": "משתמש",
+        "schedulingPeriod": "תקופת תזמון",
+        "activity": "פעילות",
+        "key": "מפתח",
+        "value": "ערך",
+        "subject": "נושא",
+        "period": "תקופה",
+        "type": "סוג",
+        "lecturer": "הרצאה",
+        "actions": "פעולות",
+        "weekday": "יום בשבוע",
+        "startTime": "זמן התחלה",
+        "endTime": "זמן סיום",
+        "minCapacity": "קיבולת מינימלית",
+        "maxCapacity": "קיבולת מקסימלית",
+        "locations": "מיקומים",
+        "resourceTypes": "סוגי חדרים",
+        "addTimeRange": "הוסף טווח זמן",
+        "removeTimeRange": "הסר"
+    },
+    "placeholders": {
+        "selectUser": "בחר משתמש",
+        "selectSchedulingPeriod": "בחר תקופת תזמון",
+        "selectSubject": "בחר נושא",
+        "selectActivity": "בחר פעילות",
+        "selectWeekday": "בחר יום בשבוע",
+        "selectStartTime": "בחר זמן התחלה",
+        "selectEndTime": "בחר זמן סיום",
+        "enterMinCapacity": "הזן קיבולת מינימלית",
+        "enterMaxCapacity": "הזן קיבולת מקסימלית",
+        "enterLocations": "הזן מיקומים (מופרד בפסיק או לחץ Enter)",
+        "enterResourceTypes": "הזן סוגי חדרים (מופרד בפסיק או לחץ Enter)",
+        "selectConstraintType": "בחר סוג אילוץ",
+        "keyExamples": {
+            "user": "לדוגמה preferred_time, max_hours_per_day",
+            "activity": "לדוגמה required_room_type, max_students",
+            "organization": "לדוגמה max_daily_hours, min_break_time"
+        },
+        "valueExamples": {
+            "user": "לדוגמה 09:00-12:00, 8",
+            "activity": "לדוגמה lab, 30",
+            "organization": "לדוגמה 8, 30"
+        }
+    },
+    "modalTitles": {
+        "createUserConstraint": "צור אילוץ משתמש",
+        "editUserConstraint": "ערוך אילוץ משתמש",
+        "createUserPreference": "צור העדפת משתמש",
+        "editUserPreference": "ערוך העדפת משתמש",
+        "createActivityConstraint": "צור אילוץ פעילות",
+        "editActivityConstraint": "ערוך אילוץ פעילות",
+        "createOrganizationPolicy": "צור מדיניות ארגון",
+        "editOrganizationPolicy": "ערוך מדיניות ארגון"
+    },
+    "validationMessages": {
+        "userRequired": "משתמש נדרש",
+        "schedulingPeriodRequired": "תקופת תזמון נדרשת",
+        "subjectRequired": "נושא נדרש",
+        "activityRequired": "דרוש פעילות",
+        "keyRequired": "מפתח נדרש",
+        "valueRequired": "ערך נדרש",
+        "weekdayRequired": "יום בשבוע נדרש",
+        "startTimeRequired": "זמן התחלה נדרש",
+        "endTimeRequired": "זמן סיום נדרש",
+        "startTimeBeforeEndTime": "זמן התחלה חייב להיות לפני זמן הסיום",
+        "atLeastOneTimeRange": "נדרש לפחות טווח זמן אחד",
+        "atLeastOneWeekday": "נדרש לפחות יום אחד בשבוע",
+        "atLeastOneLocation": "נדרש לפחות מיקום אחד",
+        "atLeastOneResourceType": "נדרש לפחות סוג חדר אחד",
+        "minOrMaxRequired": "נדרשת לפחות קיבולת מינימלית או מקסימלית אחת",
+        "minGreaterThanMax": "קיבולת מינימלית לא יכולה להיות גדולה מקיבולת מקסימלית",
+        "invalidForbiddenTimeRange": "פורמט לא חוקי. צפוי: 'Weekday HH:mm - HH:mm' (לדוגמה, 'Monday 09:30 - 11:00'). ערכים מרובים יכולים להיות מופרדים בפסיקים.",
+        "invalidPreferredWeekdays": "פורמט לא חוקי. צפויים שמות ימי שבוע מופרדים בפסיק (לדוגמה, 'Monday,Wednesday,Friday')",
+        "invalidRequiredCapacity": "פורמט לא חוקי. צפוי JSON: {\"min\": number} או {\"max\": number} או {\"min\": number, \"max\": number}",
+        "invalidLocationPreference": "פורמט לא חוקי. צפויים שמות מיקומים מופרדים בפסיק (לדוגמה, 'Building A,Building B')",
+        "invalidCompatibleResourceTypes": "פורמט לא חוקי. צפויים שמות סוג חדר מופרדים בפסיק (לדוגמה, 'Lecture Hall,Seminar Room')"
+    },
+    "constraintTypeOptions": {
+        "userConstraints": [
+            {
+                "value": "forbidden_timerange",
+                "label": "טווח זמן אסור"
+            }
+        ],
+        "userPreferences": [
+            {
+                "value": "preferred_weekdays",
+                "label": "ימי שבוע מועדפים"
+            },
+            {
+                "value": "preferred_timerange",
+                "label": "טווח זמן מועדף"
+            }
+        ],
+        "activityConstraints": [
+            {
+                "value": "required_capacity",
+                "label": "קיבולת נדרשת"
+            },
+            {
+                "value": "location_preference",
+                "label": "העדפת מיקום"
+            },
+            {
+                "value": "compatible_resource_types",
+                "label": "סוגי חדרים תואמים"
+            }
+        ]
+    },
+    "valueFormatGuidance": {
+        "forbidden_timerange": "פורמט: 'Weekday HH:mm - HH:mm' (לדוגמה, 'Monday 09:30 - 11:00'). ערכים מרובים מופרדים בפסיקים.",
+        "preferred_weekdays": "פורמט: שמות ימי שבוע מופרדים בפסיק (לדוגמה, 'Monday,Wednesday,Friday')",
+        "preferred_timerange": "פורמט: 'Weekday HH:mm - HH:mm' (לדוגמה, 'Monday 09:30 - 11:00'). ערכים מרובים מופרדים בפסיקים.",
+        "required_capacity": "פורמט: אובייקט JSON עם 'min' ו/או 'max' (לדוגמה, {\"min\": 30} או {\"min\": 20, \"max\": 50})",
+        "location_preference": "פורמט: שמות מיקומים מופרדים בפסיק (לדוגמה, 'Building A,Building B')",
+        "compatible_resource_types": "פורמט: שמות סוג חדר מופרדים בפסיק (לדוגמה, 'Lecture Hall,Seminar Room')"
+    },
+    "deleteMessages": {
+        "deleteConstraint": "מחק אילוץ",
+        "deletePreference": "מחק העדפה",
+        "deleteActivityConstraint": "מחק אילוץ פעילות",
+        "deleteOrganizationPolicy": "מחק מדיניות ארגון",
+        "confirmDeleteConstraint": "האם אתה בטוח שברצונך למחוק את האילוץ הזה?",
+        "confirmDeletePreference": "האם אתה בטוח שברצונך למחוק את ההעדפה הזו?",
+        "confirmDeleteActivityConstraint": "האם אתה בטוח שברצונך למחוק את אילוץ הפעילות הזה?",
+        "confirmDeleteOrganizationPolicy": "האם אתה בטוח שברצונך למחוק את מדיניות הארגון הזו?"
+    },
+    "emptyStateMessages": {
+        "noConstraintsOrPreferences": "לא נמצאו אילוצים או העדפות.",
+        "noActivityConstraints": "לא נמצאו אילוצי פעילות.",
+        "noOrganizationPolicies": "לא נמצאו מדיניות ארגון."
+    },
+    "constraintTypes": {
+        "constraint": "אילוץ",
+        "preference": "העדפה"
+    },
+    "badgeLabels": {
+        "constraint": "אילוץ",
+        "preference": "העדפה"
+    },
+    "other": {
+        "currentUser": "משתמש נוכחי",
+        "unknownSubject": "נושא לא ידוע",
+        "textareaMinRows": 3,
+        "defaultActiveTab": "משתמש",
+        "containerSize": "xl",
+        "weekdays": [
+            "יום ראשון",
+            "יום שני",
+            "יום שלישי",
+            "יום רביעי",
+            "יום חמישי",
+            "יום שישי",
+            "יום שבת"
+        ]
+    },
+    "errorMessages": {
+        "saveUserConstraint": "שגיאה בשמירת אילוץ משתמש:",
+        "saveActivityConstraint": "שגיאה בשמירת אילוץ פעילות:",
+        "saveOrganizationPolicy": "שגיאה בשמירת מדיניות ארגון:"
+    },
+    "notifications": {
+        "userConstraints": {
+            "deleted": "נמחק",
+            "deletedMessage": "ה-{type} נמחק בהצלחה",
+            "updated": "עודכן",
+            "created": "נוצר",
+            "updatedMessage": "ה-{type} עודכן בהצלחה",
+            "createdMessage": "ה-{type} נוצר בהצלחה",
+            "failedToDelete": "מחיקה נכשלה",
+            "failedToSave": "שמירה נכשלה",
+            "failedToSaveConstraint": "שמירת אילוץ נכשלה",
+            "unexpectedError": "אירעה שגיאה בלתי צפויה"
+        },
+        "activityConstraints": {
+            "deleted": "נמחק",
+            "deletedMessage": "אילוץ הפעילות נמחק בהצלחה",
+            "updated": "אילוץ עודכן",
+            "created": "אילוץ נוצר",
+            "updatedMessage": "אילוץ הפעילות עודכן בהצלחה",
+            "createdMessage": "אילוץ הפעילות נוצר בהצלחה",
+            "failedToDelete": "מחיקה נכשלה",
+            "failedToSaveConstraint": "שמירת אילוץ נכשלה",
+            "unexpectedError": "אירעה שגיאה בלתי צפויה"
+        },
+        "organizationPolicies": {
+            "deleted": "נמחק",
+            "deletedMessage": "מדיניות הארגון נמחקה בהצלחה",
+            "updated": "מדיניות עודכנה",
+            "created": "מדיניות נוצרה",
+            "updatedMessage": "מדיניות הארגון עודכנה בהצלחה",
+            "createdMessage": "מדיניות הארגון נוצרה בהצלחה",
+            "failedToDelete": "מחיקה נכשלה",
+            "failedToSavePolicy": "שמירת מדיניות נכשלה",
+            "unexpectedError": "אירעה שגיאה בלתי צפויה"
+        }
+    }
+}

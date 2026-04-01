@@ -268,7 +268,7 @@ export function SchedulingPeriodsPage() {
 
                                 {selectedPeriod.isExpired ? (
                                     <Text c="dimmed" ta="center" py="xl">
-                                        This period has expired. Slots cannot be edited.
+                                        {resources.expiredSlotsReadonlyMessage}
                                     </Text>
                                 ) : (
                                     <SlotActions

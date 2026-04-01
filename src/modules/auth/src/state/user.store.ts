@@ -12,6 +12,14 @@ import type {
 } from "@/modules/auth/src/data/user.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 
+const getErrorDetailsMessage = (details: unknown): string | undefined => {
+    if (details == null) {
+        return undefined;
+    }
+
+    return typeof details === "string" ? details : JSON.stringify(details);
+};
+
 interface UserStore {
     // State
     users: UserResponse[];
@@ -47,7 +55,9 @@ export const useUserStore = create<UserStore>((set, get) => ({
             set({ users: data, isLoading: false });
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to fetch users";
+            const errorMessage =
+                apiError.message ||
+                $app.localization.t("notifications.user.error.fetch");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error fetching users:", err);
         }
@@ -56,8 +66,9 @@ export const useUserStore = create<UserStore>((set, get) => ({
     // Create a user and refetch
     createUser: async (request: CreateUserRequest) => {
         set({ isLoading: true, error: null });
-        const loadingNotification =
-            $app.notifications.showLoading("Creating user...");
+        const loadingNotification = $app.notifications.showLoading(
+            $app.localization.t("notifications.user.loading.create"),
+        );
         try {
             const newUser = await userDataRepository.createUser(request);
             set({ isLoading: false });
@@ -66,17 +77,21 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("User created successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.user.success.create"),
+            );
             return newUser;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to create user";
+            const errorMessage =
+                apiError.message ||
+                $app.localization.t("notifications.user.error.create");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error creating user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to create user",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.user.error.create"),
+                getErrorDetailsMessage(apiError.details),
             );
             return null;
         }
@@ -85,8 +100,9 @@ export const useUserStore = create<UserStore>((set, get) => ({
     // Update a user and refetch
     updateUser: async (userId: string, request: UserUpdateRequest) => {
         set({ isLoading: true, error: null });
-        const loadingNotification =
-            $app.notifications.showLoading("Updating user...");
+        const loadingNotification = $app.notifications.showLoading(
+            $app.localization.t("notifications.user.loading.update"),
+        );
         try {
             await userDataRepository.updateUser(userId, request);
             set({ isLoading: false });
@@ -95,17 +111,21 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("User updated successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.user.success.update"),
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to update user";
+            const errorMessage =
+                apiError.message ||
+                $app.localization.t("notifications.user.error.update");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error updating user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to update user",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.user.error.update"),
+                getErrorDetailsMessage(apiError.details),
             );
             return false;
         }
@@ -115,7 +135,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     updateMyProfile: async (request: UserUpdateRequest) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Updating profile...",
+            $app.localization.t("notifications.user.loading.updateProfile"),
         );
         try {
             await userDataRepository.updateMyProfile(request);
@@ -125,17 +145,21 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Profile updated successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.user.success.updateProfile"),
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to update profile";
+            const errorMessage =
+                apiError.message ||
+                $app.localization.t("notifications.user.error.updateProfile");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error updating profile:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to update profile",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.user.error.updateProfile"),
+                getErrorDetailsMessage(apiError.details),
             );
             return false;
         }
@@ -144,8 +168,9 @@ export const useUserStore = create<UserStore>((set, get) => ({
     // Delete a user and refetch
     deleteUser: async (userId: string) => {
         set({ isLoading: true, error: null });
-        const loadingNotification =
-            $app.notifications.showLoading("Deleting user...");
+        const loadingNotification = $app.notifications.showLoading(
+            $app.localization.t("notifications.user.loading.delete"),
+        );
         try {
             await userDataRepository.deleteUser(userId);
             set({ isLoading: false });
@@ -154,17 +179,21 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
 
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("User deleted successfully");
+            $app.notifications.showSuccess(
+                $app.localization.t("notifications.user.success.delete"),
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to delete user";
+            const errorMessage =
+                apiError.message ||
+                $app.localization.t("notifications.user.error.delete");
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error deleting user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to delete user",
-                apiError.details ? String(apiError.details) : undefined,
+                $app.localization.t("notifications.user.error.delete"),
+                getErrorDetailsMessage(apiError.details),
             );
             return false;
         }

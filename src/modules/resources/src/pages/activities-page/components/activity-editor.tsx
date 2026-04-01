@@ -1,6 +1,7 @@
 import { Modal, TextInput, Button, Stack, NumberInput, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { userRepository } from "@/modules/resources/src/data";
+import resources from "./activity-editor.resources.json";
 
 interface ActivityEditorProps {
     readonly opened: boolean;
@@ -58,35 +59,38 @@ export function ActivityEditor({
                 label: `${user.firstName} ${user.lastName} (${user.email})`,
             }));
             setUsers(options);
-            $app.logger.info("[ActivityEditor] Fetched users", { count: userList.length });
+            $app.logger.info(`[ActivityEditor] ${resources.logger.fetchedUsers}`, { count: userList.length });
         } catch (error) {
-            $app.logger.error("[ActivityEditor] Error fetching users:", error);
-            $app.notifications.showError("Error", "Failed to load users");
+            $app.logger.error(`[ActivityEditor] ${resources.logger.errorFetchingUsers}`, error);
+            $app.notifications.showError(
+                resources.notifications.loadUsersError.title,
+                resources.notifications.loadUsersError.message,
+            );
         } finally {
             setIsLoadingUsers(false);
         }
     };
 
     const handleSubmit = async () => {
-        $app.logger.info("[ActivityEditor] handleSubmit called", {
+        $app.logger.info(`[ActivityEditor] ${resources.logger.handleSubmitCalled}`, {
             activityType,
             assignedUserId,
             expectedStudents,
         });
 
         if (!activityType.trim()) {
-            $app.logger.warn("[ActivityEditor] Validation failed - empty activity type");
+            $app.logger.warn(`[ActivityEditor] ${resources.logger.validationFailed}`);
             return;
         }
 
-        $app.logger.info("[ActivityEditor] Calling onSubmit...");
+        $app.logger.info(`[ActivityEditor] ${resources.logger.callingOnSubmit}`);
         await onSubmit({
             activityType,
             assignedUserId: assignedUserId || "",
             expectedStudents,
         });
 
-        $app.logger.info("[ActivityEditor] onSubmit completed, resetting form");
+        $app.logger.info(`[ActivityEditor] ${resources.logger.onSubmitCompleted}`);
         setActivityType("");
         setAssignedUserId(null);
         setExpectedStudents(null);
@@ -100,18 +104,18 @@ export function ActivityEditor({
     };
 
     return (
-        <Modal opened={opened} onClose={handleClose} title="Edit Group" centered>
+        <Modal opened={opened} onClose={handleClose} title={resources.modalTitle} centered>
             <Stack>
                 <TextInput
-                    label="Activity Type"
-                    placeholder="e.g. Lecture, Practice, Lab"
+                    label={resources.activityTypeLabel}
+                    placeholder={resources.activityTypePlaceholder}
                     value={activityType}
                     onChange={(e) => setActivityType(e.currentTarget.value)}
                     required
                 />
                 <Select
-                    label="Assigned User (Optional)"
-                    placeholder="Select user or leave unassigned"
+                    label={resources.assignedUserLabel}
+                    placeholder={resources.assignedUserPlaceholder}
                     data={users}
                     value={assignedUserId}
                     onChange={setAssignedUserId}
@@ -120,8 +124,8 @@ export function ActivityEditor({
                     clearable
                 />
                 <NumberInput
-                    label="Expected Students"
-                    placeholder="Number of students"
+                    label={resources.expectedStudentsLabel}
+                    placeholder={resources.expectedStudentsPlaceholder}
                     value={expectedStudents ?? undefined}
                     onChange={(value) => setExpectedStudents(value === "" ? null : Number(value))}
                     min={0}
@@ -132,7 +136,7 @@ export function ActivityEditor({
                     disabled={!activityType.trim() || isLoadingUsers}
                     fullWidth
                 >
-                    Save Changes
+                    {resources.submitButton}
                 </Button>
             </Stack>
         </Modal>

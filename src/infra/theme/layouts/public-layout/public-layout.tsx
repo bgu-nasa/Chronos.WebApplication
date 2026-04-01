@@ -10,6 +10,7 @@ import { Outlet } from "react-router";
 import styles from "./public-layout.module.css";
 import PublicLayoutSpecialAction from "./special-action";
 import { ThemeToggleButton } from "@/infra/theme/components/theme-toggle-button";
+import { LanguageToggleButton } from "@/infra/theme/components/language-toggle-button";
 import { ApplicationNavigationRepository as NavItemsRepo } from "@/infra/federation";
 import { ChronosLogo } from "@/common";
 
@@ -48,6 +49,7 @@ export default function PublicLayout() {
                         ))}
 
                         <Group gap="sm">
+                            <LanguageToggleButton />
                             <ThemeToggleButton />
                             <PublicLayoutSpecialAction />
                         </Group>

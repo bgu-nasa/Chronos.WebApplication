@@ -1,0 +1,24 @@
+{
+    "modalTitle": "ערוך קבוצה",
+    "activityTypeLabel": "סוג פעילות",
+    "activityTypePlaceholder": "לדוגמה הרצאה, תרגול, מעבדה",
+    "assignedUserLabel": "משתמש משויך (אופציונלי)",
+    "assignedUserPlaceholder": "בחר משתמש או השאר ללא שיוך",
+    "expectedStudentsLabel": "מספר סטודנטים צפוי",
+    "expectedStudentsPlaceholder": "מספר סטודנטים",
+    "submitButton": "שמור שינויים",
+    "notifications": {
+        "loadUsersError": {
+            "title": "שגיאה",
+            "message": "טעינת משתמשים נכשלה"
+        }
+    },
+    "logger": {
+        "fetchedUsers": "המשתמשים נטענו",
+        "errorFetchingUsers": "שגיאה בטעינת משתמשים:",
+        "handleSubmitCalled": "handleSubmit נקרא",
+        "validationFailed": "האימות נכשל - סוג פעילות ריק",
+        "callingOnSubmit": "מתבצעת קריאה ל-onSubmit...",
+        "onSubmitCompleted": "onSubmit הסתיים, מאפסים את הטופס"
+    }
+}

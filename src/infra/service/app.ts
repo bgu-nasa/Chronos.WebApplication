@@ -10,8 +10,10 @@ import {
     loggerService,
     setOrganizationIdGetter,
 } from "./logger/logger.service";
+import { localizationService } from "./localization/localization.service";
 import { notificationService } from "./notification/notification.service";
 import type { IAjaxService } from "./ajax/types";
+import type { ILocalizationService } from "./localization/localization.types";
 import type { IOrganizationService } from "./organization/organization.service";
 import type { ILogger } from "./logger/logger.types";
 import type { INotificationService } from "./notification/notification.types";
@@ -51,6 +53,12 @@ interface IApp {
      * All notifications auto-dismiss after 15 seconds by default
      */
     notifications: INotificationService;
+
+    /**
+     * Localization service
+     * Supports runtime locale switching and RTL/LTR direction metadata
+     */
+    localization: ILocalizationService;
 
     /**
      * Check if user is authenticated (has a valid token)
@@ -98,6 +106,7 @@ export const $app: IApp = {
     organization: organizationService,
     logger: loggerService,
     notifications: notificationService,
+    localization: localizationService,
     isAuthenticated: () => tokenService.hasToken(),
 };
 

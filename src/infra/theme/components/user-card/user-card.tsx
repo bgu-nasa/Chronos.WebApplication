@@ -1,13 +1,14 @@
 /** @author aaron-iz */
 import { Avatar, Menu, Indicator } from "@mantine/core";
 import { useNavigate } from "react-router";
-import { $app } from "@/infra/service";
-import { useOrganization } from "@/infra/service";
+import { $app, useOrganization } from "@/infra/service";
+import { useLocalization } from "@/infra/service/localization";
 import { SettingsIcon, LogoutIcon } from "@/common/icons";
 
 export default function UserCard() {
     const navigate = useNavigate();
     const { organization } = useOrganization();
+    const { t } = useLocalization();
 
     const handleLogout = () => {
         // Clear the authentication token
@@ -61,14 +62,14 @@ export default function UserCard() {
                     leftSection={<SettingsIcon size={16} />}
                     onClick={() => navigate("/auth/profile-settings")}
                 >
-                    Settings
+                    {t("action.settings", undefined, "Settings")}
                 </Menu.Item>
                 <Menu.Item
                     leftSection={<LogoutIcon size={16} />}
                     onClick={handleLogout}
                     color="red"
                 >
-                    Logout
+                    {t("action.logout", undefined, "Logout")}
                 </Menu.Item>
             </Menu.Dropdown>
         </Menu>

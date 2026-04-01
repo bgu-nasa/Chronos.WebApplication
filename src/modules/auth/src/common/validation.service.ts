@@ -3,6 +3,9 @@
  * Contains stateless validation functions that return error messages or undefined
  */
 
+import { localizationService } from "@/infra/service";
+
+const t = localizationService.t.bind(localizationService);
 const RESERVED_ORGANIZATION_NAMES = ["admin", "system", "root", "api", "app"];
 
 /**
@@ -12,12 +15,12 @@ const RESERVED_ORGANIZATION_NAMES = ["admin", "system", "root", "api", "app"];
  */
 export function validateEmail(email: string): string | undefined {
     if (!email || email.trim() === "") {
-        return "Email is required";
+        return t("validation.email.required");
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        return "Invalid email format";
+        return t("validation.email.invalid");
     }
 
     return undefined;
@@ -36,19 +39,19 @@ export function validateEmail(email: string): string | undefined {
  */
 export function validatePassword(password: string): string | undefined {
     if (!password) {
-        return "Password is required";
+        return t("validation.password.required");
     }
 
     if (password.length < 8) {
-        return "Password must be at least 8 characters long";
+        return t("validation.password.min");
     }
 
     if (password.length > 128) {
-        return "Password must not exceed 128 characters";
+        return t("validation.password.max");
     }
 
     if (/\s/.test(password)) {
-        return "Password cannot contain whitespace";
+        return t("validation.password.whitespace");
     }
 
     const hasUppercase = /[A-Z]/.test(password);
@@ -56,7 +59,7 @@ export function validatePassword(password: string): string | undefined {
     const hasDigit = /[0-9]/.test(password);
 
     if (!hasUppercase || !hasLowercase || !hasDigit) {
-        return "Password must contain uppercase, lowercase, and digit";
+        return t("validation.password.complexity");
     }
 
     return undefined;
@@ -73,7 +76,7 @@ export function validatePasswordMatch(
     confirmPassword: string
 ): string | undefined {
     if (password !== confirmPassword) {
-        return "Passwords do not match";
+        return t("validation.password.match");
     }
     return undefined;
 }
@@ -91,17 +94,17 @@ export function validateOrganizationName(
     organizationName: string
 ): string | undefined {
     if (!organizationName || organizationName.trim() === "") {
-        return "Organization name is required";
+        return t("validation.organization.required");
     }
 
     const trimmed = organizationName.trim();
 
     if (trimmed.length < 3) {
-        return "Organization name must be at least 3 characters";
+        return t("validation.organization.min");
     }
 
     if (trimmed.length > 64) {
-        return "Organization name must not exceed 64 characters";
+        return t("validation.organization.max");
     }
 
     // Check if it starts or ends with whitespace (before trim)
@@ -110,18 +113,18 @@ export function validateOrganizationName(
         organizationName.startsWith(" ") ||
         organizationName.endsWith(" ")
     ) {
-        return "Organization name cannot start or end with whitespace";
+        return t("validation.organization.whitespace");
     }
 
     // Check allowed characters: alphanumeric, hyphens, underscores, and spaces
     const validPattern = /^[a-zA-Z0-9_\-\s]+$/;
     if (!validPattern.test(organizationName)) {
-        return "Organization name must contain only letters, numbers, hyphens, underscores, and spaces";
+        return t("validation.organization.pattern");
     }
 
     // Check if it's a reserved name (case-insensitive)
     if (RESERVED_ORGANIZATION_NAMES.includes(trimmed.toLowerCase())) {
-        return "This organization name is reserved and cannot be used";
+        return t("validation.organization.reserved");
     }
 
     return undefined;
@@ -134,11 +137,11 @@ export function validateOrganizationName(
  */
 export function validateFirstName(firstName: string): string | undefined {
     if (!firstName || firstName.trim() === "") {
-        return "First name is required";
+        return t("validation.firstName.required");
     }
 
     if (firstName.trim().length < 2) {
-        return "First name must be at least 2 characters";
+        return t("validation.firstName.min");
     }
 
     return undefined;
@@ -151,11 +154,11 @@ export function validateFirstName(firstName: string): string | undefined {
  */
 export function validateLastName(lastName: string): string | undefined {
     if (!lastName || lastName.trim() === "") {
-        return "Last name is required";
+        return t("validation.lastName.required");
     }
 
     if (lastName.trim().length < 2) {
-        return "Last name must be at least 2 characters";
+        return t("validation.lastName.min");
     }
 
     return undefined;
@@ -172,7 +175,7 @@ export function validateRequired(
     fieldName: string
 ): string | undefined {
     if (!value || value.trim() === "") {
-        return `${fieldName} is required`;
+        return t("validation.required", { fieldName });
     }
     return undefined;
 }

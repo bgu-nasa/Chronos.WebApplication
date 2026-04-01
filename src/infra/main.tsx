@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { MantineProvider } from "@mantine/core";
 import { PrimeReactProvider } from "primereact/api";
+import { LocalizationProvider } from "./service";
 import { theme } from "./theme";
 import { useThemeStore } from "./theme/state";
 import App from "./App";
@@ -38,9 +39,11 @@ const ThemedApp = () => {
     return (
         <MantineProvider theme={theme} forceColorScheme={colorScheme}>
             <PrimeReactProvider>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
+                <LocalizationProvider>
+                    <BrowserRouter>
+                        <App />
+                    </BrowserRouter>
+                </LocalizationProvider>
             </PrimeReactProvider>
         </MantineProvider>
     );

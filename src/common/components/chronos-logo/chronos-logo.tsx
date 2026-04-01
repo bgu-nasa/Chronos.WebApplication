@@ -21,7 +21,7 @@ export function ChronosLogo({ height = 40 }: ChronosLogoProps) {
             width={width}
             height={height}
             viewBox={`0 0 ${width} ${height}`}
-            style={{ display: "block", overflow: "visible" }}
+            style={{ display: "block", overflow: "visible", direction: "ltr" }}
         >
             {/* Background circle elements for time/clock theme */}
             <circle
@@ -82,6 +82,9 @@ export function ChronosLogo({ height = 40 }: ChronosLogoProps) {
                 fontWeight="700"
                 letterSpacing="0.05em"
                 fill={primaryColor}
+                direction="ltr"
+                unicodeBidi="isolate"
+                textAnchor="start"
             >
                 CHRONOS
             </text>

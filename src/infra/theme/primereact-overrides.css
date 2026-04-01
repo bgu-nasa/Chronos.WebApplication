@@ -81,3 +81,26 @@
 .p-datatable .p-paginator {
     background-color: transparent !important;
 }
+
+/* In RTL locales, align table values to the right while keeping headers unchanged */
+[dir="rtl"] .p-datatable .p-datatable-tbody > tr > td,
+[dir="rtl"] table > tbody > tr > td {
+    text-align: right;
+}
+
+/* In RTL locales, align table header title/content to the right */
+[dir="rtl"] .p-datatable .p-datatable-header {
+    text-align: right;
+}
+
+/* In RTL locales, keep column title and sort icon aligned together on the right */
+[dir="rtl"] .p-datatable .p-datatable-thead > tr > th {
+    text-align: right;
+}
+
+[dir="rtl"] .p-datatable .p-datatable-thead > tr > th .p-column-header-content,
+[dir="rtl"] .p-datatable .p-sortable-column .p-column-header-content {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 0.375rem;
+}

@@ -40,3 +40,15 @@ export {
     type NotificationOptions,
     type NotificationType,
 } from "./notification";
+
+// Localization service exports
+export {
+    localizationService,
+    LocalizationProvider,
+    useLocalization,
+    useLocalizationStore,
+    type ILocalizationService,
+    type LocalizationDirection,
+    type SupportedLocale,
+    type TranslationParams,
+} from "./localization";

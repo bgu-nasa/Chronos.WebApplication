@@ -1,6 +1,7 @@
 import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
+import resources from "./subject-editor.resources.json";
 
 interface SubjectEditorProps {
     opened: boolean;
@@ -47,27 +48,30 @@ export function SubjectEditor({
                 label: period.name,
             }));
             setSchedulingPeriods(options);
-            $app.logger.info("[SubjectEditor] Fetched scheduling periods", { count: options.length });
+            $app.logger.info(`[SubjectEditor] ${resources.logger.fetchedSchedulingPeriods}`, { count: options.length });
         } catch (error) {
-            $app.logger.error("[SubjectEditor] Error fetching scheduling periods:", error);
-            $app.notifications.showError("Error", "Failed to load scheduling periods");
+            $app.logger.error(`[SubjectEditor] ${resources.logger.errorFetchingSchedulingPeriods}`, error);
+            $app.notifications.showError(
+                resources.notifications.loadSchedulingPeriodsError.title,
+                resources.notifications.loadSchedulingPeriodsError.message,
+            );
         } finally {
             setIsLoadingPeriods(false);
         }
     };
 
     const handleSubmit = async () => {
-        $app.logger.info("[SubjectEditor] handleSubmit called", { code, name, schedulingPeriodId });
+        $app.logger.info(`[SubjectEditor] ${resources.logger.handleSubmitCalled}`, { code, name, schedulingPeriodId });
         
         if (!code.trim() || !name.trim() || !schedulingPeriodId) {
-            $app.logger.warn("[SubjectEditor] Validation failed - empty fields");
+            $app.logger.warn(`[SubjectEditor] ${resources.logger.validationFailed}`);
             return;
         }
         
-        $app.logger.info("[SubjectEditor] Calling onSubmit...");
+        $app.logger.info(`[SubjectEditor] ${resources.logger.callingOnSubmit}`);
         await onSubmit({ code, name, schedulingPeriodId });
         
-        $app.logger.info("[SubjectEditor] onSubmit completed, resetting form");
+        $app.logger.info(`[SubjectEditor] ${resources.logger.onSubmitCompleted}`);
         setCode("");
         setName("");
         setSchedulingPeriodId(null);
@@ -84,27 +88,27 @@ export function SubjectEditor({
         <Modal
             opened={opened}
             onClose={handleClose}
-            title="Edit Course"
+            title={resources.modalTitle}
             centered
         >
             <Stack>
                 <TextInput
-                    label="Course Code"
-                    placeholder="e.g. CS101"
+                    label={resources.codeLabel}
+                    placeholder={resources.codePlaceholder}
                     value={code}
                     onChange={(e) => setCode(e.currentTarget.value)}
                     required
                 />
                 <TextInput
-                    label="Course Name"
-                    placeholder="e.g. Operating Systems"
+                    label={resources.nameLabel}
+                    placeholder={resources.namePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.currentTarget.value)}
                     required
                 />
                 <Select
-                    label="Scheduling Period"
-                    placeholder="Select scheduling period"
+                    label={resources.schedulingPeriodLabel}
+                    placeholder={resources.schedulingPeriodPlaceholder}
                     data={schedulingPeriods}
                     value={schedulingPeriodId}
                     onChange={setSchedulingPeriodId}
@@ -118,7 +122,7 @@ export function SubjectEditor({
                     disabled={!code.trim() || !name.trim() || !schedulingPeriodId || isLoadingPeriods}
                     fullWidth
                 >
-                    Save Changes
+                    {resources.submitButton}
                 </Button>
             </Stack>
         </Modal>

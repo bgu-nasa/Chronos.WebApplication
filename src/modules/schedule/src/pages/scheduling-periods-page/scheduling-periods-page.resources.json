@@ -25,6 +25,8 @@
     "deleteConfirmButton": "Delete",
     "deleteCancelButton": "Cancel",
     "emptyStateMessage": "No semesters found. Click \"Create\" to add one.",
+    "viewSlotsButton": "View Slots",
+    "expiredSlotsReadonlyMessage": "This period has expired. Slots cannot be edited.",
     "runBatchAssignmentButton": "Run Batch Assignment",
     "batchAssignmentConfirmTitle": "Run Batch Assignment",
     "batchAssignmentConfirmMessage": "This will delete all current assignments in this semester, then run batch scheduling to create new assignments. This cannot be undone. Continue?",

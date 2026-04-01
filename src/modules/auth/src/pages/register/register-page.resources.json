@@ -13,6 +13,8 @@
     "confirmPasswordLabel": "Confirm Password",
     "confirmPasswordPlaceholder": "Re-enter your password",
     "orgInfoTitle": "Organization Details",
+    "inviteCodeLabel": "Invite Code",
+    "inviteCodePlaceholder": "Enter your invite code",
     "orgNameLabel": "Organization Name",
     "orgNamePlaceholder": "Acme Corporation",
     "planLabel": "Select Plan",

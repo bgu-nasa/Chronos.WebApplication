@@ -1,0 +1,23 @@
+{
+    "title": "הצטרף ל-Chronos",
+    "subtitle": "צור את הארגון שלך והתחל לנהל את הזמן שלך בעילות",
+    "userInfoTitle": "חשבון מנהל",
+    "emailLabel": "דואר אלקטרוני",
+    "emailPlaceholder": "admin@example.com",
+    "firstNameLabel": "שם פרטי",
+    "firstNamePlaceholder": "John",
+    "lastNameLabel": "שם משפחה",
+    "lastNamePlaceholder": "Doe",
+    "passwordLabel": "סיסמה",
+    "passwordPlaceholder": "הזן סיסמה מאובטחת",
+    "confirmPasswordLabel": "אשר סיסמה",
+    "confirmPasswordPlaceholder": "הזן מחדש את הסיסמה שלך",
+    "orgInfoTitle": "פרטי ארגון",
+    "inviteCodeLabel": "קוד הזמנה",
+    "inviteCodePlaceholder": "הזן את קוד ההזמנה שלך",
+    "orgNameLabel": "שם ארגון",
+    "orgNamePlaceholder": "Acme Corporation",
+    "planLabel": "בחר תוכנית",
+    "planPlaceholder": "בחר תוכנית",
+    "registerButton": "צור ארגון"
+}

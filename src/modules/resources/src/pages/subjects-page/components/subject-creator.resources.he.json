@@ -1,0 +1,24 @@
+{
+    "modalTitle": "צור קורס",
+    "codeLabel": "קוד קורס",
+    "codePlaceholder": "לדוגמה CS101",
+    "nameLabel": "שם הקורס",
+    "namePlaceholder": "לדוגמה מערכות הפעלה",
+    "schedulingPeriodLabel": "תקופת תזמון",
+    "schedulingPeriodPlaceholder": "בחר תקופת תזמון",
+    "submitButton": "צור קורס",
+    "notifications": {
+        "loadSchedulingPeriodsError": {
+            "title": "שגיאה",
+            "message": "טעינת תקופות תזמון נכשלה"
+        }
+    },
+    "logger": {
+        "fetchedSchedulingPeriods": "תקופות תזמון שנאספו",
+        "errorFetchingSchedulingPeriods": "שגיאה בהبאת תקופות תזמון:",
+        "handleSubmitCalled": "handleSubmit נקרא",
+        "validationFailed": "אימות נכשל - שדות ריקים",
+        "callingOnSubmit": "קריאה ל-onSubmit...",
+        "onSubmitCompleted": "onSubmit הושלם, איפוס הטופס"
+    }
+}

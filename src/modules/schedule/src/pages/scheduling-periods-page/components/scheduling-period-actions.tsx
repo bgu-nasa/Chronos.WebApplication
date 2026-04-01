@@ -46,7 +46,7 @@ export function SchedulingPeriodActions({
                 onClick={onViewSlotsClick}
                 disabled={!selectedPeriod}
             >
-                View Slots
+                {resources.viewSlotsButton}
             </Button>
             <Button
                 variant="filled"

@@ -4,6 +4,11 @@
   margin-left: 60px;
 }
 
+[dir="rtl"] .weekHeaderContainer {
+  margin-left: 0;
+  margin-right: 60px;
+}
+
 .dayHeader {
   flex: 1;
   padding: 8px;
