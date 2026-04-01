@@ -26,6 +26,7 @@
     "deleteCancelButton": "ביטול",
     "emptyStateMessage": "לא נמצאו סמסטרים. לחץ על \"יצור\" כדי להוסיף אחד.",
     "viewSlotsButton": "הצג משבצות",
+    "slotsPanelTitle": "משבצות - {name}",
     "expiredSlotsReadonlyMessage": "תקופה זו הסתיימה. לא ניתן לערוך משבצות.",
     "runBatchAssignmentButton": "הריץ הקצאה קבוצתית",
     "batchAssignmentConfirmTitle": "הריץ הקצאה קבוצתית",

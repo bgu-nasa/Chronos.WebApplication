@@ -4,6 +4,7 @@ import { useSlotEditorStore } from "@/modules/schedule/src/stores";
 import { useCreateSlot, useUpdateSlot } from "@/modules/schedule/src/hooks";
 import { Weekday, WeekdayOrder } from "@/modules/schedule/src/data";
 import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import { useLocalization } from "@/infra/service/localization";
 
 interface SlotEditorProps {
     schedulingPeriodId: string;
@@ -87,13 +88,8 @@ function TimeSpinner({ label, totalMinutes, onChange, error }: TimeSpinnerProps)
     );
 }
 
-// Day options for multi-select (Sunday first) - uses string values directly
-const dayOptions = WeekdayOrder.map((day) => ({
-    value: day,
-    label: day,
-}));
-
 export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
+    const { t } = useLocalization();
     const { isOpen, mode, slot, close } = useSlotEditorStore();
     const { createSlot, error: createError, clearError: clearCreateError } = useCreateSlot();
     const { updateSlot, error: updateError, clearError: clearUpdateError } = useUpdateSlot();
@@ -268,6 +264,10 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
 
     const title = mode === "create" ? resources.editorCreateTitle : resources.editorEditTitle;
     const apiError = createError || updateError;
+    const dayOptions = WeekdayOrder.map((day) => ({
+        value: day,
+        label: t(`weekday.${day.toLowerCase()}`, undefined, day),
+    }));
 
     // Calculate slot count for preview
     const calculateSlotCount = () => {
@@ -288,7 +288,7 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
                                     <Group gap="xs">
                                         {dayOptions.map((day) => (
                                             <Chip key={day.value} value={day.value} variant="filled">
-                                                {day.label.substring(0, 3)}
+                                                {day.label}
                                             </Chip>
                                         ))}
                                     </Group>

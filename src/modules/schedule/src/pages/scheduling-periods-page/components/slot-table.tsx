@@ -3,6 +3,7 @@ import { Paper, Text, Group, Stack, Badge } from "@mantine/core";
 import { WeekdayOrder } from "@/modules/schedule/src/data";
 import type { SlotResponse } from "@/modules/schedule/src/data";
 import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import { useLocalization } from "@/infra/service/localization";
 
 interface SlotTableProps {
     slots: SlotResponse[];
@@ -15,6 +16,11 @@ export function SlotTable({
     selectedSlot,
     onSelectionChange,
 }: SlotTableProps) {
+    const { t } = useLocalization();
+
+    const getWeekdayLabel = (day: string) =>
+        t(`weekday.${day.toLowerCase()}`, undefined, day);
+
     // Group slots by day and sort by time within each day
     const groupedSlots = useMemo(() => {
         const groups: Record<string, SlotResponse[]> = {};
@@ -64,7 +70,7 @@ export function SlotTable({
                 return (
                     <Paper key={day} p="sm" withBorder>
                         <Text fw={600} size="sm" mb="xs">
-                            {day}
+                            {getWeekdayLabel(day)}
                         </Text>
                         <Group gap="xs" wrap="wrap">
                             {daySlots.map((slot) => (

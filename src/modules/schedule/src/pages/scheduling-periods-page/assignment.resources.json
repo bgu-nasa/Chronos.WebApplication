@@ -1,0 +1,38 @@
+{
+    "panelTitle": "Assignments",
+    "closeButton": "Close",
+    "actions": {
+        "addButton": "Add Assignment",
+        "editButton": "Edit",
+        "deleteButton": "Delete"
+    },
+    "table": {
+        "loading": "Loading assignments...",
+        "empty": "No assignments found for this slot",
+        "resourceLabel": "Resource:",
+        "activityLabel": "Activity:"
+    },
+    "editor": {
+        "createTitle": "Add Assignment",
+        "editTitle": "Edit Assignment",
+        "resourceLabel": "Resource (Location)",
+        "resourceRequired": "Resource is required",
+        "resourceLoadingPlaceholder": "Loading resources...",
+        "resourceEmptyPlaceholder": "There are no resources yet",
+        "resourceSelectPlaceholder": "Select a resource",
+        "activityLabel": "Activity",
+        "activityRequired": "Activity is required",
+        "activityLoadingPlaceholder": "Loading activities...",
+        "activityEmptyPlaceholder": "There are no activities yet",
+        "activitySelectPlaceholder": "Select an activity",
+        "cancelButton": "Cancel",
+        "createButton": "Create",
+        "saveButton": "Save"
+    },
+    "deleteConfirm": {
+        "title": "Delete Assignment",
+        "message": "Are you sure you want to delete this assignment?",
+        "confirmButton": "Delete",
+        "cancelButton": "Cancel"
+    }
+}

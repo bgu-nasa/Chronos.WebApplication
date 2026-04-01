@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { Box, Button, Group, Text, Paper } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
+import { useLocalization } from '@/infra/service/localization';
 
 import type { CalendarEvent } from "@/common/types";
 
@@ -45,6 +46,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
   onTimeRangeSelect,
   onEventBlockClick
 }) => {
+  const { locale } = useLocalization();
   const [currentDate, setCurrentDate] = useState(initialDate);
 
   // Calculate dates for the current week (starting Sunday)
@@ -84,7 +86,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
     ['ArrowRight', handleNextWeek],
   ]);
 
-  const monthLabel = weekDates[0].toLocaleString('default', { month: 'long', year: 'numeric' });
+  const monthLabel = weekDates[0].toLocaleString(locale, { month: 'long', year: 'numeric' });
 
   const hoursPerDay = Math.max(1, dayEndHour - dayStartHour);
 

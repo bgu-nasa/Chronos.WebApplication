@@ -7,6 +7,7 @@
     "createButton": "Add Slot",
     "editButton": "Edit",
     "deleteButton": "Delete",
+    "viewAssignmentsButton": "View Assignments",
     "tableHeaderDay": "Day",
     "tableHeaderStart": "Start Time",
     "tableHeaderEnd": "End Time",

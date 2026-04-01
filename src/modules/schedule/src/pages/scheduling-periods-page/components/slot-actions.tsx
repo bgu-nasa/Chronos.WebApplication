@@ -42,7 +42,7 @@ export function SlotActions({
                     disabled={!selectedSlot}
                     onClick={onViewAssignmentsClick}
                 >
-                    View Assignments
+                    {resources.viewAssignmentsButton}
                 </Button>
             )}
         </Group>

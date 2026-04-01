@@ -8,6 +8,7 @@ import { Paper, Text, Stack } from "@mantine/core";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { useResources } from "@/modules/schedule/src/hooks/use-resources";
 import { useActivities } from "@/modules/schedule/src/hooks/use-activities";
+import assignmentResources from "@/modules/schedule/src/pages/scheduling-periods-page/assignment.resources.json";
 
 interface AssignmentTableProps {
     assignments: AssignmentResponse[];
@@ -22,15 +23,15 @@ export function AssignmentTable({
     onSelectionChange,
     isLoading = false,
 }: AssignmentTableProps) {
-    const { resources } = useResources();
+    const { resources: scheduleResources } = useResources();
     const { activities } = useActivities();
 
     // Create lookup maps for display names
     const resourceDisplayMap = useMemo(() => {
         return new Map(
-            resources.map((r) => [r.id, `${r.location} / ${r.identifier}`])
+            scheduleResources.map((r) => [r.id, `${r.location} / ${r.identifier}`])
         );
-    }, [resources]);
+    }, [scheduleResources]);
 
     const activityDisplayMap = useMemo(() => {
         return new Map(
@@ -51,7 +52,7 @@ export function AssignmentTable({
     if (isLoading) {
         return (
             <Paper p="xl" withBorder>
-                <Text c="dimmed" ta="center">Loading assignments...</Text>
+                <Text c="dimmed" ta="center">{assignmentResources.table.loading}</Text>
             </Paper>
         );
     }
@@ -59,7 +60,7 @@ export function AssignmentTable({
     if (assignments.length === 0) {
         return (
             <Paper p="xl" withBorder>
-                <Text c="dimmed" ta="center">No assignments found for this slot</Text>
+                <Text c="dimmed" ta="center">{assignmentResources.table.empty}</Text>
             </Paper>
         );
     }
@@ -86,10 +87,10 @@ export function AssignmentTable({
                 >
                     <Stack gap={4}>
                         <Text size="sm">
-                            <Text span fw={500}>Resource:</Text> {getResourceDisplay(assignment.resourceId)}
+                            <Text span fw={500}>{assignmentResources.table.resourceLabel}</Text> {getResourceDisplay(assignment.resourceId)}
                         </Text>
                         <Text size="sm">
-                            <Text span fw={500}>Activity:</Text> {getActivityDisplay(assignment.activityId)}
+                            <Text span fw={500}>{assignmentResources.table.activityLabel}</Text> {getActivityDisplay(assignment.activityId)}
                         </Text>
                     </Stack>
                 </Paper>

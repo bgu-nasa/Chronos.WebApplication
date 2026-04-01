@@ -13,6 +13,8 @@ import { useAssignments, useDeleteAssignment } from "@/modules/schedule/src/hook
 import { useAssignmentEditorStore } from "@/modules/schedule/src/stores/assignment-editor.store";
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
+import resources from "@/modules/schedule/src/pages/scheduling-periods-page/assignment.resources.json";
+import { useLocalization } from "@/infra/service/localization";
 
 interface AssignmentPanelProps {
     isOpen: boolean;
@@ -21,6 +23,7 @@ interface AssignmentPanelProps {
 }
 
 export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps) {
+    const { t } = useLocalization();
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
 
     const { assignments, isLoading, fetchAssignments, clearAssignments } = useAssignments();
@@ -81,8 +84,8 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
         if (!selectedAssignment) return;
 
         openConfirmation({
-            title: "Delete Assignment",
-            message: "Are you sure you want to delete this assignment?",
+            title: resources.deleteConfirm.title,
+            message: resources.deleteConfirm.message,
             onConfirm: async () => {
                 const success = await deleteAssignment(selectedAssignment.id);
                 if (success) {
@@ -107,9 +110,9 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
                 onClose={handleClose}
                 title={
                     <Stack gap={0}>
-                        <Title order={4}>Assignments</Title>
+                        <Title order={4}>{resources.panelTitle}</Title>
                         <Text size="sm" c="dimmed">
-                            {slot.weekday} • {formatTime(slot.fromTime)} - {formatTime(slot.toTime)}
+                            {t(`weekday.${slot.weekday.toLowerCase()}`, undefined, slot.weekday)} • {formatTime(slot.fromTime)} - {formatTime(slot.toTime)}
                         </Text>
                     </Stack>
                 }
@@ -134,7 +137,7 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
 
                 <Group justify="flex-end" mt="lg">
                     <Button variant="subtle" onClick={handleClose}>
-                        Close
+                        {resources.closeButton}
                     </Button>
                 </Group>
             </Modal>
@@ -147,8 +150,8 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
                 onConfirm={handleConfirm}
                 title={confirmationState.title}
                 message={confirmationState.message}
-                confirmText="Delete"
-                cancelText="Cancel"
+                confirmText={resources.deleteConfirm.confirmButton}
+                cancelText={resources.deleteConfirm.cancelButton}
                 loading={isConfirming}
             />
         </>

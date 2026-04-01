@@ -5,6 +5,7 @@
 
 import { Button, Group } from "@mantine/core";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
+import resources from "@/modules/schedule/src/pages/scheduling-periods-page/assignment.resources.json";
 
 interface AssignmentActionsProps {
     selectedAssignment: AssignmentResponse | null;
@@ -22,7 +23,7 @@ export function AssignmentActions({
     return (
         <Group mb="md">
             <Button onClick={onCreateClick} size="sm">
-                Add Assignment
+                {resources.actions.addButton}
             </Button>
             <Button
                 variant="light"
@@ -30,7 +31,7 @@ export function AssignmentActions({
                 onClick={onEditClick}
                 size="sm"
             >
-                Edit
+                {resources.actions.editButton}
             </Button>
             <Button
                 variant="light"
@@ -38,7 +39,7 @@ export function AssignmentActions({
                 onClick={onDeleteClick}
                 size="sm"
             >
-                Delete
+                {resources.actions.deleteButton}
             </Button>
         </Group>
     );

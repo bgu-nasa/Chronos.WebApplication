@@ -16,6 +16,7 @@ import {
     useSlots,
     useDeleteSlot,
 } from "@/modules/schedule/src/hooks";
+import { useLocalization } from "@/infra/service/localization";
 import { schedulingPeriodDataRepository } from "@/modules/schedule/src/data/scheduling-period-data-repository";
 import type { SlotResponse } from "@/modules/schedule/src/data";
 import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
@@ -26,6 +27,7 @@ export interface SchedulingPeriodDataWithExpired extends SchedulingPeriodData {
 }
 
 export function SchedulingPeriodsPage() {
+    const { t } = useLocalization();
     const [selectedPeriod, setSelectedPeriod] = useState<SchedulingPeriodDataWithExpired | null>(null);
     const [showSlots, setShowSlots] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState<SlotResponse | null>(null);
@@ -218,7 +220,7 @@ export function SchedulingPeriodsPage() {
     return (
         <Container size="xl" py="xl">
             <div className={styles.container}>
-                <Title order={1}>{resources.title}</Title>
+                <Title order={1}>{t("schedule.schedulingPeriods.title", undefined, resources.title)}</Title>
                 <Divider className={styles.divider} />
 
                 <Grid gutter="xl">
@@ -254,7 +256,11 @@ export function SchedulingPeriodsPage() {
                             <Paper p="md" withBorder>
                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
                                     <Title order={3}>
-                                        Slots - {selectedPeriod.name}
+                                        {t(
+                                            "schedule.schedulingPeriods.slotsPanelTitle",
+                                            { name: selectedPeriod.name },
+                                            resources.slotsPanelTitle.replace("{name}", selectedPeriod.name),
+                                        )}
                                     </Title>
                                     <Button
                                         variant="subtle"
@@ -268,7 +274,11 @@ export function SchedulingPeriodsPage() {
 
                                 {selectedPeriod.isExpired ? (
                                     <Text c="dimmed" ta="center" py="xl">
-                                        {resources.expiredSlotsReadonlyMessage}
+                                        {t(
+                                            "schedule.schedulingPeriods.expiredSlotsReadonlyMessage",
+                                            undefined,
+                                            resources.expiredSlotsReadonlyMessage,
+                                        )}
                                     </Text>
                                 ) : (
                                     <SlotActions

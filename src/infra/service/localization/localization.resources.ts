@@ -26,6 +26,20 @@ const en: TranslationMap = {
     "navigation.label.semesters": "Semesters",
     "navigation.label.constraints": "Constraints",
 
+    // Schedule page labels
+    "schedule.schedulingPeriods.title": "Semesters",
+    "schedule.schedulingPeriods.slotsPanelTitle": "Slots - {name}",
+    "schedule.schedulingPeriods.expiredSlotsReadonlyMessage": "This period has expired. Slots cannot be edited.",
+
+    // Weekday labels
+    "weekday.sunday": "Sunday",
+    "weekday.monday": "Monday",
+    "weekday.tuesday": "Tuesday",
+    "weekday.wednesday": "Wednesday",
+    "weekday.thursday": "Thursday",
+    "weekday.friday": "Friday",
+    "weekday.saturday": "Saturday",
+
     // Auth validation
     "validation.email.required": "Email is required",
     "validation.email.invalid": "Invalid email format",
@@ -110,6 +124,20 @@ const he: TranslationMap = {
     "navigation.label.calendar": "לוח שנה",
     "navigation.label.semesters": "סמסטרים",
     "navigation.label.constraints": "אילוצים",
+
+    // Schedule page labels
+    "schedule.schedulingPeriods.title": "סמסטרים",
+    "schedule.schedulingPeriods.slotsPanelTitle": "משבצות - {name}",
+    "schedule.schedulingPeriods.expiredSlotsReadonlyMessage": "תקופה זו הסתיימה. לא ניתן לערוך משבצות.",
+
+    // Weekday labels
+    "weekday.sunday": "ראשון",
+    "weekday.monday": "שני",
+    "weekday.tuesday": "שלישי",
+    "weekday.wednesday": "רביעי",
+    "weekday.thursday": "חמישי",
+    "weekday.friday": "שישי",
+    "weekday.saturday": "שבת",
 
     // Auth validation
     "validation.email.required": "נדרש להזין דואר אלקטרוני",

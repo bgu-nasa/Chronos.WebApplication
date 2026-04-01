@@ -26,6 +26,7 @@
     "deleteCancelButton": "Cancel",
     "emptyStateMessage": "No semesters found. Click \"Create\" to add one.",
     "viewSlotsButton": "View Slots",
+    "slotsPanelTitle": "Slots - {name}",
     "expiredSlotsReadonlyMessage": "This period has expired. Slots cannot be edited.",
     "runBatchAssignmentButton": "Run Batch Assignment",
     "batchAssignmentConfirmTitle": "Run Batch Assignment",

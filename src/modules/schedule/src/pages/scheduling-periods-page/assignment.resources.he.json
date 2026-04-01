@@ -1,0 +1,38 @@
+{
+    "panelTitle": "הקצאות",
+    "closeButton": "סגור",
+    "actions": {
+        "addButton": "הוסף הקצאה",
+        "editButton": "ערוך",
+        "deleteButton": "מחק"
+    },
+    "table": {
+        "loading": "טוען הקצאות...",
+        "empty": "לא נמצאו הקצאות למשבצת זו",
+        "resourceLabel": "משאב:",
+        "activityLabel": "פעילות:"
+    },
+    "editor": {
+        "createTitle": "הוסף הקצאה",
+        "editTitle": "ערוך הקצאה",
+        "resourceLabel": "משאב (מיקום)",
+        "resourceRequired": "משאב הוא שדה חובה",
+        "resourceLoadingPlaceholder": "טוען משאבים...",
+        "resourceEmptyPlaceholder": "עדיין אין משאבים",
+        "resourceSelectPlaceholder": "בחר משאב",
+        "activityLabel": "פעילות",
+        "activityRequired": "פעילות היא שדה חובה",
+        "activityLoadingPlaceholder": "טוען פעילויות...",
+        "activityEmptyPlaceholder": "עדיין אין פעילויות",
+        "activitySelectPlaceholder": "בחר פעילות",
+        "cancelButton": "ביטול",
+        "createButton": "יצירה",
+        "saveButton": "שמור"
+    },
+    "deleteConfirm": {
+        "title": "מחק הקצאה",
+        "message": "האם אתה בטוח שברצונך למחוק הקצאה זו?",
+        "confirmButton": "מחק",
+        "cancelButton": "ביטול"
+    }
+}

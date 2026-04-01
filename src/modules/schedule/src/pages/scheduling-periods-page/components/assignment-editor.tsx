@@ -12,6 +12,7 @@ import {
     useResources,
     useActivities,
 } from "@/modules/schedule/src/hooks";
+import assignmentResources from "@/modules/schedule/src/pages/scheduling-periods-page/assignment.resources.json";
 
 export function AssignmentEditor() {
     const { isOpen, mode, assignment, slotId, close } = useAssignmentEditorStore();
@@ -60,10 +61,10 @@ export function AssignmentEditor() {
     const validate = () => {
         const newErrors: Record<string, string> = {};
         if (!resourceId) {
-            newErrors.resourceId = "Resource is required";
+            newErrors.resourceId = assignmentResources.editor.resourceRequired;
         }
         if (!activityId) {
-            newErrors.activityId = "Activity is required";
+            newErrors.activityId = assignmentResources.editor.activityRequired;
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -107,22 +108,33 @@ export function AssignmentEditor() {
 
     const isLoading = isCreating || isUpdating;
     const apiError = createError || updateError;
-    const title = mode === "create" ? "Add Assignment" : "Edit Assignment";
-    const submitButtonLabel = mode === "create" ? "Create" : "Save";
+    const title = mode === "create"
+        ? assignmentResources.editor.createTitle
+        : assignmentResources.editor.editTitle;
+    const submitButtonLabel = mode === "create"
+        ? assignmentResources.editor.createButton
+        : assignmentResources.editor.saveButton;
+    let resourcePlaceholder = assignmentResources.editor.resourceSelectPlaceholder;
+    if (isLoadingResources) {
+        resourcePlaceholder = assignmentResources.editor.resourceLoadingPlaceholder;
+    } else if (resourceOptions.length === 0) {
+        resourcePlaceholder = assignmentResources.editor.resourceEmptyPlaceholder;
+    }
+
+    let activityPlaceholder = assignmentResources.editor.activitySelectPlaceholder;
+    if (isLoadingActivities) {
+        activityPlaceholder = assignmentResources.editor.activityLoadingPlaceholder;
+    } else if (activityOptions.length === 0) {
+        activityPlaceholder = assignmentResources.editor.activityEmptyPlaceholder;
+    }
 
     return (
         <Modal opened={isOpen} onClose={handleClose} title={title} centered size="md">
             <form onSubmit={handleSubmit}>
                 <Stack gap="md">
                     <Select
-                        label="Resource (Location)"
-                        placeholder={
-                            isLoadingResources
-                                ? "Loading resources..."
-                                : resourceOptions.length === 0
-                                    ? "There are no resources yet"
-                                    : "Select a resource"
-                        }
+                        label={assignmentResources.editor.resourceLabel}
+                        placeholder={resourcePlaceholder}
                         data={resourceOptions}
                         value={resourceId}
                         onChange={(value) => {
@@ -140,14 +152,8 @@ export function AssignmentEditor() {
                     />
 
                     <Select
-                        label="Activity"
-                        placeholder={
-                            isLoadingActivities
-                                ? "Loading activities..."
-                                : activityOptions.length === 0
-                                    ? "There are no activities yet"
-                                    : "Select an activity"
-                        }
+                        label={assignmentResources.editor.activityLabel}
+                        placeholder={activityPlaceholder}
                         data={activityOptions}
                         value={activityId}
                         onChange={(value) => {
@@ -176,7 +182,7 @@ export function AssignmentEditor() {
                             onClick={handleClose}
                             disabled={isLoading}
                         >
-                            Cancel
+                            {assignmentResources.editor.cancelButton}
                         </Button>
                         <Button type="submit" loading={isLoading}>
                             {submitButtonLabel}

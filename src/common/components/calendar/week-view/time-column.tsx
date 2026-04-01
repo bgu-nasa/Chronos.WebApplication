@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Text } from '@mantine/core';
 
 import styles from './time-column.module.css';
-import resources from './time-column.resources.json';
 
 interface TimeColumnProps {
   hourHeight?: number;
@@ -16,17 +15,14 @@ export const TimeColumn: React.FC<TimeColumnProps> = ({
   dayStartHour = 0,
   hoursPerDay = 24
 }) => {
+  const formatHourLabel = (hour: number) => {
+    const normalizedHour = ((hour % 24) + 24) % 24;
+    return `${normalizedHour.toString().padStart(2, '0')}:00`;
+  };
 
   const times = Array.from({ length: hoursPerDay + 1 }).map((_, i) => {
     const hour = i + dayStartHour;
-    let displayHour;
-
-    // Simple 12-hour format logic
-    const h = hour % 24;
-    if (h === 0) displayHour = resources.labels.midnight;
-    else if (h < 12) displayHour = `${h} ${resources.labels.am}`;
-    else if (h === 12) displayHour = resources.labels.noon;
-    else displayHour = `${h - 12} ${resources.labels.pm}`;
+    const displayHour = formatHourLabel(hour);
 
     return (
       <Box
