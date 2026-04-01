@@ -91,8 +91,8 @@ function TimeSpinner({ label, totalMinutes, onChange, error }: TimeSpinnerProps)
 export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
     const { t } = useLocalization();
     const { isOpen, mode, slot, close } = useSlotEditorStore();
-    const { createSlot, error: createError, clearError: clearCreateError } = useCreateSlot();
-    const { updateSlot, error: updateError, clearError: clearUpdateError } = useUpdateSlot();
+    const { createSlot, clearError: clearCreateError } = useCreateSlot();
+    const { updateSlot, clearError: clearUpdateError } = useUpdateSlot();
 
     // Form state - Create mode (using total minutes)
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
@@ -231,15 +231,22 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
                 }
 
                 // Create all slots
+                let createdCount = 0;
                 for (const slotData of slotsToCreate) {
-                    await createSlot({
+                    const result = await createSlot({
                         schedulingPeriodId,
                         weekday: slotData.day,
                         fromTime: slotData.fromTime,
                         toTime: slotData.toTime,
                     });
+                    if (result !== null) createdCount++;
                 }
 
+                if (createdCount === slotsToCreate.length) {
+                    $app.notifications.showSuccess("Success", `${createdCount} slot${createdCount !== 1 ? "s" : ""} created successfully`);
+                } else {
+                    $app.notifications.showError("Error", `Only ${createdCount} of ${slotsToCreate.length} slots were created`);
+                }
                 close();
             } else if (mode === "edit" && slot) {
                 if (!validateEdit()) {
@@ -254,7 +261,10 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
                 });
 
                 if (success) {
+                    $app.notifications.showSuccess("Success", "Slot updated successfully");
                     close();
+                } else {
+                    $app.notifications.showError("Error", "Failed to update slot");
                 }
             }
         } finally {
@@ -356,12 +366,6 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
                                 />
                             </Group>
                         </>
-                    )}
-
-                    {apiError && (
-                        <Text c="var(--mantine-color-error)" size="sm">
-                            {apiError}
-                        </Text>
                     )}
 
                     <Group justify="flex-end" mt="md">
