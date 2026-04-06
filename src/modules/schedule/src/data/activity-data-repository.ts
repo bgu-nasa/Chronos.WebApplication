@@ -61,6 +61,20 @@ export class ActivityDataRepository {
     }
 
     /**
+     * Fetch activities for a specific scheduling period
+     * @param schedulingPeriodId The ID of the scheduling period
+     * @returns Array of activities
+     */
+    async getActivitiesBySchedulingPeriodAsync(schedulingPeriodId: string): Promise<ActivityResponse[]> {
+        const departmentId = this.getDepartmentId();
+        const response = await $app.ajax.get<ActivityResponse[]>(
+            `/api/department/${departmentId}/resources/subjects/Subject/activities/scheduling-period/${schedulingPeriodId}`,
+            { headers: this.getHeaders() }
+        );
+        return response;
+    }
+
+    /**
      * Fetch all subjects for the organization
      * @returns Array of subjects
      */

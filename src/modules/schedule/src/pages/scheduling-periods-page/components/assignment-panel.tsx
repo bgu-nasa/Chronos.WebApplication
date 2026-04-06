@@ -67,13 +67,13 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
     // Assignment actions
     const handleCreateClick = () => {
         if (slot) {
-            openCreate(slot.id);
+            openCreate(slot.id, slot.schedulingPeriodId);
         }
     };
 
     const handleEditClick = () => {
-        if (selectedAssignment) {
-            openEdit(selectedAssignment);
+        if (selectedAssignment && slot) {
+            openEdit(selectedAssignment, slot.schedulingPeriodId);
         }
     };
 
@@ -133,6 +133,7 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
                     selectedAssignment={selectedAssignment}
                     onSelectionChange={setSelectedAssignment}
                     isLoading={isLoading}
+                    slot={slot}
                 />
 
                 <Group justify="flex-end" mt="lg">

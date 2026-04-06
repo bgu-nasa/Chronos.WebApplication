@@ -11,7 +11,7 @@ import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.type
  * Hook for fetching all activities with enriched data (subject name, user name)
  * Display format: "{ActivityType} - {SubjectName} ({FirstName} {LastName})"
  */
-export function useActivities() {
+export function useActivities(schedulingPeriodId?: string) {
     const [activities, setActivities] = useState<EnrichedActivity[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,9 @@ export function useActivities() {
         try {
             // Fetch all data in parallel
             const [activitiesData, subjectsData, usersData] = await Promise.all([
-                activityDataRepository.getAllActivities(),
+                schedulingPeriodId 
+                    ? activityDataRepository.getActivitiesBySchedulingPeriodAsync(schedulingPeriodId)
+                    : activityDataRepository.getAllActivities(),
                 activityDataRepository.getAllSubjects(),
                 activityDataRepository.getAllUsers(),
             ]);
@@ -61,7 +63,7 @@ export function useActivities() {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [schedulingPeriodId]);
 
     // Fetch on mount
     useEffect(() => {

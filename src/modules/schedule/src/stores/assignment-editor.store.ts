@@ -36,14 +36,19 @@ interface AssignmentEditorState {
     slotId: string | null;
 
     /**
+     * Scheduling period ID for the slot
+     */
+    schedulingPeriodId: string | null;
+
+    /**
      * Open editor in create mode for a specific slot
      */
-    openCreate: (slotId: string) => void;
+    openCreate: (slotId: string, schedulingPeriodId: string) => void;
 
     /**
      * Open editor in edit mode with an assignment
      */
-    openEdit: (assignment: AssignmentResponse) => void;
+    openEdit: (assignment: AssignmentResponse, schedulingPeriodId: string) => void;
 
     /**
      * Close the editor
@@ -60,22 +65,25 @@ export const useAssignmentEditorStore = create<AssignmentEditorState>(
         mode: "create",
         assignment: null,
         slotId: null,
+        schedulingPeriodId: null,
 
-        openCreate: (slotId: string) => {
+        openCreate: (slotId: string, schedulingPeriodId: string) => {
             set({
                 isOpen: true,
                 mode: "create",
                 assignment: null,
                 slotId,
+                schedulingPeriodId,
             });
         },
 
-        openEdit: (assignment: AssignmentResponse) => {
+        openEdit: (assignment: AssignmentResponse, schedulingPeriodId: string) => {
             set({
                 isOpen: true,
                 mode: "edit",
                 assignment,
                 slotId: assignment.slotId,
+                schedulingPeriodId,
             });
         },
 
@@ -84,6 +92,7 @@ export const useAssignmentEditorStore = create<AssignmentEditorState>(
                 isOpen: false,
                 assignment: null,
                 slotId: null,
+                schedulingPeriodId: null,
             });
         },
     })
