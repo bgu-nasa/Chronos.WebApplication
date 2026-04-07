@@ -104,6 +104,7 @@ export function ActivitiesPage() {
         activityType: string; 
         assignedUserId: string; 
         expectedStudents: number | null;
+        duration: number;
     }) => {
         $app.logger.info("[ActivitiesPage] handleCreateSubmit called with:", data);
         
@@ -129,6 +130,7 @@ export function ActivitiesPage() {
             assignedUserId: data.assignedUserId || "",
             activityType: data.activityType,
             expectedStudents: data.expectedStudents,
+            duration: data.duration,
         };
 
         $app.logger.info("[ActivitiesPage] Sending create request:", request);
@@ -164,6 +166,7 @@ export function ActivitiesPage() {
         activityType: string;
         assignedUserId: string;
         expectedStudents: number | null;
+        duration: number;
     }) => {
         $app.logger.info("[ActivitiesPage] handleEditSubmit called with:", data);
         $app.logger.info("[ActivitiesPage] selectedActivity:", selectedActivity);
@@ -189,6 +192,7 @@ export function ActivitiesPage() {
             assignedUserId: data.assignedUserId || "",
             activityType: data.activityType,
             expectedStudents: data.expectedStudents,
+            duration: data.duration,
         };
 
         $app.logger.info("[ActivitiesPage] Sending update request:", request);
@@ -248,6 +252,7 @@ export function ActivitiesPage() {
                 assignedUserId: activity.assignedUserId,
                 assignedUserName: userName,
                 expectedStudents: activity.expectedStudents || 0,
+                duration: activity.duration,
             };
         });
 
@@ -319,6 +324,7 @@ export function ActivitiesPage() {
                                   activityType: selectedActivity.activityType,
                                   assignedUserId: selectedActivity.assignedUserId,
                                   expectedStudents: selectedActivity.expectedStudents || 0,
+                                  duration: selectedActivity.duration,
                               }
                             : undefined
                     }

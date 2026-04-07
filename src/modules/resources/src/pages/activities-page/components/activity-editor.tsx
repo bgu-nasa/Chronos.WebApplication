@@ -9,12 +9,14 @@ interface ActivityEditorProps {
         activityType: string;
         assignedUserId: string;
         expectedStudents: number | null;
+        duration: number;
     }) => Promise<void>;
     readonly loading?: boolean;
     readonly initialData?: {
         readonly activityType: string;
         readonly assignedUserId: string;
         readonly expectedStudents: number | null;
+        readonly duration: number;
     };
 }
 
@@ -28,6 +30,8 @@ export function ActivityEditor({
     const [activityType, setActivityType] = useState("");
     const [assignedUserId, setAssignedUserId] = useState<string | null>(null);
     const [expectedStudents, setExpectedStudents] = useState<number | null>(null);
+    const [duration, setDuration] = useState<number>(0);
+    const [durationTouched, setDurationTouched] = useState(false);
     const [users, setUsers] = useState<{ value: string; label: string }[]>([]);
     const [isLoadingUsers, setIsLoadingUsers] = useState(false);
 
@@ -41,11 +45,12 @@ export function ActivityEditor({
     useEffect(() => {
         if (initialData) {
             setActivityType(initialData.activityType);
-            // Check if assigned user is empty or unassigned, if so set to null
             const isUnassigned = !initialData.assignedUserId || 
                 initialData.assignedUserId.trim().length === 0;
             setAssignedUserId(isUnassigned ? null : initialData.assignedUserId);
             setExpectedStudents(initialData.expectedStudents);
+            setDuration(initialData.duration);
+            setDurationTouched(false);
         }
     }, [initialData]);
 
@@ -72,10 +77,18 @@ export function ActivityEditor({
             activityType,
             assignedUserId,
             expectedStudents,
+            duration,
         });
+
+        setDurationTouched(true);
 
         if (!activityType.trim()) {
             $app.logger.warn("[ActivityEditor] Validation failed - empty activity type");
+            return;
+        }
+
+        if (duration <= 0) {
+            $app.notifications.showWarning("Validation", "Duration must be greater than 0");
             return;
         }
 
@@ -84,18 +97,23 @@ export function ActivityEditor({
             activityType,
             assignedUserId: assignedUserId || "",
             expectedStudents,
+            duration,
         });
 
         $app.logger.info("[ActivityEditor] onSubmit completed, resetting form");
         setActivityType("");
         setAssignedUserId(null);
         setExpectedStudents(null);
+        setDuration(0);
+        setDurationTouched(false);
     };
 
     const handleClose = () => {
         setActivityType("");
         setAssignedUserId(null);
         setExpectedStudents(null);
+        setDuration(0);
+        setDurationTouched(false);
         onClose();
     };
 
@@ -126,10 +144,20 @@ export function ActivityEditor({
                     onChange={(value) => setExpectedStudents(value === "" ? null : Number(value))}
                     min={0}
                 />
+                <NumberInput
+                    label="Duration"
+                    placeholder="Duration in hours"
+                    value={duration}
+                    onChange={(value) => setDuration(value === "" ? 0 : Number(value))}
+                    onBlur={() => setDurationTouched(true)}
+                    min={0}
+                    required
+                    error={durationTouched && duration <= 0 ? "Duration must be greater than 0" : undefined}
+                />
                 <Button
                     onClick={handleSubmit}
                     loading={loading}
-                    disabled={!activityType.trim() || isLoadingUsers}
+                    disabled={!activityType.trim() || isLoadingUsers || duration <= 0}
                     fullWidth
                 >
                     Save Changes

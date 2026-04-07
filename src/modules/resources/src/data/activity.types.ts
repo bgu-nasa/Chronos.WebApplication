@@ -13,6 +13,7 @@ export interface ActivityResponse {
     assignedUserId: string; // Guid from C#
     activityType: string;
     expectedStudents: number | null;
+    duration: number;
 }
 
 /**
@@ -25,6 +26,7 @@ export interface CreateActivityRequest {
     assignedUserId: string; // Guid from C#
     activityType: string;
     expectedStudents: number | null;
+    duration: number;
 }
 
 /**
@@ -37,4 +39,5 @@ export interface UpdateActivityRequest {
     assignedUserId: string; // Guid from C#
     activityType: string;
     expectedStudents: number | null;
+    duration: number;
 }

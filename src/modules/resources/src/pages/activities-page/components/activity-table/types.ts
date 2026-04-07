@@ -4,4 +4,5 @@ export type ActivityData = {
     assignedUserId: string;
     assignedUserName: string;
     expectedStudents: number | null;
+    duration: number;
 };
