@@ -14,11 +14,11 @@ import {
 } from "@/modules/schedule/src/hooks";
 
 export function AssignmentEditor() {
-    const { isOpen, mode, assignment, slotId, close } = useAssignmentEditorStore();
+    const { isOpen, mode, assignment, slotId, schedulingPeriodId, close } = useAssignmentEditorStore();
     const { createAssignment, isLoading: isCreating, clearError: clearCreateError } = useCreateAssignment();
     const { updateAssignment, isLoading: isUpdating, clearError: clearUpdateError } = useUpdateAssignment();
     const { resources, isLoading: isLoadingResources } = useResources();
-    const { activities, isLoading: isLoadingActivities } = useActivities();
+    const { activities, isLoading: isLoadingActivities } = useActivities(schedulingPeriodId ?? undefined);
 
     const [resourceId, setResourceId] = useState<string | null>(null);
     const [activityId, setActivityId] = useState<string | null>(null);

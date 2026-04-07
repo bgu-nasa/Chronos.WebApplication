@@ -6,6 +6,7 @@
 import { useMemo } from "react";
 import { Paper, Text, Stack } from "@mantine/core";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
+import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import { useResources } from "@/modules/schedule/src/hooks/use-resources";
 import { useActivities } from "@/modules/schedule/src/hooks/use-activities";
 
@@ -14,6 +15,7 @@ interface AssignmentTableProps {
     selectedAssignment: AssignmentResponse | null;
     onSelectionChange: (assignment: AssignmentResponse | null) => void;
     isLoading?: boolean;
+    slot: SlotResponse | null;
 }
 
 export function AssignmentTable({
@@ -21,9 +23,10 @@ export function AssignmentTable({
     selectedAssignment,
     onSelectionChange,
     isLoading = false,
+    slot,
 }: AssignmentTableProps) {
     const { resources } = useResources();
-    const { activities } = useActivities();
+    const { activities } = useActivities(slot?.schedulingPeriodId);
 
     // Create lookup maps for display names
     const resourceDisplayMap = useMemo(() => {
