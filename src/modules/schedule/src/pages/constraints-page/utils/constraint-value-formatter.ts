@@ -14,7 +14,7 @@ import { parseForbiddenTimeRange } from "./constraint-value-parser";
  * @param value - The constraint value from database (in UTC for time ranges)
  * @returns Formatted value for display (in local timezone for time ranges)
  */
-export function formatConstraintValueForDisplay(key: string, value: string): string {
+export function formatConstraintValueForDisplay(key: string, value: string, weekNum?: number | null): string {
     if (!value?.trim()) {
         return value || "";
     }
@@ -23,11 +23,12 @@ export function formatConstraintValueForDisplay(key: string, value: string): str
     if (key === "forbidden_timerange" || key === "preferred_timerange") {
         // Parse UTC entries and convert to local timezone
         const localEntries = parseForbiddenTimeRange(value);
+        const weekSuffix = weekNum === null || weekNum === undefined ? "" : ` [W${weekNum}]`;
 
         // Format for display (entries are already in local timezone, just format as string)
         return localEntries
             .filter(e => e.weekday && e.startTime && e.endTime)
-            .map(e => `${e.weekday} ${e.startTime} - ${e.endTime}`)
+            .map(e => `${e.weekday}${weekSuffix} ${e.startTime} - ${e.endTime}`)
             .join(", ");
     }
 

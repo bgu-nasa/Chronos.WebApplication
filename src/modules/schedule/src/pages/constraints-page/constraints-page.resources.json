@@ -43,6 +43,8 @@
         "lecturer": "Lecturer",
         "actions": "Actions",
         "weekday": "Weekday",
+        "constraintMode": "Constraint Mode",
+        "date": "Date",
         "startTime": "Start Time",
         "endTime": "End Time",
         "minCapacity": "Minimum Capacity",
@@ -58,6 +60,7 @@
         "selectSubject": "Select subject",
         "selectActivity": "Select activity",
         "selectWeekday": "Select weekday",
+        "selectDate": "Select date",
         "selectStartTime": "Select start time",
         "selectEndTime": "Select end time",
         "enterMinCapacity": "Enter minimum capacity",
@@ -99,6 +102,8 @@
         "startTimeBeforeEndTime": "Start time must be before end time",
         "atLeastOneTimeRange": "At least one time range is required",
         "atLeastOneWeekday": "At least one weekday is required",
+        "oneTimeDateRequired": "Date is required for one-time constraints",
+        "oneTimeDateOutOfRange": "Date must be within the selected scheduling period",
         "atLeastOneLocation": "At least one location is required",
         "atLeastOneResourceType": "At least one room type is required",
         "minOrMaxRequired": "At least one of minimum or maximum capacity is required",
@@ -109,6 +114,16 @@
         "invalidLocationPreference": "Invalid format. Expected comma-separated location names (e.g., 'Building A,Building B')",
         "invalidCompatibleResourceTypes": "Invalid format. Expected comma-separated room type names (e.g., 'Lecture Hall,Seminar Room')"
     },
+    "constraintModes": [
+        {
+            "value": "repeated",
+            "label": "Repeated"
+        },
+        {
+            "value": "oneTime",
+            "label": "One Time"
+        }
+    ],
     "constraintTypeOptions": {
         "userConstraints": [
             {
@@ -143,6 +158,7 @@
     },
     "valueFormatGuidance": {
         "forbidden_timerange": "Format: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries separated by commas.",
+        "forbidden_timerange_oneTime": "One Time: pick a date and enter a single start/end time.",
         "preferred_weekdays": "Format: Comma-separated weekday names (e.g., 'Monday,Wednesday,Friday')",
         "preferred_timerange": "Format: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries separated by commas.",
         "required_capacity": "Format: JSON object with 'min' and/or 'max' (e.g., {\"min\": 30} or {\"min\": 20, \"max\": 50})",

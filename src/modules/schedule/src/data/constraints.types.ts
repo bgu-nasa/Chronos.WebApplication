@@ -12,6 +12,7 @@ export interface UserConstraintResponse {
     userId: string;
     organizationId: string;
     schedulingPeriodId: string;
+    weekNum?: number | null;
     key: string;
     value: string;
 }
@@ -19,11 +20,13 @@ export interface UserConstraintResponse {
 export interface CreateUserConstraintRequest {
     userId: string;
     schedulingPeriodId: string;
+    weekNum?: number | null;
     key: string;
     value: string;
 }
 
 export interface UpdateUserConstraintRequest {
+    weekNum?: number | null;
     key: string;
     value: string;
 }
@@ -60,17 +63,20 @@ export interface ActivityConstraintResponse {
     id: string;
     activityId: string;
     organizationId: string;
+    weekNum?: number | null;
     key: string;
     value: string;
 }
 
 export interface CreateActivityConstraintRequest {
     activityId: string;
+    weekNum?: number | null;
     key: string;
     value: string;
 }
 
 export interface UpdateActivityConstraintRequest {
+    weekNum?: number | null;
     key: string;
     value: string;
 }
