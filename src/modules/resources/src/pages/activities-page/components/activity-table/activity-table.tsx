@@ -65,6 +65,11 @@ export function ActivityTable({
                 sortable 
                 body={(rowData: ActivityData) => rowData.expectedStudents ?? "N/A"}
             />
+            <Column 
+                field="duration" 
+                header={resources.durationColumn} 
+                sortable 
+            />
         </DataTable>
     );
 }
