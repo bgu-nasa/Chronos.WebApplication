@@ -12,14 +12,14 @@ interface SchedulingPeriodRange {
 
 const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-function createDateKey(date: Date) {
+export function createDateKey(date: Date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
 }
 
-function getIsoWeekNumber(dateKey: string) {
+export function getIsoWeekNumber(dateKey: string) {
     const [year, month, day] = dateKey.split("-").map(Number);
     const date = new Date(year, month - 1, day);
     const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -33,12 +33,45 @@ function getIsoWeekNumber(dateKey: string) {
     return 1 + Math.round((utcDate.getTime() - firstThursday.getTime()) / 604800000);
 }
 
-function normalizeWeekday(weekday: string) {
+export function normalizeWeekday(weekday: string) {
     if (!weekday) {
         return weekday;
     }
 
     return weekday.charAt(0).toUpperCase() + weekday.slice(1).toLowerCase();
+}
+
+export function getWeekdayFromDateKey(dateKey: string, weekdayOptions: string[] = weekdays) {
+    if (!dateKey) {
+        return "";
+    }
+
+    const [year, month, day] = dateKey.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+    return weekdayOptions[date.getDay()] || "";
+}
+
+export function getDateFromIsoWeek(
+    year: number,
+    weekNum: number,
+    weekday: string,
+    weekdayOptions: string[] = weekdays
+) {
+    const normalizedWeekday = normalizeWeekday(weekday);
+    const weekdayIndex = weekdayOptions.indexOf(normalizedWeekday);
+    if (weekdayIndex < 0) {
+        return "";
+    }
+
+    const week1Thursday = new Date(Date.UTC(year, 0, 4));
+    const week1ThursdayDayNumber = (week1Thursday.getUTCDay() + 6) % 7;
+    week1Thursday.setUTCDate(week1Thursday.getUTCDate() - week1ThursdayDayNumber + 3);
+
+    const isoWeekdayOffset = (weekdayIndex + 6) % 7;
+    const date = new Date(week1Thursday);
+    date.setUTCDate(week1Thursday.getUTCDate() + (weekNum - 1) * 7 + isoWeekdayOffset - 3);
+
+    return createDateKey(new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
 }
 
 function findDateKeyForWeekdayInPeriod(
