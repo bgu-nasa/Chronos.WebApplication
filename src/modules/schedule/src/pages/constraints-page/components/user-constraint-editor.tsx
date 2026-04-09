@@ -11,6 +11,7 @@ import resources from "../constraints-page.resources.json";
 import {
     getDateFromIsoWeek,
     getIsoWeekNumber,
+    getMinutesFromTime,
     getWeekdayFromDateKey,
     parseForbiddenTimeRange,
     parsePreferredTimeRange,
@@ -59,11 +60,6 @@ function createEmptyTimeRangeEntry(): ForbiddenTimeRangeEntry & { id: string } {
         endTime: "",
         id: `entry-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     };
-}
-
-function getMinutesFromTime(time: string) {
-    const [hours, minutes] = time.split(":").map(Number);
-    return hours * 60 + minutes;
 }
 
 function isValidTimeRange(entry: Pick<ForbiddenTimeRangeEntry, "startTime" | "endTime">) {

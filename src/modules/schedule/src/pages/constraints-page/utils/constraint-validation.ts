@@ -2,6 +2,11 @@
  * Validation utilities for constraint values
  */
 
+export function getMinutesFromTime(time: string): number {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+}
+
 /**
  * Validates forbidden_timerange format: "Weekday HH:mm - HH:mm"
  * Examples: "Monday 09:30 - 11:00", "Tuesday 13:00-15:00, Wednesday 10:00 - 12:00"
@@ -30,10 +35,8 @@ export function validateForbiddenTimeRange(value: string): string | null {
         }
 
         // Parse times to check if start < end
-        const [startHours, startMinutes] = startTime.split(':').map(Number);
-        const [endHours, endMinutes] = endTime.split(':').map(Number);
-        const startTotal = startHours * 60 + startMinutes;
-        const endTotal = endHours * 60 + endMinutes;
+        const startTotal = getMinutesFromTime(startTime);
+        const endTotal = getMinutesFromTime(endTime);
 
         if (startTotal >= endTotal) {
             return "Start time must be before end time";
