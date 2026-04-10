@@ -48,7 +48,8 @@ export function useActivities(schedulingPeriodId?: string) {
                     activityType: activity.activityType,
                     subjectName,
                     userFullName,
-                    displayLabel: `${activity.activityType} - ${subjectName} (${userFullName})`,
+                    displayLabel: `${activity.activityType} - ${subjectName} (${userFullName}) [${activity.duration}m]`,
+                    duration: activity.duration,
                 };
             });
 

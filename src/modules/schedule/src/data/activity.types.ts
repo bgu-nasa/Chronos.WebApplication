@@ -14,6 +14,7 @@ export interface ActivityResponse {
     assignedUserId: string;
     activityType: string;
     expectedStudents: number | null;
+    duration: number;
 }
 
 /**
@@ -52,4 +53,5 @@ export interface EnrichedActivity {
     subjectName: string;
     userFullName: string;
     displayLabel: string;
+    duration: number;
 }
