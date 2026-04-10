@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router";
 import { MantineProvider } from "@mantine/core";
 import { PrimeReactProvider } from "primereact/api";
 import { theme } from "./theme";
-import { useThemeStore } from "./theme/state";
+import { useLocaleStore, useThemeStore } from "./theme/state";
 import App from "./App";
 import "@mantine/core/styles.css";
 import "primereact/resources/primereact.min.css";
@@ -13,6 +13,8 @@ import "./theme/primereact-overrides.css";
 
 const ThemedApp = () => {
     const colorScheme = useThemeStore((state) => state.colorScheme);
+    const language = useLocaleStore((state) => state.language);
+    const direction = useLocaleStore((state) => state.direction);
 
     useEffect(() => {
         // Dynamically load PrimeReact theme - hacky we store this locally instead of using the npm package, need to update on builds...
@@ -34,7 +36,12 @@ const ThemedApp = () => {
             document.head.appendChild(link);
         }
     }, [colorScheme]);
-
+    
+    useEffect(() => {
+        document.documentElement.setAttribute("lang", language);
+        document.documentElement.setAttribute("dir", direction);
+    }, [language, direction]);
+    
     return (
         <MantineProvider theme={theme} forceColorScheme={colorScheme}>
             <PrimeReactProvider>

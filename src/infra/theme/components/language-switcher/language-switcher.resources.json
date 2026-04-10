@@ -1,0 +1,11 @@
+{
+    "interfaceLanguage": "Interface language",
+    "aria": {
+        "selectInterfaceLanguage": "Select interface language",
+        "switchInterfaceLanguage": "Switch interface language"
+    },
+    "languageLabels": {
+        "en": "English",
+        "he": "Hebrew"
+    }
+}
