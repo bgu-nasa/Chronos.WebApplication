@@ -10,7 +10,7 @@ import {
     useSchedulingPeriods
 } from "@/modules/schedule/src/hooks";
 
-import { UserConstraintEditor } from "./user-constraint-editor";
+import { UserConstraintEditor } from "./user-constraint-editor.tsx";
 import { formatConstraintValueForDisplay } from "../utils";
 import resources from "../constraints-page.resources.json";
 import styles from "../constraints-page.module.css";
@@ -72,7 +72,8 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
             return {
                 ...item,
                 userName: user ? `${user.firstName} ${user.lastName}` : item.userId,
-                periodName: period ? period.name : item.schedulingPeriodId
+                periodName: period ? period.name : item.schedulingPeriodId,
+                schedulingPeriod: period ? { fromDate: period.fromDate, toDate: period.toDate } : undefined
             };
         });
     }, [userConstraints, userPreferences, users, schedulingPeriods]);
@@ -233,7 +234,7 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
                                     </Badge>
                                 </Table.Td>
                                 <Table.Td>{item.key}</Table.Td>
-                                <Table.Td>{formatConstraintValueForDisplay(item.key, item.value)}</Table.Td>
+                                <Table.Td>{formatConstraintValueForDisplay(item.key, item.value, item.weekNum, item.schedulingPeriod)}</Table.Td>
                                 <Table.Td>
                                     <div className={styles.actionIcons}>
                                         <ActionIcon variant="subtle" onClick={() => handleEdit(item)}>
