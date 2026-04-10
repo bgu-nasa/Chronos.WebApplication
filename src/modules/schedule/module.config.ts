@@ -1,7 +1,7 @@
 import type { ModuleConfig } from "@/infra";
 import React from "react";
-import { CalendarIcon, ScheduleIcon, ConstraintsIcon, CoursesIcon } from "@/common/icons";
-import { CalendarPage, SchedulingPeriodsPage, ConstraintsPage } from "./src";
+import { CalendarIcon, ScheduleIcon, ConstraintsIcon, CoursesIcon, SchedulingPeriodsIcon } from "@/common/icons";
+import { CalendarPage, SchedulingPeriodsPage, ConstraintsPage, AssignmentsPage } from "./src";
 
 export const moduleConfig: ModuleConfig = {
     name: "Schedule",
@@ -32,6 +32,12 @@ export const moduleConfig: ModuleConfig = {
             authorize: true,
             element: React.createElement(ConstraintsPage),
         },
+        {
+            name: "assignments",
+            path: "/assignments",
+            authorize: true,
+            element: React.createElement(AssignmentsPage),
+        },
     ],
     navigationItems: [
         {
@@ -60,6 +66,16 @@ export const moduleConfig: ModuleConfig = {
                     href: "/schedule/constraints",
                     location: "dashboard",
                     icon: React.createElement(ConstraintsIcon),
+                },
+                {
+                    label: "Assignments",
+                    href: "/schedule/assignments",
+                    location: "dashboard",
+                    icon: React.createElement(SchedulingPeriodsIcon),
+                    requiredRoles: [
+                        "ResourceManager",
+                        "Administrator"
+                    ],
                 },
             ],
         },
