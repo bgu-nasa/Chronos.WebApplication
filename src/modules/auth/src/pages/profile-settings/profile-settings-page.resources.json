@@ -3,7 +3,11 @@
     "description": "Manage your profile information and account settings",
     "sections": {
         "profileInfo": "Profile Information",
+        "language": "Language",
         "dangerZone": "Danger Zone"
+    },
+    "language": {
+        "description": "Choose interface language and writing direction."
     },
     "dangerZone": {
         "passwordTitle": "Update Password",

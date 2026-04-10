@@ -8,6 +8,7 @@ import {
     Paper,
     Text,
 } from "@mantine/core";
+import { LanguageSwitcher } from "@/infra/theme/components/language-switcher";
 import { ProfileUpdateForm } from "./components/profile-update-form";
 import { UpdatePasswordModal } from "./components/update-password-modal";
 import resources from "./profile-settings-page.resources.json";
@@ -25,13 +26,24 @@ export function ProfileSettingsPage() {
                 </Text>
                 <Divider className={styles.divider} />
 
-                {/* Profile Information Section */}
                 <Stack gap="lg">
+                    {/* Profile Information Section */}
                     <div>
                         <Title order={2} size="h3" mb="md">
                             {resources.sections.profileInfo}
                         </Title>
                         <ProfileUpdateForm />
+                    </div>
+
+                    {/* Language Section */}
+                    <div>
+                        <Title order={2} size="h3" mb="md">
+                            {resources.sections.language}
+                        </Title>
+                        <Text size="sm" c="dimmed" mb="md">
+                            {resources.language.description}
+                        </Text>
+                        <LanguageSwitcher variant="settings" />
                     </div>
 
                     {/* Danger Zone Section */}
