@@ -1,0 +1,14 @@
+{
+    "title": "My Assignments",
+    "schedulingPeriodLabel": "Scheduling Period",
+    "schedulingPeriodPlaceholder": "Select a scheduling period",
+    "emptyStateMessage": "No assignments found.",
+    "noPeriodsMessage": "No scheduling periods found.",
+    "resourceColumn": "Resource",
+    "activityColumn": "Activity",
+    "userColumn": "User",
+    "dayColumn": "Day",
+    "timeColumn": "Time",
+    "resourceFilterLabel": "Resource",
+    "resourceFilterPlaceholder": "All resources"
+}
