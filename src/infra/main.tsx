@@ -6,10 +6,13 @@ import { MantineProvider } from "@mantine/core";
 import { PrimeReactProvider } from "primereact/api";
 import { theme } from "./theme";
 import { useLocaleStore, useThemeStore } from "./theme/state";
+import { i18n, initializeI18n } from "./i18n";
 import App from "./App";
 import "@mantine/core/styles.css";
 import "primereact/resources/primereact.min.css";
 import "./theme/primereact-overrides.css";
+
+initializeI18n("en");
 
 const ThemedApp = () => {
     const colorScheme = useThemeStore((state) => state.colorScheme);
@@ -41,6 +44,10 @@ const ThemedApp = () => {
         document.documentElement.setAttribute("lang", language);
         document.documentElement.setAttribute("dir", direction);
     }, [language, direction]);
+
+    useEffect(() => {
+        void i18n.changeLanguage(language);
+    }, [language]);
     
     return (
         <MantineProvider theme={theme} forceColorScheme={colorScheme}>

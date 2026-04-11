@@ -5,13 +5,14 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc -b && vite build",
+        "build": "npm run generate:translations && tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
         "create-module": "node scripts/create-module.js",
         "docker:build": "docker build -t chronos-portal .",
         "docker:run": "docker run --env-file .local.env -p 3000:3000 chronos-portal",
-        "docker:start": "npm run docker:build && npm run docker:run"
+        "docker:start": "npm run docker:build && npm run docker:run",
+        "generate:translations": "node scripts/i18n/generate-translations.js"
     },
     "dependencies": {
         "@mantine/core": "^8.3.10",
@@ -19,9 +20,12 @@
         "@mantine/hooks": "^8.3.10",
         "axios": "^1.13.2",
         "dayjs": "^1.11.19",
+        "dotenv": "^17.4.1",
+        "i18next": "^25.6.0",
         "primereact": "^10.9.7",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
+        "react-i18next": "^16.2.1",
         "react-icons": "^5.5.0",
         "react-router": "^7.10.1",
         "zustand": "^5.0.9"

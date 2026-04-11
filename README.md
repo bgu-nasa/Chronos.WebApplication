@@ -59,8 +59,31 @@ You should visit [Chronos.ServiceProxy](https://github.com/bgu-nasa/Chronos.Serv
 1. [Mantine Core](https://mantine.dev/) - As component library
 2. [React Icons](https://react-icons.github.io/react-icons/) - For icons
 3. [React Router](https://reactrouter.com/) - For routing (only for infra, regular contributors should not need to deal with it)
+4. [i18next](https://www.i18next.com/) + [react-i18next](https://react.i18next.com/) - For localization
 
 **TODO:** State management library, some ajax library etc.
+
+## Build-time Translations
+
+All `*.resources.json` files are translated at build time using Azure Translator.
+
+`npm run build` now runs `npm run generate:translations` before TypeScript/Vite build and generates:
+
+- `src/infra/i18n/locales/en/<namespace>/*.generated.json`
+- `src/infra/i18n/locales/he/<namespace>/*.generated.json`
+
+Required environment variables for build:
+
+- `AZURE_TRANSLATOR_KEY`
+- `AZURE_TRANSLATOR_REGION`
+- `AZURE_TRANSLATOR_ENDPOINT`
+
+Example endpoint value: `https://api.cognitive.microsofttranslator.com`
+
+Namespaces follow module/page keys. For example login page resources are generated to:
+
+- `src/infra/i18n/locales/en/auth.login/login-page.generated.json`
+- `src/infra/i18n/locales/he/auth.login/login-page.generated.json`
 
 ## Contribution Rules
 
