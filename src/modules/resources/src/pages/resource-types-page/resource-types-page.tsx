@@ -4,8 +4,11 @@ import { ConfirmationDialog, useConfirmation } from "@/common";
 import { ResourceTypeActions, ResourceTypeTable, ResourceTypeCreator, ResourceTypeEditor, type ResourceTypeData } from "./components";
 import type { UpdateResourceTypeRequest } from "@/modules/resources/src/data";
 import { useResourceTypes, useCreateResourceType, useUpdateResourceType, useDeleteResourceType } from "@/modules/resources/src/hooks";
-import resources from "./resource-types-page.resources.json";
+import resourcesJson from "./resource-types-page.resources.json";
 import styles from "./resource-types-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json", resourcesJson);
 
 export function ResourceTypesPage() {
     const [selectedResourceType, setSelectedResourceType] = useState<ResourceTypeData | null>(null);

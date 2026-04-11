@@ -1,0 +1,50 @@
+{
+    "title": "Organization Settings",
+    "description": "Manage your organization settings and preferences",
+    "noOrganization": "No organization information available",
+    "sections": {
+        "organizationInfo": "Organization Information",
+        "dangerZone": "Danger Zone"
+    },
+    "fields": {
+        "organizationName": "Organization Name",
+        "currentUser": "Current User",
+        "deletedBadge": "Deleted"
+    },
+    "dangerZone": {
+        "deleteTitle": "Delete Organization",
+        "deleteDescription": "Mark this organization for deletion. This action can be reversed by restoring the organization.",
+        "deleteButton": "Delete Organization",
+        "restoreTitle": "Restore Organization",
+        "restoreDescription": "Restore this organization and make it active again.",
+        "restoreButton": "Restore Organization"
+    },
+    "deleteDialog": {
+        "title": "Confirm Organization Deletion",
+        "message": "Are you sure you want to delete this organization? This will mark it for deletion and restrict access. You can restore it later if needed.",
+        "confirmButton": "Delete",
+        "cancelButton": "Cancel"
+    },
+    "restoreDialog": {
+        "title": "Confirm Organization Restoration",
+        "message": "Are you sure you want to restore this organization? This will make it active again and restore full access.",
+        "confirmButton": "Restore",
+        "cancelButton": "Cancel"
+    },
+    "deleteSuccess": {
+        "title": "Organization Deleted",
+        "message": "The organization has been successfully marked for deletion"
+    },
+    "deleteError": {
+        "title": "Delete Failed",
+        "message": "Failed to delete the organization. Please try again."
+    },
+    "restoreSuccess": {
+        "title": "Organization Restored",
+        "message": "The organization has been successfully restored"
+    },
+    "restoreError": {
+        "title": "Restore Failed",
+        "message": "Failed to restore the organization. Please try again."
+    }
+}

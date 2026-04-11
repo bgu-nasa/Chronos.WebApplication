@@ -1,0 +1,12 @@
+{
+    "successTitle": "Success",
+    "successMessage": "Profile updated successfully!",
+    "form": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "avatarUrl": "Avatar URL"
+    },
+    "buttons": {
+        "save": "Save Changes"
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "drawerTitle": {
+        "create": "Create New User",
+        "edit": "Edit User"
+    },
+    "form": {
+        "email": "Email",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "avatarUrl": "Avatar Image URL"
+    },
+    "buttons": {
+        "save": "Save",
+        "cancel": "Cancel",
+        "create": "Create User"
+    },
+    "passwordModal": {
+        "title": "User Created Successfully",
+        "message": "The user has been created. This is the only time you will see the generated password. Please copy it and share it with the user securely.",
+        "passwordLabel": "Generated Password",
+        "emailLabel": "User Email",
+        "closeButton": "I've Copied the Password"
+    },
+    "errors": {
+        "createFailed": "Failed to create user",
+        "updateFailed": "Failed to update user"
+    },
+    "validation": {
+        "emailRequired": "Email is required",
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required"
+    }
+}

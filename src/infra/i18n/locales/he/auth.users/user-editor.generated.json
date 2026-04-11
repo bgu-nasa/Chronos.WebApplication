@@ -1,0 +1,33 @@
+{
+    "drawerTitle": {
+        "create": "צור משתמש חדש",
+        "edit": "עריכת משתמש"
+    },
+    "form": {
+        "email": "דואר אלקטרוני",
+        "firstName": "שם פרטי",
+        "lastName": "שם משפחה",
+        "avatarUrl": "כתובת ה-URL של תמונת האווטאר"
+    },
+    "buttons": {
+        "save": "שמור",
+        "cancel": "ביטול",
+        "create": "צור משתמש"
+    },
+    "passwordModal": {
+        "title": "המשתמש נוצר בהצלחה",
+        "message": "המשתמש נוצר. זו הפעם היחידה שתראה את הסיסמה שנוצרה. אנא העתק אותו ושתף אותו עם המשתמש בצורה מאובטחת.",
+        "passwordLabel": "סיסמה שנוצרה",
+        "emailLabel": "אימייל משתמש",
+        "closeButton": "העתקתי את הסיסמה"
+    },
+    "errors": {
+        "createFailed": "נכשל ביצירת משתמש",
+        "updateFailed": "נכשל לעדכן את המשתמש"
+    },
+    "validation": {
+        "emailRequired": "דוא\"ל נדרש",
+        "firstNameRequired": "שם פרטי נדרש",
+        "lastNameRequired": "שם משפחה נדרש"
+    }
+}

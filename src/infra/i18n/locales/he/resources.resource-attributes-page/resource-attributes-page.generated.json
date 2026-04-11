@@ -1,0 +1,21 @@
+{
+    "title": "ניהול מאפייני חדר",
+    "createButton": "יצור",
+    "editButton": "עריכה",
+    "deleteButton": "מחק",
+    "titleColumn": "כותרת",
+    "descriptionColumn": "תיאור",
+    "emptyStateMessage": "עדיין אין מאפייני חדר. התחילו ביצירת התכונה הראשונה שלכם!",
+    "editorCreateTitle": "מאפיין יצירת חדר",
+    "editorEditTitle": "מאפיין חדר עריכה",
+    "editorTitleLabel": "כותרת",
+    "editorTitlePlaceholder": "הכנס את כותרת התכונה",
+    "editorDescriptionLabel": "תיאור",
+    "editorDescriptionPlaceholder": "הזן תיאור מאפיין (אופציונלי)",
+    "editorCreateButton": "יצור",
+    "editorSaveButton": "שמור",
+    "deleteConfirmTitle": "מאפיין מחיקת חדר",
+    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את התכונה \"{title}\"? פעולה זו אינה ניתנת לביטול.",
+    "deleteConfirmButton": "מחק",
+    "deleteCancelButton": "ביטול"
+}

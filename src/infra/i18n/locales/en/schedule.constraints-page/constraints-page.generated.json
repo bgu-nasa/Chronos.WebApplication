@@ -1,0 +1,248 @@
+{
+    "title": "Constraints",
+    "tabs": {
+        "user": {
+            "value": "user",
+            "label": "User Constraints / Preferences"
+        },
+        "activity": {
+            "value": "activity",
+            "label": "Activity Constraints"
+        },
+        "organization": {
+            "value": "organization",
+            "label": "Organization Policies"
+        }
+    },
+    "userConstraintsTab": "User Constraints / Preferences",
+    "activityConstraintsTab": "Activity Constraints",
+    "organizationConstraintsTab": "Organization Constraints",
+    "createConstraintButton": "Create Constraint",
+    "createPreferenceButton": "Create Preference",
+    "createButton": "Create",
+    "updateButton": "Update",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "cancelButton": "Cancel",
+    "deleteConfirmTitle": "Delete Constraint",
+    "deleteConfirmMessage": "Are you sure you want to delete this constraint? This action cannot be undone.",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "noConstraintsMessage": "No constraints found",
+    "loadingMessage": "Loading constraints...",
+    "modalSize": "md",
+    "labels": {
+        "user": "User",
+        "schedulingPeriod": "Scheduling Period",
+        "activity": "Activity",
+        "key": "Key",
+        "value": "Value",
+        "subject": "Subject",
+        "period": "Period",
+        "type": "Type",
+        "lecturer": "Lecturer",
+        "actions": "Actions",
+        "weekday": "Weekday",
+        "constraintMode": "Constraint Mode",
+        "date": "Date",
+        "startTime": "Start Time",
+        "endTime": "End Time",
+        "minCapacity": "Minimum Capacity",
+        "maxCapacity": "Maximum Capacity",
+        "locations": "Locations",
+        "resourceTypes": "Room Types",
+        "addTimeRange": "Add Time Range",
+        "removeTimeRange": "Remove"
+    },
+    "placeholders": {
+        "selectUser": "Select user",
+        "selectSchedulingPeriod": "Select scheduling period",
+        "selectSubject": "Select subject",
+        "selectActivity": "Select activity",
+        "selectWeekday": "Select weekday",
+        "selectDate": "Select date",
+        "selectStartTime": "Select start time",
+        "selectEndTime": "Select end time",
+        "enterMinCapacity": "Enter minimum capacity",
+        "enterMaxCapacity": "Enter maximum capacity",
+        "enterLocations": "Enter locations (comma-separated or press Enter)",
+        "enterResourceTypes": "Enter room types (comma-separated or press Enter)",
+        "selectConstraintType": "Select constraint type",
+        "keyExamples": {
+            "user": "e.g., preferred_time, max_hours_per_day",
+            "activity": "e.g., required_room_type, max_students",
+            "organization": "e.g., max_daily_hours, min_break_time"
+        },
+        "valueExamples": {
+            "user": "e.g., 09:00-12:00, 8",
+            "activity": "e.g., lab, 30",
+            "organization": "e.g., 8, 30"
+        }
+    },
+    "modalTitles": {
+        "createUserConstraint": "Create User Constraint",
+        "editUserConstraint": "Edit User Constraint",
+        "createUserPreference": "Create User Preference",
+        "editUserPreference": "Edit User Preference",
+        "createActivityConstraint": "Create Activity Constraint",
+        "editActivityConstraint": "Edit Activity Constraint",
+        "createOrganizationPolicy": "Create Organization Policy",
+        "editOrganizationPolicy": "Edit Organization Policy"
+    },
+    "validationMessages": {
+        "userRequired": "User is required",
+        "schedulingPeriodRequired": "Scheduling period is required",
+        "subjectRequired": "Subject is required",
+        "activityRequired": "Activity is required",
+        "keyRequired": "Key is required",
+        "valueRequired": "Value is required",
+        "weekdayRequired": "Weekday is required",
+        "startTimeRequired": "Start time is required",
+        "endTimeRequired": "End time is required",
+        "startTimeBeforeEndTime": "Start time must be before end time",
+        "atLeastOneTimeRange": "At least one time range is required",
+        "atLeastOneWeekday": "At least one weekday is required",
+        "oneTimeDateRequired": "Date is required for one-time constraints",
+        "oneTimeDateOutOfRange": "Date must be within the selected scheduling period",
+        "atLeastOneLocation": "At least one location is required",
+        "atLeastOneResourceType": "At least one room type is required",
+        "minOrMaxRequired": "At least one of minimum or maximum capacity is required",
+        "minGreaterThanMax": "Minimum capacity cannot be greater than maximum capacity",
+        "invalidForbiddenTimeRange": "Invalid format. Expected: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries can be separated by commas.",
+        "invalidPreferredWeekdays": "Invalid format. Expected comma-separated weekday names (e.g., 'Monday,Wednesday,Friday')",
+        "invalidRequiredCapacity": "Invalid format. Expected JSON: {\"min\": number} or {\"max\": number} or {\"min\": number, \"max\": number}",
+        "invalidLocationPreference": "Invalid format. Expected comma-separated location names (e.g., 'Building A,Building B')",
+        "invalidCompatibleResourceTypes": "Invalid format. Expected comma-separated room type names (e.g., 'Lecture Hall,Seminar Room')"
+    },
+    "constraintModes": [
+        {
+            "value": "repeated",
+            "label": "Repeated"
+        },
+        {
+            "value": "oneTime",
+            "label": "One Time"
+        }
+    ],
+    "constraintTypeOptions": {
+        "userConstraints": [
+            {
+                "value": "forbidden_timerange",
+                "label": "Forbidden Time Range"
+            }
+        ],
+        "userPreferences": [
+            {
+                "value": "preferred_weekdays",
+                "label": "Preferred Weekdays"
+            },
+            {
+                "value": "preferred_timerange",
+                "label": "Preferred Time Range"
+            }
+        ],
+        "activityConstraints": [
+            {
+                "value": "required_capacity",
+                "label": "Required Capacity"
+            },
+            {
+                "value": "location_preference",
+                "label": "Location Preference"
+            },
+            {
+                "value": "compatible_resource_types",
+                "label": "Compatible Room Types"
+            }
+        ]
+    },
+    "valueFormatGuidance": {
+        "forbidden_timerange": "Format: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries separated by commas.",
+        "forbidden_timerange_oneTime": "One Time: pick a date and enter a single start/end time.",
+        "preferred_weekdays": "Format: Comma-separated weekday names (e.g., 'Monday,Wednesday,Friday')",
+        "preferred_timerange": "Format: 'Weekday HH:mm - HH:mm' (e.g., 'Monday 09:30 - 11:00'). Multiple entries separated by commas.",
+        "required_capacity": "Format: JSON object with 'min' and/or 'max' (e.g., {\"min\": 30} or {\"min\": 20, \"max\": 50})",
+        "location_preference": "Format: Comma-separated location names (e.g., 'Building A,Building B')",
+        "compatible_resource_types": "Format: Comma-separated room type names (e.g., 'Lecture Hall,Seminar Room')"
+    },
+    "deleteMessages": {
+        "deleteConstraint": "Delete Constraint",
+        "deletePreference": "Delete Preference",
+        "deleteActivityConstraint": "Delete Activity Constraint",
+        "deleteOrganizationPolicy": "Delete Organization Policy",
+        "confirmDeleteConstraint": "Are you sure you want to delete this constraint?",
+        "confirmDeletePreference": "Are you sure you want to delete this preference?",
+        "confirmDeleteActivityConstraint": "Are you sure you want to delete this activity constraint?",
+        "confirmDeleteOrganizationPolicy": "Are you sure you want to delete this organization policy?"
+    },
+    "emptyStateMessages": {
+        "noConstraintsOrPreferences": "No constraints or preferences found.",
+        "noActivityConstraints": "No activity constraints found.",
+        "noOrganizationPolicies": "No organization policies found."
+    },
+    "constraintTypes": {
+        "constraint": "constraint",
+        "preference": "preference"
+    },
+    "badgeLabels": {
+        "constraint": "Constraint",
+        "preference": "Preference"
+    },
+    "other": {
+        "currentUser": "Current User",
+        "unknownSubject": "Unknown Subject",
+        "textareaMinRows": 3,
+        "defaultActiveTab": "user",
+        "containerSize": "xl",
+        "weekdays": [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ]
+    },
+    "errorMessages": {
+        "saveUserConstraint": "Error saving user constraint:",
+        "saveActivityConstraint": "Error saving activity constraint:",
+        "saveOrganizationPolicy": "Error saving organization policy:"
+    },
+    "notifications": {
+        "userConstraints": {
+            "deleted": "Deleted",
+            "deletedMessage": "The {type} has been deleted successfully",
+            "updated": "Updated",
+            "created": "Created",
+            "updatedMessage": "The {type} has been updated successfully",
+            "createdMessage": "The {type} has been created successfully",
+            "failedToDelete": "Failed to Delete",
+            "failedToSave": "Failed to Save",
+            "failedToSaveConstraint": "Failed to Save Constraint",
+            "unexpectedError": "An unexpected error occurred"
+        },
+        "activityConstraints": {
+            "deleted": "Deleted",
+            "deletedMessage": "The activity constraint has been deleted successfully",
+            "updated": "Constraint Updated",
+            "created": "Constraint Created",
+            "updatedMessage": "The activity constraint has been updated successfully",
+            "createdMessage": "The activity constraint has been created successfully",
+            "failedToDelete": "Failed to Delete",
+            "failedToSaveConstraint": "Failed to Save Constraint",
+            "unexpectedError": "An unexpected error occurred"
+        },
+        "organizationPolicies": {
+            "deleted": "Deleted",
+            "deletedMessage": "The organization policy has been deleted successfully",
+            "updated": "Policy Updated",
+            "created": "Policy Created",
+            "updatedMessage": "The organization policy has been updated successfully",
+            "createdMessage": "The organization policy has been created successfully",
+            "failedToDelete": "Failed to Delete",
+            "failedToSavePolicy": "Failed to Save Policy",
+            "unexpectedError": "An unexpected error occurred"
+        }
+    }
+}

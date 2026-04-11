@@ -1,0 +1,41 @@
+{
+    "welcome": {
+        "title": "CPSS Dashboard",
+        "subtitle": "Constraint & Preference based Scheduling System"
+    },
+    "features": {
+        "automated": {
+            "title": "Automated Scheduling",
+            "description": "Generate optimal schedules based on availability, preferences, and institutional constraints with our intelligent assignment engine."
+        },
+        "collaborative": {
+            "title": "Collaborative Platform",
+            "description": "Teachers, managers, and administrators work together seamlessly with clear visibility into schedules, conflicts, and changes."
+        },
+        "flexible": {
+            "title": "Flexible Management",
+            "description": "Easily handle changes, swaps, and special requests with live rebalancing and minimal-impact conflict resolution."
+        },
+        "transparent": {
+            "title": "Transparent Process",
+            "description": "See why assignments were made, track changes with audit trails, and maintain fairness across departments."
+        }
+    },
+    "problemDomain": {
+        "title": "The Problem Domain",
+        "content": [
+            "Academic scheduling sits at the intersection of people, time, and limited resources. Universities must assign lecturers and TAs to courses, rooms, and time slots while respecting a dense web of constraints: individual availability, institutional policies, room capacities, equipment needs, and fairness considerations.",
+            "The domain is multi-stakeholder: Lecturers care about realistic workloads and personal constraints; Managers care about coverage and compliance; Organizations care about standardizing processes and ensuring data security.",
+            "Many institutions still manage scheduling with tools not designed for it: spreadsheets, email threads, and legacy systems. These make it hard to maintain a single source of truth, see conflicts early, ensure fairness, and react to changes during the semester."
+        ]
+    },
+    "vision": {
+        "title": "Our Vision",
+        "content": [
+            "The vision is to provide a SaaS-based academic scheduling platform that turns the messy manual process into a transparent, data-driven workflow. Instead of treating scheduling as a painful one-off event each semester, we see it as a living process that can adapt to new information.",
+            "Lecturers and TAs get simple, friendly interfaces to express availability and preferences in natural language. Managers get powerful tools to define slots, run auto-assignment, review conflicts, and adjust with full manual control.",
+            "A central design principle is trustworthy automation: The auto-assignment engine proposes schedules based on availability and rules, but it's never a black box. Managers can see why assignments were made, override when needed, and re-run while preserving critical decisions.",
+            "The system makes fairness and resilience first-class concerns, tracking unpopular shifts, workload limits, and rest periods to help distribute duties equitably over time."
+        ]
+    }
+}

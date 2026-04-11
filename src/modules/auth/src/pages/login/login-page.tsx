@@ -8,13 +8,13 @@ import {
 } from "@mantine/core";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { useLogin } from "@/modules/auth/src/hooks";
 import {
     validateEmail,
     validatePassword,
 } from "@/modules/auth/src/common/validation.service";
 import styles from "./login-page.module.css";
-import resources from "./login-page.resources.json";
 
 export function LoginPage() {
     const [email, setEmail] = useState("");
@@ -22,6 +22,7 @@ export function LoginPage() {
     const [touched, setTouched] = useState({ email: false, password: false });
     const { login, isLoading, error } = useLogin();
     const navigate = useNavigate();
+    const { t } = useTranslation("auth.login.login-page");
 
     // Compute errors reactively based on current field values
     const emailError = useMemo(() => {
@@ -65,9 +66,9 @@ export function LoginPage() {
                 radius="md"
             >
                 <div className={styles.loginHeader}>
-                    <Title order={2}>{resources.title}</Title>
+                    <Title order={2}>{t("title")}</Title>
                     <Text c="dimmed" size="sm">
-                        {resources.subtitle}
+                        {t("subtitle")}
                     </Text>
                 </div>
 
@@ -79,8 +80,8 @@ export function LoginPage() {
                     )}
 
                     <TextInput
-                        label={resources.emailLabel}
-                        placeholder={resources.emailPlaceholder}
+                        label={t("emailLabel")}
+                        placeholder={t("emailPlaceholder")}
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.currentTarget.value)}
@@ -93,8 +94,8 @@ export function LoginPage() {
                     />
 
                     <PasswordInput
-                        label={resources.passwordLabel}
-                        placeholder={resources.passwordPlaceholder}
+                        label={t("passwordLabel")}
+                        placeholder={t("passwordPlaceholder")}
                         value={password}
                         onChange={(e) => setPassword(e.currentTarget.value)}
                         onBlur={() =>
@@ -112,7 +113,7 @@ export function LoginPage() {
                         loading={isLoading}
                         className={styles.loginButton}
                     >
-                        {resources.loginButton}
+                        {t("loginButton")}
                     </Button>
                 </form>
             </Card>

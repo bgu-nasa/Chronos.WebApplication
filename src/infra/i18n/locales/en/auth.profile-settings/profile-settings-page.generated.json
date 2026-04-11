@@ -1,0 +1,17 @@
+{
+    "title": "Profile Settings",
+    "description": "Manage your profile information and account settings",
+    "sections": {
+        "profileInfo": "Profile Information",
+        "language": "Language",
+        "dangerZone": "Danger Zone"
+    },
+    "language": {
+        "description": "Choose interface language and writing direction."
+    },
+    "dangerZone": {
+        "passwordTitle": "Update Password",
+        "passwordDescription": "Change your account password. Make sure it's strong and unique.",
+        "passwordButton": "Update Password"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "hero": {
+        "title": "Welcome to Chronos Portal",
+        "subtitle": "A modern modular application platform",
+        "paragraph": "Build scalable applications with our federated module architecture. Get started quickly with pre-built modules and customize to your needs."
+    },
+    "tabs": {
+        "overview": {
+            "title": "Overview",
+            "content": "TODO Actual content"
+        },
+        "features": {
+            "title": "Features",
+            "content": "TODO Actual content"
+        },
+        "gettingStarted": {
+            "title": "Getting Started",
+            "content": "TODO Actual content"
+        }
+    },
+    "privatePreviewNotice": {
+        "title": "Private Preview",
+        "paragraph": "This application is currently in private preview. Features and functionality may change as we continue development. Thank you for your feedback and participation!"
+    }
+}

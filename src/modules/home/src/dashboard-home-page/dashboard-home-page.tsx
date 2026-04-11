@@ -1,7 +1,10 @@
 import { Stack } from "@mantine/core";
 import { WelcomeSection, FeatureCard, InfoSection } from "./components";
-import resources from "./dashboard-home-page.resources.json";
+import resourcesJson from "./dashboard-home-page.resources.json";
 import styles from "./dashboard-home-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/home/src/dashboard-home-page/dashboard-home-page.resources.json", resourcesJson);
 
 export function DashboardHomePage() {
     return (

@@ -1,0 +1,50 @@
+{
+    "title": "הגדרות ארגוני",
+    "description": "נהל את הגדרות הארגון וההעדפות שלך",
+    "noOrganization": "אין מידע זמין על הארגון",
+    "sections": {
+        "organizationInfo": "מידע על הארגון",
+        "dangerZone": "אזור הסכנה"
+    },
+    "fields": {
+        "organizationName": "שם הארגון",
+        "currentUser": "משתמש נוכחי",
+        "deletedBadge": "נמחק"
+    },
+    "dangerZone": {
+        "deleteTitle": "מחק ארגון",
+        "deleteDescription": "סמנו את הארגון הזה למחיקה. פעולה זו ניתנת לביטול על ידי שיקום הארגון.",
+        "deleteButton": "מחק ארגון",
+        "restoreTitle": "ארגון השיקום",
+        "restoreDescription": "השחזרו את הארגון הזה והחזרו אותו לפעיל.",
+        "restoreButton": "ארגון השיקום"
+    },
+    "deleteDialog": {
+        "title": "אשר מחיקת ארגון",
+        "message": "אתה בטוח שאתה רוצה למחוק את הארגון הזה? זה יסמן אותו למחיקה ויגביל את הגישה. אתה יכול לשחזר אותו מאוחר יותר אם צריך.",
+        "confirmButton": "מחק",
+        "cancelButton": "ביטול"
+    },
+    "restoreDialog": {
+        "title": "אישור שיקום הארגון",
+        "message": "אתה בטוח שאתה רוצה לשקם את הארגון הזה? זה יהפוך אותו לפעיל שוב וישיב את הגישה המלאה.",
+        "confirmButton": "שחזור",
+        "cancelButton": "ביטול"
+    },
+    "deleteSuccess": {
+        "title": "הארגון נמחק",
+        "message": "הארגון סומן בהצלחה למחיקה"
+    },
+    "deleteError": {
+        "title": "מחיקה נכשלה",
+        "message": "לא הצלחתי למחוק את הארגון. אנא נסה שוב."
+    },
+    "restoreSuccess": {
+        "title": "הארגון ששוחזר",
+        "message": "הארגון שוחזר בהצלחה"
+    },
+    "restoreError": {
+        "title": "השחזור נכשל",
+        "message": "נכשל בשיקום הארגון. אנא נסה שוב."
+    }
+}

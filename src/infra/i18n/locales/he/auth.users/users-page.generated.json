@@ -1,0 +1,14 @@
+{
+    "title": "ניהול משתמשים",
+    "createButton": "יצור",
+    "editButton": "עריכה",
+    "deleteButton": "מחק",
+    "profileColumn": "פרופיל",
+    "firstNameColumn": "שם פרטי",
+    "lastNameColumn": "שם משפחה",
+    "emailColumn": "דואר אלקטרוני",
+    "verifiedColumn": "מאומת",
+    "verified": "מאומת",
+    "unverified": "לא מאומת",
+    "underDevelopmentTooltip": "תכונה זו עדיין בפיתוח"
+}

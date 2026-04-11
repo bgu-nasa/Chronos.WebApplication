@@ -1,0 +1,24 @@
+{
+    "modalTitle": "Create Course",
+    "codeLabel": "Course Code",
+    "codePlaceholder": "e.g. CS101",
+    "nameLabel": "Course Name",
+    "namePlaceholder": "e.g. Operating Systems",
+    "schedulingPeriodLabel": "Scheduling Period",
+    "schedulingPeriodPlaceholder": "Select scheduling period",
+    "submitButton": "Create Course",
+    "notifications": {
+        "loadSchedulingPeriodsError": {
+            "title": "Error",
+            "message": "Failed to load scheduling periods"
+        }
+    },
+    "logger": {
+        "fetchedSchedulingPeriods": "Fetched scheduling periods",
+        "errorFetchingSchedulingPeriods": "Error fetching scheduling periods:",
+        "handleSubmitCalled": "handleSubmit called",
+        "validationFailed": "Validation failed - empty fields",
+        "callingOnSubmit": "Calling onSubmit...",
+        "onSubmitCompleted": "onSubmit completed, resetting form"
+    }
+}

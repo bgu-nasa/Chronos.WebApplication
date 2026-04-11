@@ -1,0 +1,4 @@
+{
+    "title": "Organization Scheduled for Deletion",
+    "message": "This organization is scheduled for permanent deletion on {finalDeletionDate}, as it was marked for deletion on {deletedDate}. Please back up any important information immediately and discontinue using this organization. All data will be permanently removed after the deletion date."
+}

@@ -5,8 +5,11 @@ import { UserTable } from "@/modules/auth/src/pages/users/components/user-table/
 import { UserEditor } from "@/modules/auth/src/pages/users/components/user-editor";
 import type { UserData } from "@/modules/auth/src/pages/users/components/user-table/types";
 import { useUsers } from "@/modules/auth/src/hooks/use-users";
-import resources from "@/modules/auth/src/pages/users/users-page.resources.json";
+import resourcesJson from "@/modules/auth/src/pages/users/users-page.resources.json";
 import styles from "./users-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/auth/src/pages/users/users-page.resources.json", resourcesJson);
 
 export function UsersPage() {
     const [selectedUser, setSelectedUser] = useState<UserData | null>(null);

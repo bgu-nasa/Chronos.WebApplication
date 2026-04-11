@@ -19,10 +19,15 @@ import {
 } from "@/modules/resources/src/hooks";
 import { ResourceTypeActions, ResourceTypeTable, ResourceTypeCreator, ResourceTypeEditor, type ResourceTypeData } from "../resource-types-page/components";
 import { ResourceAttributeActions, ResourceAttributeTable, ResourceAttributeCreator, ResourceAttributeEditor, type ResourceAttributeData } from "../resource-attributes-page/components";
-import resourcesJson from "./resources-page.resources.json";
-import resourceTypesJson from "../resource-types-page/resource-types-page.resources.json";
-import resourceAttributesJson from "../resource-attributes-page/resource-attributes-page.resources.json";
+import resourcesJsonJson from "./resources-page.resources.json";
+import resourceTypesJsonJson from "../resource-types-page/resource-types-page.resources.json";
+import resourceAttributesJsonJson from "../resource-attributes-page/resource-attributes-page.resources.json";
 import styles from "./resources-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resourcesJson = translatedResources("src/modules/resources/src/pages/resources-page/resources-page.resources.json", resourcesJsonJson);
+const resourceTypesJson = translatedResources("src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json", resourceTypesJsonJson);
+const resourceAttributesJson = translatedResources("src/modules/resources/src/pages/resource-attributes-page/resource-attributes-page.resources.json", resourceAttributesJsonJson);
 
 const resources = resourcesJson;
 

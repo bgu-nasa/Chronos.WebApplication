@@ -1,0 +1,48 @@
+{
+    "title": "Courses Management",
+    "createButton": "Create",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "viewActivitiesButton": "View Groups",
+    "departmentColumn": "Department",
+    "schedulingPeriodColumn": "Scheduling Period",
+    "codeColumn": "Code",
+    "nameColumn": "Name",
+    "emptyStateMessage": "No courses yet. Get started by creating your first course!",
+    "deleteConfirmTitle": "Delete Course",
+    "deleteConfirmMessage": "Are you sure you want to delete the course \"{name}\"?",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "loadingText": "Loading...",
+    "unknownText": "Unknown",
+    "unknownDepartment": "Unknown Department",
+    "notifications": {
+        "departmentRequired": {
+            "title": "Department Required",
+            "message": "Please select a department to search for courses"
+        }
+    },
+    "logger": {
+        "loadedSchedulingPeriods": "Loaded scheduling periods",
+        "errorLoadingSchedulingPeriods": "Error loading scheduling periods:",
+        "departmentIdRequired": "Department ID is required for search",
+        "fetchedDepartment": "Fetched department:",
+        "errorFetchingDepartment": "Error fetching department:",
+        "handleCreateSubmitCalled": "handleCreateSubmit called with:",
+        "currentDepartmentId": "currentDepartmentId:",
+        "noDepartmentIdSet": "No department ID set",
+        "organizationFromContext": "Organization from context:",
+        "noOrganizationContext": "No organization context available",
+        "sendingCreateRequest": "Sending create request:",
+        "createSubjectResult": "Create subject result:",
+        "createSubjectReturnedNull": "Create subject returned null",
+        "errorCreatingSubject": "Error creating subject:",
+        "handleEditSubmitCalled": "handleEditSubmit called with:",
+        "selectedSubject": "selectedSubject:",
+        "missingSubjectOrDepartment": "Missing selectedSubject or currentDepartmentId",
+        "sendingUpdateRequest": "Sending update request:",
+        "updateSubjectResult": "Update subject result:",
+        "updateSubjectReturnedFalse": "Update subject returned false",
+        "errorUpdatingSubject": "Error updating subject:"
+    }
+}

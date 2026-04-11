@@ -9,8 +9,11 @@ import { RoleAssignmentDrawer } from "@/modules/management/src/pages/roles-page/
 import { UserScopedRoleEditor } from "@/modules/management/src/pages/roles-page/components/user-scoped-role-editor";
 import { useRoleAssignments } from "@/modules/management/src/hooks/use-roles";
 import type { UserRoleAssignmentSummary } from "@/modules/management/src/data/role.types";
-import resources from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
 import styles from "@/modules/management/src/pages/roles-page/roles-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/management/src/pages/roles-page/roles-page.resources.json", resourcesJson);
 
 export function RolesPage() {
     const [selectedRow, setSelectedRow] = useState<RoleTableRow | null>(null);
