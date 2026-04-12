@@ -8,6 +8,7 @@ import type { CalendarEvent } from "@/common/types";
 import { EventItem } from './event-item';
 import { ConstraintItem } from './constraint-item';
 import { EventBlockItem } from './event-block-item';
+import { getIsoWeekNumber } from './iso-week';
 import styles from './day-column.module.css';
 import resources from './day-column.resources.json';
 
@@ -20,9 +21,11 @@ interface ConstraintVisualization {
   weekday: string;
   startTime: string;
   endTime: string;
+  weekNum?: number | null;
 }
 
 interface EventBlock extends ConstraintVisualization {
+  weekNum?: number | null;
   activityId?: string;
   activityType?: string;
   subjectName?: string;
@@ -36,6 +39,8 @@ interface DayColumnProps {
   events: CalendarEvent[];
   constraints?: ConstraintVisualization[];
   eventBlocks?: EventBlock[];
+  periodFromDate?: string;
+  periodToDate?: string;
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
@@ -48,6 +53,8 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   events,
   constraints = [],
   eventBlocks = [],
+  periodFromDate,
+  periodToDate,
   hourHeight = 60,
   dayStartHour = 8,
   hoursPerDay = 24,
@@ -260,16 +267,60 @@ export const DayColumn: React.FC<DayColumnProps> = ({
 
   // Get weekday name for this column
   const weekdayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+  const weekNum = getIsoWeekNumber(date);
+  const isInsideSelectedPeriod = useMemo(() => {
+    if (!periodFromDate || !periodToDate) {
+      return true;
+    }
+
+    const current = new Date(date);
+    const from = new Date(periodFromDate);
+    const to = new Date(periodToDate);
+
+    current.setHours(0, 0, 0, 0);
+    from.setHours(0, 0, 0, 0);
+    to.setHours(0, 0, 0, 0);
+
+    return current >= from && current <= to;
+  }, [date, periodFromDate, periodToDate]);
 
   // Filter constraints for this weekday
   const dailyConstraints = useMemo(() => {
-    return constraints.filter(c => c.weekday === weekdayName);
-  }, [constraints, weekdayName]);
+    if (!isInsideSelectedPeriod) {
+      return [];
+    }
+
+    return constraints.filter(c => {
+      if (c.weekday !== weekdayName) {
+        return false;
+      }
+
+      if (c.weekNum == null) {
+        return true;
+      }
+
+      return c.weekNum === weekNum;
+    });
+  }, [constraints, weekdayName, weekNum, isInsideSelectedPeriod]);
 
   // Filter event blocks for this weekday
   const dailyEventBlocks = useMemo(() => {
-    return eventBlocks.filter(eb => eb.weekday === weekdayName);
-  }, [eventBlocks, weekdayName]);
+    if (!isInsideSelectedPeriod) {
+      return [];
+    }
+
+    return eventBlocks.filter(eb => {
+      if (eb.weekday !== weekdayName) {
+        return false;
+      }
+
+      if (eb.weekNum == null) {
+        return true;
+      }
+
+      return eb.weekNum === weekNum;
+    });
+  }, [eventBlocks, weekdayName, weekNum, isInsideSelectedPeriod]);
 
   return (
     <Box
