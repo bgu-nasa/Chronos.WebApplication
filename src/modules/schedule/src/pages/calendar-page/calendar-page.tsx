@@ -1,5 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, Flex, Paper, Group } from "@mantine/core";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json", resourcesJson);
 
 import { WeekView } from "@/common/components/calendar";
 import { useUsers } from "@/modules/auth/src/hooks";
@@ -9,7 +12,7 @@ import { assignmentDataRepository, activityDataRepository, slotDataRepository, t
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import { SchedulingPeriodSelect, TimeRangeSelectionModal, UserSelect, EventDetailsModal } from "./components";
 import styles from "./calendar-page.module.css";
-import resources from "./calendar-page.resources.json";
+import resourcesJson from "./calendar-page.resources.json";
 
 interface TimeRangeSelection {
   date: Date;

@@ -1,0 +1,47 @@
+{
+    "notifications": {
+        "constraintCreated": {
+            "title": "אילוץ שנוצר",
+            "message": "טווח זמן לא זמין נקבע בהצלחה"
+        },
+        "constraintCreateFailed": {
+            "title": "נכשל ביצירת מגבלה",
+            "message": "אירעה שגיאה בלתי צפויה"
+        }
+    },
+    "eventDetailsModal": {
+        "title": "פרטי האירוע",
+        "labels": {
+            "subject": "נושא",
+            "activityType": "סוג פעילות",
+            "schedule": "לוח זמנים",
+            "resource": "חדר",
+            "location": "מיקום:",
+            "capacity": "קיבולת:",
+            "expectedStudents": "תלמידים צפויים"
+        },
+        "unknown": {
+            "day": "יום לא ידוע",
+            "subject": "נושא לא ידוע",
+            "activityType": "לא ידוע"
+        },
+        "loading": "פרטי חדר טעינה...",
+        "closeButton": "סגור"
+    },
+    "timeRangeSelectionModal": {
+        "title": "הוגדר כלא זמין",
+        "message": "צור מגבלת טווח זמן אסור ל:",
+        "cancelButton": "ביטול",
+        "confirmButton": "הוגדר כלא זמין"
+    },
+    "userSelect": {
+        "label": "משתמש",
+        "placeholder": "בחירת משתמש לצפייה באילוצים",
+        "nothingFoundMessage": "לא נמצאו משתמשים"
+    },
+    "schedulingPeriodSelect": {
+        "label": "תקופת תזמון",
+        "placeholder": "תקופה נבחרת",
+        "nothingFoundMessage": "לא נמצאו תקופות"
+    }
+}

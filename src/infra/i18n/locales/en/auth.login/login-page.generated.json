@@ -1,0 +1,9 @@
+{
+    "title": "Welcome Back",
+    "subtitle": "Sign in to your account to continue",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "loginButton": "Sign In"
+}

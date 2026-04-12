@@ -1,0 +1,6 @@
+{
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebarAriaLabel": "Expand sidebar to show navigation labels",
+    "collapseSidebarAriaLabel": "Collapse sidebar to show only icons"
+}

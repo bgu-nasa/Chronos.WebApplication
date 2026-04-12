@@ -1,0 +1,12 @@
+{
+    "successTitle": "הצלחה",
+    "successMessage": "הפרופיל עודכן בהצלחה!",
+    "form": {
+        "firstName": "שם פרטי",
+        "lastName": "שם משפחה",
+        "avatarUrl": "כתובת URL של אווטאר"
+    },
+    "buttons": {
+        "save": "שינויים בשמירה"
+    }
+}

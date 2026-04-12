@@ -1,0 +1,14 @@
+{
+    "title": "Users Management",
+    "createButton": "Create",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "profileColumn": "Profile",
+    "firstNameColumn": "First Name",
+    "lastNameColumn": "Last Name",
+    "emailColumn": "Email",
+    "verifiedColumn": "Verified",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "underDevelopmentTooltip": "This feature is still under development"
+}

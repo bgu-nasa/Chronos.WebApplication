@@ -1,0 +1,21 @@
+{
+    "title": "הצטרף לכרונוס",
+    "subtitle": "צרו את הארגון שלכם והתחילו לנהל את הזמן שלכם ביעילות",
+    "userInfoTitle": "חשבון מנהל",
+    "emailLabel": "דואר אלקטרוני",
+    "emailPlaceholder": "admin@example.com",
+    "firstNameLabel": "שם פרטי",
+    "firstNamePlaceholder": "John",
+    "lastNameLabel": "שם משפחה",
+    "lastNamePlaceholder": "דו",
+    "passwordLabel": "סיסמה",
+    "passwordPlaceholder": "הזן סיסמה מאובטחת",
+    "confirmPasswordLabel": "אשר סיסמה",
+    "confirmPasswordPlaceholder": "הזן מחדש את הסיסמה שלך",
+    "orgInfoTitle": "פרטי הארגון",
+    "orgNameLabel": "שם הארגון",
+    "orgNamePlaceholder": "תאגיד אקמי",
+    "planLabel": "תוכנית סלקט",
+    "planPlaceholder": "בחר תוכנית",
+    "registerButton": "יצירת ארגון"
+}

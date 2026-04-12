@@ -1,0 +1,23 @@
+{
+    "title": "Room Types Management",
+    "createButton": "Create",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "typeColumn": "Type",
+    "emptyStateMessage": "No room types yet. Get started by creating your first room type!",
+    "deleteConfirmTitle": "Delete Room Type",
+    "deleteConfirmMessage": "Are you sure you want to delete the room type \"{type}\"?",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel",
+    "searchDepartmentLabel": "Department",
+    "searchDepartmentPlaceholder": "Select department",
+    "searchButton": "Search",
+    "clearFiltersButton": "Clear Filters",
+    "editorCreateTitle": "Create Room Type",
+    "editorEditTitle": "Edit Room Type",
+    "editorTypeLabel": "Type",
+    "editorTypePlaceholder": "e.g. Laboratory, Classroom, Auditorium",
+    "editorCancelButton": "Cancel",
+    "editorSaveButton": "Save",
+    "editorCreateButton": "Create"
+}

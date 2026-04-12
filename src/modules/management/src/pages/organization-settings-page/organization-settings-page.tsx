@@ -12,8 +12,11 @@ import {
 } from "@mantine/core";
 import { ConfirmationDialog } from "@/common/components/confirmation-dialog";
 import { organizationDataRepository } from "@/modules/management/src/data/organization-data-repository";
-import resources from "./organization-settings-page.resources.json";
+import resourcesJson from "./organization-settings-page.resources.json";
 import styles from "./organization-settings-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/management/src/pages/organization-settings-page/organization-settings-page.resources.json", resourcesJson);
 
 export function OrganizationSettingsPage() {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);

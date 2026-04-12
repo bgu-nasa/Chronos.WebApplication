@@ -1,7 +1,10 @@
 import { Card, Modal, Tabs, Text, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
-import resources from "./home-page.resources.json";
+import resourcesJson from "./home-page.resources.json";
 import styles from "./home-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/home/src/home-page/home-page.resources.json", resourcesJson);
 
 export function HomePage() {
     const [previewNoticeOpen, setPreviewNoticeOpen] = useState(false);

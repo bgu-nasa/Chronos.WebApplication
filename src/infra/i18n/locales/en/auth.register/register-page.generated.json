@@ -1,0 +1,21 @@
+{
+    "title": "Join Chronos",
+    "subtitle": "Create your organization and start managing your time effectively",
+    "userInfoTitle": "Administrator Account",
+    "emailLabel": "Email",
+    "emailPlaceholder": "admin@example.com",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "John",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter a secure password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "orgInfoTitle": "Organization Details",
+    "orgNameLabel": "Organization Name",
+    "orgNamePlaceholder": "Acme Corporation",
+    "planLabel": "Select Plan",
+    "planPlaceholder": "Choose a plan",
+    "registerButton": "Create Organization"
+}

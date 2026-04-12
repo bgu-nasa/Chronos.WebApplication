@@ -18,8 +18,11 @@ import {
 } from "@/modules/schedule/src/hooks";
 import { schedulingPeriodDataRepository } from "@/modules/schedule/src/data/scheduling-period-data-repository";
 import type { SlotResponse } from "@/modules/schedule/src/data";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json", resourcesJson);
 
 export interface SchedulingPeriodDataWithExpired extends SchedulingPeriodData {
     isExpired: boolean;

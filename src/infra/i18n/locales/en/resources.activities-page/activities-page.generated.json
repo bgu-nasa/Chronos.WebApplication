@@ -1,0 +1,16 @@
+{
+    "title": "Groups Activities",
+    "backToSubjects": "Back to Courses",
+    "createButton": "Create",
+    "editButton": "Edit",
+    "deleteButton": "Delete",
+    "activityTypeColumn": "Type",
+    "assignedUserColumn": "Instructor",
+    "expectedStudentsColumn": "Expected Students",
+    "durationColumn": "Duration",
+    "emptyStateMessage": "No groups for this course yet.",
+    "deleteConfirmTitle": "Delete Group",
+    "deleteConfirmMessage": "Are you sure you want to delete this group?",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel"
+}

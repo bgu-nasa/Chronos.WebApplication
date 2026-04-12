@@ -20,7 +20,10 @@ import {
     validateOrganizationName,
 } from "@/modules/auth/src/common/validation.service";
 import styles from "./register-page.module.css";
-import resources from "./register-page.resources.json";
+import resourcesJson from "./register-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/auth/src/pages/register/register-page.resources.json", resourcesJson);
 
 export function RegisterPage() {
     // User info

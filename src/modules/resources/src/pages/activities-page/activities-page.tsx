@@ -14,9 +14,12 @@ import {
     useUpdateActivity,
     useDeleteActivity,
 } from "@/modules/resources/src/hooks";
-import resources from "./activities-page.resources.json";
+import resourcesJson from "./activities-page.resources.json";
 import styles from "./activities-page.module.css";
 import { userRepository } from "@/modules/resources/src/data";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/resources/src/pages/activities-page/activities-page.resources.json", resourcesJson);
 
 export function ActivitiesPage() {
     const navigate = useNavigate();

@@ -11,8 +11,11 @@ import {
 import { LanguageSwitcher } from "@/infra/theme/components/language-switcher";
 import { ProfileUpdateForm } from "./components/profile-update-form";
 import { UpdatePasswordModal } from "./components/update-password-modal";
-import resources from "./profile-settings-page.resources.json";
+import resourcesJson from "./profile-settings-page.resources.json";
 import styles from "./profile-settings-page.module.css";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/auth/src/pages/profile-settings/profile-settings-page.resources.json", resourcesJson);
 
 export function ProfileSettingsPage() {
     const [passwordModalOpen, setPasswordModalOpen] = useState(false);

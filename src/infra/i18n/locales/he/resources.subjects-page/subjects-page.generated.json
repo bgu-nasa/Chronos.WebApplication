@@ -1,0 +1,48 @@
+{
+    "title": "ניהול קורסים",
+    "createButton": "יצור",
+    "editButton": "עריכה",
+    "deleteButton": "מחק",
+    "viewActivitiesButton": "צפייה בקבוצות",
+    "departmentColumn": "המחלקה",
+    "schedulingPeriodColumn": "תקופת תזמון",
+    "codeColumn": "קוד",
+    "nameColumn": "שם",
+    "emptyStateMessage": "עדיין אין קורסים. התחילו ביצירת הקורס הראשון שלכם!",
+    "deleteConfirmTitle": "מחק את הקורס",
+    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את הקורס \"{name}\"?",
+    "deleteConfirmButton": "מחק",
+    "deleteCancelButton": "ביטול",
+    "loadingText": "טוען...",
+    "unknownText": "לא ידוע",
+    "unknownDepartment": "מחלקה לא ידועה",
+    "notifications": {
+        "departmentRequired": {
+            "title": "מחלקה נדרשת",
+            "message": "אנא בחרו מחלקה לחיפוש קורסים"
+        }
+    },
+    "logger": {
+        "loadedSchedulingPeriods": "תקופות תזמון עמוסות",
+        "errorLoadingSchedulingPeriods": "טעינת שגיאות בתקופות תזמון:",
+        "departmentIdRequired": "נדרש זיהוי מחלקה לחיפוש",
+        "fetchedDepartment": "המחלקה שנלקחה:",
+        "errorFetchingDepartment": "מחלקת שליפת שגיאות:",
+        "handleCreateSubmitCalled": "handleCreateSubmit נקרא עם:",
+        "currentDepartmentId": "PresentDepartmentId:",
+        "noDepartmentIdSet": "אין סט זיהוי מחלקה",
+        "organizationFromContext": "ארגון מהקשר:",
+        "noOrganizationContext": "אין הקשר ארגוני זמין",
+        "sendingCreateRequest": "שליחת בקשת יצירה:",
+        "createSubjectResult": "יצירת תוצאה של נושא:",
+        "createSubjectReturnedNull": "צור נושא שהוחזר אפס",
+        "errorCreatingSubject": "נושא יצירת שגיאות:",
+        "handleEditSubmitCalled": "handleEditSubmit התקשר עם:",
+        "selectedSubject": "נושא נבחר:",
+        "missingSubjectOrDepartment": "חסר selectedsubject או currentDepartmentID",
+        "sendingUpdateRequest": "שליחת בקשת עדכון:",
+        "updateSubjectResult": "עדכון תוצאת הנושא:",
+        "updateSubjectReturnedFalse": "נושא עדכון חזר שגוי",
+        "errorUpdatingSubject": "עדכון שגיאות בנושא:"
+    }
+}

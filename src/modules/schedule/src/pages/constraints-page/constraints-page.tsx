@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Container, Divider, Title, Tabs } from "@mantine/core";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources("src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json", resourcesJson);
 
 import { ConfirmationDialog, useConfirmation } from "@/common";
 import { $app } from "@/infra/service";
@@ -9,7 +12,7 @@ import {
     ActivityConstraintsPanel,
     OrganizationPoliciesPanel
 } from "./components";
-import resources from "./constraints-page.resources.json";
+import resourcesJson from "./constraints-page.resources.json";
 import styles from "./constraints-page.module.css";
 
 export function ConstraintsPage() {

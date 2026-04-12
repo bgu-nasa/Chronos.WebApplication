@@ -1,0 +1,16 @@
+{
+    "title": "פעילויות קבוצתיות",
+    "backToSubjects": "חזרה לקורסים",
+    "createButton": "יצור",
+    "editButton": "עריכה",
+    "deleteButton": "מחק",
+    "activityTypeColumn": "סוג",
+    "assignedUserColumn": "מדריך",
+    "expectedStudentsColumn": "תלמידים צפויים",
+    "durationColumn": "משך",
+    "emptyStateMessage": "עדיין אין קבוצות לקורס הזה.",
+    "deleteConfirmTitle": "מחיקת קבוצה",
+    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את הקבוצה הזו?",
+    "deleteConfirmButton": "מחק",
+    "deleteCancelButton": "ביטול"
+}
