@@ -36,6 +36,7 @@ export function CalendarPage() {
     weekday: string;
     startTime: string;
     endTime: string;
+    weekNum?: number | null;
     activityId?: string;
     activityType?: string;
     subjectName?: string;
@@ -44,12 +45,36 @@ export function CalendarPage() {
     resourceId?: string;
     expectedStudents?: number | null;
   }
+
+  interface ConstraintVisualization {
+    weekday: string;
+    startTime: string;
+    endTime: string;
+    weekNum?: number | null;
+  }
   const [selectedEvent, setSelectedEvent] = useState<EventBlock | null>(null);
   const [eventModalOpened, setEventModalOpened] = useState(false);
 
   const { createUserConstraint, fetchUserConstraintsByUser, userConstraints, isLoading } = useUserConstraints();
   const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
   const { fetchUsers } = useUsers();
+
+  const selectedSchedulingPeriod = useMemo(() => {
+    if (!selectedPeriodId) {
+      return null;
+    }
+
+    return schedulingPeriods.find((period) => period.id === selectedPeriodId) ?? null;
+  }, [schedulingPeriods, selectedPeriodId]);
+
+  const initialCalendarDate = useMemo(() => {
+    if (!selectedSchedulingPeriod?.fromDate) {
+      return new Date();
+    }
+
+    const parsed = new Date(selectedSchedulingPeriod.fromDate);
+    return Number.isNaN(parsed.getTime()) ? new Date() : parsed;
+  }, [selectedSchedulingPeriod]);
 
   // Initialize user and admin status
   useEffect(() => {
@@ -166,11 +191,16 @@ export function CalendarPage() {
     );
 
     // Parse and flatten all constraint entries
-    const visualizations: Array<{ weekday: string; startTime: string; endTime: string }> = [];
+    const visualizations: ConstraintVisualization[] = [];
 
     for (const constraint of relevantConstraints) {
       const entries = parseForbiddenTimeRange(constraint.value);
-      visualizations.push(...entries);
+      entries.forEach((entry) => {
+        visualizations.push({
+          ...entry,
+          weekNum: constraint.weekNum ?? null,
+        });
+      });
     }
 
     return visualizations;
@@ -227,6 +257,7 @@ export function CalendarPage() {
             weekday: localSlot.weekday,
             startTime: localSlot.fromTime,
             endTime: localSlot.toTime,
+            weekNum: a.weekNum,
             activityId: a.activityId,
             activityType: activity?.activityType,
             subjectName: subject?.name,
@@ -327,9 +358,12 @@ export function CalendarPage() {
       </Paper>
       <Box className={styles.content}>
         <WeekView
+          initialDate={initialCalendarDate}
           events={[]}
           constraints={constraintVisualizations}
           eventBlocks={eventBlockVisualizations}
+          periodFromDate={selectedSchedulingPeriod?.fromDate}
+          periodToDate={selectedSchedulingPeriod?.toDate}
           onTimeRangeSelect={handleTimeRangeSelect}
           onEventBlockClick={(eventBlock) => {
             setSelectedEvent(eventBlock);

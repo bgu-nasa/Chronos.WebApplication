@@ -1,5 +1,5 @@
 /** @author noamarg */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Box, Button, Group, Text, Paper } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 
@@ -13,9 +13,11 @@ interface ConstraintVisualization {
   weekday: string;
   startTime: string;
   endTime: string;
+  weekNum?: number | null;
 }
 
 interface EventBlock extends ConstraintVisualization {
+  weekNum?: number | null;
   activityId?: string;
   activityType?: string;
   subjectName?: string;
@@ -29,6 +31,8 @@ interface WeekViewProps {
   events: CalendarEvent[];
   constraints?: ConstraintVisualization[];
   eventBlocks?: EventBlock[];
+  periodFromDate?: string;
+  periodToDate?: string;
   dayStartHour?: number;
   dayEndHour?: number;
   onTimeRangeSelect?: (selection: { date: Date; startTime: string; endTime: string }) => void;
@@ -40,12 +44,18 @@ export const WeekView: React.FC<WeekViewProps> = ({
   events,
   constraints = [],
   eventBlocks = [],
+  periodFromDate,
+  periodToDate,
   dayStartHour = resources.config.defaultStartHour,
   dayEndHour = resources.config.defaultEndHour,
   onTimeRangeSelect,
   onEventBlockClick
 }) => {
   const [currentDate, setCurrentDate] = useState(initialDate);
+
+  useEffect(() => {
+    setCurrentDate(initialDate);
+  }, [initialDate]);
 
   // Calculate dates for the current week (starting Sunday)
   const weekDates = useMemo(() => {
@@ -108,6 +118,8 @@ export const WeekView: React.FC<WeekViewProps> = ({
           events={events}
           constraints={constraints}
           eventBlocks={eventBlocks}
+          periodFromDate={periodFromDate}
+          periodToDate={periodToDate}
           dayStartHour={dayStartHour}
           hoursPerDay={hoursPerDay}
           hourHeight={resources.config.hourHeight || 60}

@@ -11,9 +11,11 @@ interface ConstraintVisualization {
   weekday: string;
   startTime: string;
   endTime: string;
+  weekNum?: number | null;
 }
 
 interface EventBlock extends ConstraintVisualization {
+  weekNum?: number | null;
   activityId?: string;
   activityType?: string;
   subjectName?: string;
@@ -27,6 +29,8 @@ interface TimeGridProps {
   events: CalendarEvent[];
   constraints?: ConstraintVisualization[];
   eventBlocks?: EventBlock[];
+  periodFromDate?: string;
+  periodToDate?: string;
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
@@ -39,6 +43,8 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
   events,
   constraints = [],
   eventBlocks = [],
+  periodFromDate,
+  periodToDate,
   hourHeight,
   dayStartHour = 0,
   hoursPerDay = 24,
@@ -61,6 +67,8 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
             events={events}
             constraints={constraints}
             eventBlocks={eventBlocks}
+            periodFromDate={periodFromDate}
+            periodToDate={periodToDate}
             hourHeight={hourHeight}
             dayStartHour={dayStartHour}
             hoursPerDay={hoursPerDay}
