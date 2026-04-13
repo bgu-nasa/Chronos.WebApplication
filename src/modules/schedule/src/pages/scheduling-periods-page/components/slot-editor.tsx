@@ -3,6 +3,7 @@ import { Modal, Select, Button, Stack, Text, Group, Chip, Box, ActionIcon } from
 import { useSlotEditorStore } from "@/modules/schedule/src/stores";
 import { useCreateSlot, useUpdateSlot } from "@/modules/schedule/src/hooks";
 import { Weekday, WeekdayOrder } from "@/modules/schedule/src/data";
+import { convertSlotLocalToUtc, convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
 
 interface SlotEditorProps {
@@ -27,7 +28,7 @@ interface TimeSpinnerProps {
     error?: string;
 }
 
-function TimeSpinner({ label, totalMinutes, onChange, error }: TimeSpinnerProps) {
+function TimeSpinner({ label, totalMinutes, onChange, error }: Readonly<TimeSpinnerProps>) {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
 
@@ -93,7 +94,7 @@ const dayOptions = WeekdayOrder.map((day) => ({
     label: day,
 }));
 
-export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
+export function SlotEditor({ schedulingPeriodId }: Readonly<SlotEditorProps>) {
     const { isOpen, mode, slot, close } = useSlotEditorStore();
     const { createSlot, clearError: clearCreateError } = useCreateSlot();
     const { updateSlot, clearError: clearUpdateError } = useUpdateSlot();
@@ -145,12 +146,17 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
 
             if (mode === "edit" && slot) {
                 // Edit mode: single slot
-                setEditWeekday(slot.weekday);
-                // Parse time to total minutes
-                const fromParts = slot.fromTime.split(":");
-                const toParts = slot.toTime.split(":");
-                setEditFromTime(parseInt(fromParts[0], 10) * 60 + parseInt(fromParts[1], 10));
-                setEditToTime(parseInt(toParts[0], 10) * 60 + parseInt(toParts[1], 10));
+                const slotFromTime = slot.fromTime.split(':').slice(0, 2).join(':');
+                const slotToTime = slot.toTime.split(':').slice(0, 2).join(':');
+                const localSlots = convertSlotUtcToLocal(slot.weekday, slotFromTime, slotToTime);
+                const localSlot = localSlots[0] ?? { weekday: slot.weekday, fromTime: slotFromTime, toTime: slotToTime };
+
+                setEditWeekday(localSlot.weekday);
+                // Parse local time to total minutes
+                const fromParts = localSlot.fromTime.split(":");
+                const toParts = localSlot.toTime.split(":");
+                setEditFromTime(Number.parseInt(fromParts[0], 10) * 60 + Number.parseInt(fromParts[1], 10));
+                setEditToTime(Number.parseInt(toParts[0], 10) * 60 + Number.parseInt(toParts[1], 10));
             } else {
                 // Create mode: bulk creation
                 setSelectedDays([]);
@@ -171,7 +177,7 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
         // Check if time range is divisible by duration
         if (duration && startTime < endTime) {
             const timeRange = endTime - startTime;
-            const durationMinutes = parseInt(duration);
+            const durationMinutes = Number.parseInt(duration, 10);
             if (timeRange < durationMinutes) {
                 newErrors.duration = "Time range is too short for this duration";
             } else if (timeRange % durationMinutes !== 0) {
@@ -201,75 +207,102 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
         return withSeconds ? `${h}:${m}:00` : `${h}:${m}`;
     };
 
+    const buildUtcSlotsForCreate = (durationMinutes: number) => {
+        const slotsToCreate: { day: Weekday; fromTime: string; toTime: string }[] = [];
+
+        let currentStart = startTime;
+        while (currentStart + durationMinutes <= endTime) {
+            const fromTimeStr = formatTimeStr(currentStart, true);
+            const toTimeStr = formatTimeStr(currentStart + durationMinutes, true);
+
+            selectedDays.forEach((dayStr) => {
+                const utcSlots = convertSlotLocalToUtc(
+                    dayStr,
+                    fromTimeStr.split(":").slice(0, 2).join(":"),
+                    toTimeStr.split(":").slice(0, 2).join(":")
+                );
+
+                utcSlots.forEach((utcSlot) => {
+                    slotsToCreate.push({
+                        day: utcSlot.weekday as Weekday,
+                        fromTime: `${utcSlot.fromTime}:00`,
+                        toTime: `${utcSlot.toTime}:00`,
+                    });
+                });
+            });
+
+            currentStart += durationMinutes;
+        }
+
+        return slotsToCreate;
+    };
+
+    const handleCreateSubmit = async () => {
+        if (!validateCreate()) {
+            return;
+        }
+
+        const durationMinutes = Number.parseInt(duration!, 10);
+        const slotsToCreate = buildUtcSlotsForCreate(durationMinutes);
+
+        let createdCount = 0;
+        for (const slotData of slotsToCreate) {
+            const result = await createSlot({
+                schedulingPeriodId,
+                weekday: slotData.day,
+                fromTime: slotData.fromTime,
+                toTime: slotData.toTime,
+            });
+
+            if (result !== null) {
+                createdCount++;
+            }
+        }
+
+        if (createdCount === slotsToCreate.length) {
+            const pluralSuffix = createdCount === 1 ? "" : "s";
+            $app.notifications.showSuccess("Success", `${createdCount} slot${pluralSuffix} created successfully`);
+        } else {
+            $app.notifications.showError("Error", `Only ${createdCount} of ${slotsToCreate.length} slots were created`);
+        }
+
+        close();
+    };
+
+    const handleEditSubmit = async () => {
+        if (!slot || !validateEdit()) {
+            return;
+        }
+
+        const localFromTime = formatTimeStr(editFromTime, false);
+        const localToTime = formatTimeStr(editToTime, false);
+        const utcSlots = convertSlotLocalToUtc(editWeekday as Weekday, localFromTime, localToTime);
+        const utcSlot = utcSlots[0];
+
+        const success = await updateSlot(slot.id, {
+            weekday: utcSlot.weekday as Weekday,
+            fromTime: `${utcSlot.fromTime}:00`,
+            toTime: `${utcSlot.toTime}:00`,
+        });
+
+        if (success) {
+            $app.notifications.showSuccess("Success", "Slot updated successfully");
+            close();
+            return;
+        }
+
+        $app.notifications.showError("Error", "Failed to update slot");
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
 
         try {
             if (mode === "create") {
-                if (!validateCreate()) {
-                    setIsSubmitting(false);
-                    return;
-                }
-
-                // Generate slots based on time range, duration, and days
-                const durationMinutes = parseInt(duration!);
-
-                const slotsToCreate: { day: Weekday; fromTime: string; toTime: string }[] = [];
-
-                // Generate slot times
-                let currentStart = startTime;
-                while (currentStart + durationMinutes <= endTime) {
-                    const fromTimeStr = formatTimeStr(currentStart, true);
-                    const toTimeStr = formatTimeStr(currentStart + durationMinutes, true);
-
-                    selectedDays.forEach((dayStr) => {
-                        slotsToCreate.push({
-                            day: dayStr as Weekday,
-                            fromTime: fromTimeStr,
-                            toTime: toTimeStr,
-                        });
-                    });
-
-                    currentStart += durationMinutes;
-                }
-
-                // Create all slots
-                let createdCount = 0;
-                for (const slotData of slotsToCreate) {
-                    const result = await createSlot({
-                        schedulingPeriodId,
-                        weekday: slotData.day,
-                        fromTime: slotData.fromTime,
-                        toTime: slotData.toTime,
-                    });
-                    if (result !== null) createdCount++;
-                }
-
-                if (createdCount === slotsToCreate.length) {
-                    $app.notifications.showSuccess("Success", `${createdCount} slot${createdCount !== 1 ? "s" : ""} created successfully`);
-                } else {
-                    $app.notifications.showError("Error", `Only ${createdCount} of ${slotsToCreate.length} slots were created`);
-                }
-                close();
-            } else if (mode === "edit" && slot) {
-                if (!validateEdit()) {
-                    setIsSubmitting(false);
-                    return;
-                }
-
-                const success = await updateSlot(slot.id, {
-                    weekday: editWeekday as Weekday,
-                    fromTime: formatTimeStr(editFromTime, true),
-                    toTime: formatTimeStr(editToTime, true),
-                });
-
-                if (success) {
-                    $app.notifications.showSuccess("Success", "Slot updated successfully");
-                    close();
-                } else {
-                    $app.notifications.showError("Error", "Failed to update slot");
-                }
+                await handleCreateSubmit();
+            } else if (mode === "edit") {
+                await handleEditSubmit();
             }
         } finally {
             setIsSubmitting(false);
@@ -282,7 +315,7 @@ export function SlotEditor({ schedulingPeriodId }: SlotEditorProps) {
     const calculateSlotCount = () => {
         if (!duration || selectedDays.length === 0) return 0;
         if (startTime >= endTime) return 0;
-        return Math.floor((endTime - startTime) / parseInt(duration)) * selectedDays.length;
+        return Math.floor((endTime - startTime) / Number.parseInt(duration, 10)) * selectedDays.length;
     };
 
     return (

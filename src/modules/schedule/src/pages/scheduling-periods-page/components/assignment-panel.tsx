@@ -13,6 +13,7 @@ import { useAssignments, useDeleteAssignment } from "@/modules/schedule/src/hook
 import { useAssignmentEditorStore } from "@/modules/schedule/src/stores/assignment-editor.store";
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 
 interface AssignmentPanelProps {
     isOpen: boolean;
@@ -20,7 +21,7 @@ interface AssignmentPanelProps {
     onClose: () => void;
 }
 
-export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps) {
+export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPanelProps>) {
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
 
     const { assignments, isLoading, fetchAssignments, clearAssignments } = useAssignments();
@@ -101,6 +102,18 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
         return `${parts[0]}:${parts[1]}`;
     };
 
+    const localSlotHeader = slot
+        ? (convertSlotUtcToLocal(
+            slot.weekday,
+            slot.fromTime.split(":").slice(0, 2).join(":"),
+            slot.toTime.split(":").slice(0, 2).join(":")
+        )[0] ?? {
+            weekday: slot.weekday,
+            fromTime: slot.fromTime,
+            toTime: slot.toTime,
+        })
+        : null;
+
     if (!slot) return null;
 
     return (
@@ -112,7 +125,7 @@ export function AssignmentPanel({ isOpen, slot, onClose }: AssignmentPanelProps)
                     <Stack gap={0}>
                         <Title order={4}>Assignments</Title>
                         <Text size="sm" c="dimmed">
-                            {slot.weekday} • {formatTime(slot.fromTime)} - {formatTime(slot.toTime)}
+                            {localSlotHeader?.weekday} • {formatTime(localSlotHeader?.fromTime ?? "")} - {formatTime(localSlotHeader?.toTime ?? "")}
                         </Text>
                     </Stack>
                 }
