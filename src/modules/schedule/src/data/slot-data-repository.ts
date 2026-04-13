@@ -36,6 +36,17 @@ export class SlotDataRepository {
     }
 
     /**
+     * Fetch a single slot by ID
+     */
+    async getSlot(slotId: string): Promise<SlotResponse> {
+        const response = await $app.ajax.get<SlotResponse>(
+            `/api/schedule/scheduling/slots/${slotId}`,
+            { headers: this.getHeaders() }
+        );
+        return response;
+    }
+
+    /**
      * Fetch all slots for a specific scheduling period
      * @param schedulingPeriodId - The ID of the scheduling period
      * @returns Array of slots
