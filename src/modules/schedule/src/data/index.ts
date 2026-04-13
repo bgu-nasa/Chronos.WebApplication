@@ -10,3 +10,5 @@ export * from "./activity.types";
 export * from "./activity-data-repository";
 export * from "./constraints.types";
 export * from "./constraint-data-repository";
+export * from "./appeal.types";
+export * from "./appeal-data-repository";

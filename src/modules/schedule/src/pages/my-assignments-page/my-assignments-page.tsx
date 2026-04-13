@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { Container, Divider, Title, Select } from "@mantine/core";
+import { Container, Divider, Title, Select, Button, Group } from "@mantine/core";
 import { $app } from "@/infra/service";
 import { useSchedulingPeriods } from "@/modules/schedule/src/hooks/use-scheduling-periods";
 import { useSlots } from "@/modules/schedule/src/hooks/use-slots";
@@ -9,6 +9,7 @@ import { useResources } from "@/modules/schedule/src/hooks/use-resources";
 import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment-data-repository";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { AssignmentsDataTable } from "@/modules/schedule/src/pages/assignments-page/components/assignments-data-table";
+import { CreateAppealModal } from "./components/create-appeal-modal";
 import resources from "./my-assignments-page.resources.json";
 import styles from "./my-assignments-page.module.css";
 
@@ -21,6 +22,7 @@ export function MyAssignmentsPage() {
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
 
     const [filterResourceId, setFilterResourceId] = useState<string | null>(null);
+    const [isAppealModalOpen, setIsAppealModalOpen] = useState(false);
 
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
     const { slots, fetchSlots } = useSlots();
@@ -132,6 +134,16 @@ export function MyAssignmentsPage() {
                             nothingFoundMessage={resources.noPeriodsMessage}
                         />
                     </div>
+
+                    <Group>
+                        <Button
+                            variant="light"
+                            onClick={() => setIsAppealModalOpen(true)}
+                            disabled={!selectedAssignment}
+                        >
+                            Appeal
+                        </Button>
+                    </Group>
                 </div>
 
                 {selectedPeriodId && (
@@ -161,6 +173,15 @@ export function MyAssignmentsPage() {
                         isLoading={isLoadingAssignments}
                     />
                 )}
+
+                <CreateAppealModal
+                    opened={isAppealModalOpen}
+                    onClose={() => setIsAppealModalOpen(false)}
+                    assignmentId={selectedAssignment?.id ?? null}
+                    onCreated={() => {
+                        $app.notifications.showSuccess("Success", "Appeal submitted");
+                    }}
+                />
             </div>
         </Container>
     );

@@ -1,0 +1,12 @@
+{
+    "title": "Appeals",
+    "emptyStateMessage": "No appeals found.",
+    "titleColumn": "Title",
+    "descriptionColumn": "Description",
+    "assignmentColumn": "Assignment",
+    "deleteButton": "Delete",
+    "deleteConfirmTitle": "Delete Appeal",
+    "deleteConfirmMessage": "Are you sure you want to delete this appeal? This action cannot be undone.",
+    "deleteConfirmButton": "Delete",
+    "deleteCancelButton": "Cancel"
+}
