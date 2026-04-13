@@ -27,7 +27,7 @@ function assertRequiredEnv() {
 
 function loadLocalEnvironment() {
     dotenv.config({ path: path.join(projectRoot, ".env") });
-    dotenv.config({ path: path.join(projectRoot, ".env.local"), override: true });
+    dotenv.config({ path: path.join(projectRoot, ".local.env"), override: true });
 }
 
 async function findResourceFiles(dirPath) {
