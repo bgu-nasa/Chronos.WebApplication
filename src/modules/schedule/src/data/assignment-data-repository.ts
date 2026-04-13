@@ -49,14 +49,30 @@ export class AssignmentDataRepository {
     }
 
     /**
-     * Fetch all assignments
+     * Fetch all assignments with optional filters
+     * @param filters - Optional query filters
      * @returns Array of all assignments
      */
-    async getAllAssignments(): Promise<AssignmentResponse[]> {
-        const response = await $app.ajax.get<AssignmentResponse[]>(
-            `/api/schedule/scheduling/assignments`,
-            { headers: this.getHeaders() }
-        );
+    async getAllAssignments(filters?: {
+        slotId?: string;
+        resourceId?: string;
+        activityId?: string;
+        assignedUserId?: string;
+        schedulingPeriodId?: string;
+    }): Promise<AssignmentResponse[]> {
+        const params = new URLSearchParams();
+        if (filters?.slotId) params.append("slotId", filters.slotId);
+        if (filters?.resourceId) params.append("resourceId", filters.resourceId);
+        if (filters?.activityId) params.append("activityId", filters.activityId);
+        if (filters?.assignedUserId) params.append("assignedUserId", filters.assignedUserId);
+        if (filters?.schedulingPeriodId) params.append("schedulingPeriodId", filters.schedulingPeriodId);
+
+        const query = params.toString();
+        const url = `/api/schedule/scheduling/assignments${query ? `?${query}` : ""}`;
+
+        const response = await $app.ajax.get<AssignmentResponse[]>(url, {
+            headers: this.getHeaders(),
+        });
         return response;
     }
 
