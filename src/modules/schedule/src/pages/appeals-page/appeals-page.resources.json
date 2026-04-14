@@ -1,0 +1,20 @@
+{
+    "title": "Appeals",
+    "emptyStateMessage": "No appeals found.",
+    "titleColumn": "Title",
+    "descriptionColumn": "Description",
+    "dayColumn": "Day",
+    "timeColumn": "Time",
+    "activityColumn": "Activity",
+    "resourceColumn": "Resource",
+    "viewButton": "View",
+    "viewModalTitle": "Appeal Details",
+    "assignmentDetailsLabel": "Assignment Info",
+    "dismissButton": "Dismiss",
+    "dismissConfirmTitle": "Dismiss Appeal",
+    "dismissConfirmMessage": "Are you sure you want to dismiss this appeal? This action cannot be undone.",
+    "dismissConfirmButton": "Dismiss",
+    "dismissCancelButton": "Cancel",
+    "dismissSuccess": "Appeal dismissed successfully",
+    "dismissError": "Failed to dismiss appeal"
+}

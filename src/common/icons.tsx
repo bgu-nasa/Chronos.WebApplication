@@ -21,6 +21,7 @@ import {
 
 // Alert icons
 import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import { HiOutlineAnnotation } from "react-icons/hi";
 
 // Navigation icons
 import { HiChevronLeft, HiChevronRight, HiOutlineMenu } from "react-icons/hi";
@@ -42,6 +43,8 @@ export const ConstraintsIcon = HiOutlineAdjustments;
 export const ResourcesIcon = HiOutlineCollection;
 export const CoursesIcon = HiOutlineBookOpen;
 export const ResourceManagementIcon = HiOutlineOfficeBuilding;
+
+export const AppealsIcon = HiOutlineAnnotation;
 
 // User Menu Icons
 export const SettingsIcon = HiOutlineCog;
