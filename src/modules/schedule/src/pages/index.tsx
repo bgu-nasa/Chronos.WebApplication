@@ -4,3 +4,4 @@ export { ConstraintsPage } from "./constraints-page";
 export { AssignmentsPage } from "./assignments-page";
 export { MyAssignmentsPage } from "./my-assignments-page";
 export { AppealsPage } from "./appeals-page";
+export { MyAppealsPage } from "./my-appeals-page";

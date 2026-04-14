@@ -1,7 +1,7 @@
 import type { ModuleConfig } from "@/infra";
 import React from "react";
 import { CalendarIcon, ScheduleIcon, ConstraintsIcon, CoursesIcon, SchedulingPeriodsIcon, AppealsIcon } from "@/common/icons";
-import { CalendarPage, SchedulingPeriodsPage, ConstraintsPage, AssignmentsPage, MyAssignmentsPage, AppealsPage } from "./src";
+import { CalendarPage, SchedulingPeriodsPage, ConstraintsPage, AssignmentsPage, MyAssignmentsPage, AppealsPage, MyAppealsPage } from "./src";
 
 export const moduleConfig: ModuleConfig = {
     name: "Schedule",
@@ -50,6 +50,12 @@ export const moduleConfig: ModuleConfig = {
             authorize: true,
             element: React.createElement(AppealsPage),
         },
+        {
+            name: "my-appeals",
+            path: "/my-appeals",
+            authorize: true,
+            element: React.createElement(MyAppealsPage),
+        },
     ],
     navigationItems: [
         {
@@ -97,6 +103,16 @@ export const moduleConfig: ModuleConfig = {
                     requiredRoles: [
                         "Viewer",
                         "Operator"
+                    ],
+                },
+                {
+                    label: "My Appeals",
+                    href: "/schedule/my-appeals",
+                    location: "dashboard",
+                    icon: React.createElement(AppealsIcon),
+                    requiredRoles: [
+                        "Viewer",
+                        "Operator",
                     ],
                 },
                 {
