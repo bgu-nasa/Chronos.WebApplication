@@ -1,5 +1,5 @@
 import type { ModuleConfig } from "@/infra";
-import React from "react";
+// import React from "react";
 
 export const moduleConfig: ModuleConfig = {
     name: "agent",
