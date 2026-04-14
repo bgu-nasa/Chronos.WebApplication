@@ -35,6 +35,14 @@ export class AppealDataRepository {
         return response;
     }
 
+    async getAppealsByUser(userId: string): Promise<AppealResponse[]> {
+        const response = await $app.ajax.get<AppealResponse[]>(
+            `/api/schedule/scheduling/users/${userId}/appeals`,
+            { headers: this.getHeaders() }
+        );
+        return response;
+    }
+
     async getAppealsByAssignment(assignmentId: string): Promise<AppealResponse[]> {
         const response = await $app.ajax.get<AppealResponse[]>(
             `/api/schedule/scheduling/assignments/${assignmentId}/appeals`,
