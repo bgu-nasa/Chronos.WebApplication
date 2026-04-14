@@ -1,10 +1,18 @@
 import type { ModuleConfig } from "@/infra";
 import React from "react";
+import { AgentChatPage } from "./src";
 
 export const moduleConfig: ModuleConfig = {
-    name: "agent",
+    name: "Agent",
     owner: "",
     basePath: "/agent",
-    routes: [],
+    routes: [
+        {
+            name: "chat",
+            path: "/chat",
+            authorize: true,
+            element: React.createElement(AgentChatPage),
+        },
+    ],
     navigationItems: [],
 };

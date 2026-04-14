@@ -18,6 +18,7 @@ import {
     HiOutlineBookOpen,
     HiOutlineOfficeBuilding,
 } from "react-icons/hi";
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 
 // Alert icons
 import { HiOutlineExclamationTriangle } from "react-icons/hi2";
@@ -39,6 +40,7 @@ export const AccessControlIcon = HiOutlineLockOpen;
 export const ScheduleIcon = HiOutlineCalendar;
 export const SchedulingPeriodsIcon = HiOutlineCalendar;
 export const CalendarIcon = HiOutlineCalendar;
+export const AgentIcon = HiOutlineChatBubbleLeftRight;
 export const ConstraintsIcon = HiOutlineAdjustments;
 export const ResourcesIcon = HiOutlineCollection;
 export const CoursesIcon = HiOutlineBookOpen;

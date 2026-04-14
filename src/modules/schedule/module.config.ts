@@ -1,6 +1,6 @@
 import type { ModuleConfig } from "@/infra";
 import React from "react";
-import { CalendarIcon, ScheduleIcon, ConstraintsIcon, CoursesIcon, SchedulingPeriodsIcon, AppealsIcon } from "@/common/icons";
+import { CalendarIcon, ScheduleIcon, ConstraintsIcon, CoursesIcon, SchedulingPeriodsIcon, AgentIcon } from "@/common/icons";
 import { CalendarPage, SchedulingPeriodsPage, ConstraintsPage, AssignmentsPage, MyAssignmentsPage, AppealsPage } from "./src";
 
 export const moduleConfig: ModuleConfig = {
@@ -74,13 +74,7 @@ export const moduleConfig: ModuleConfig = {
                     ],
                 },
                 {
-                    label: "Constraints",
-                    href: "/schedule/constraints",
-                    location: "dashboard",
-                    icon: React.createElement(ConstraintsIcon),
-                },
-                {
-                    label: "Manage Assignments",
+                    label: "Assignments",
                     href: "/schedule/assignments",
                     location: "dashboard",
                     icon: React.createElement(SchedulingPeriodsIcon),
@@ -103,10 +97,19 @@ export const moduleConfig: ModuleConfig = {
                     label: "Appeals",
                     href: "/schedule/appeals",
                     location: "dashboard",
-                    icon: React.createElement(AppealsIcon),
-                    requiredRoles: [
-                        "Administrator",
-                    ],
+                    icon: React.createElement(CoursesIcon),
+                },
+                {
+                    label: "Constraints",
+                    href: "/schedule/constraints",
+                    location: "dashboard",
+                    icon: React.createElement(ConstraintsIcon),
+                },
+                {
+                    label: "Agent",
+                    href: "/agent/chat",
+                    location: "dashboard",
+                    icon: React.createElement(AgentIcon),
                 },
             ],
         },
