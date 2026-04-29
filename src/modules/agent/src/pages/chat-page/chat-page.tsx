@@ -1,0 +1,185 @@
+import { useState } from "react";
+import { Divider, Title } from "@mantine/core";
+import { translatedResources } from "@/infra/i18n";
+import { MessageList, ChatInput, ConstraintProposalCard } from "./components";
+import resourcesJson from "./chat-page.resources.json";
+import styles from "./chat-page.module.css";
+
+const resources = translatedResources(
+    "src/modules/agent/src/pages/chat-page/chat-page.resources.json",
+    resourcesJson,
+);
+
+const mockProposal = {
+    hardConstraints: [
+        { key: "avoid_weekday", value: "Friday" },
+        { key: "forbidden_timerange", value: "All days before 08:00" },
+    ],
+    softPreferences: [
+        { key: "preferred_weekdays", value: "Monday, Wednesday" },
+        { key: "preferred_time_morning", value: "true" },
+        { key: "preferred_timerange", value: "Thursday 12:00 - 16:00" },
+    ],
+};
+
+const initialMockMessages = [
+    {
+        role: "agent" as const,
+        content: "Hi! I can help you create scheduling constraints and preferences. Tell me about your scheduling needs.",
+        timestamp: new Date(Date.now() - 600000).toISOString(),
+    },
+    {
+        role: "user" as const,
+        content: "I absolutely cannot work on Fridays. That's my day to recover from the week.",
+        timestamp: new Date(Date.now() - 540000).toISOString(),
+    },
+    {
+        role: "agent" as const,
+        content: "Totally understandable. Fridays are sacred. What about the rest of the week?",
+        timestamp: new Date(Date.now() - 480000).toISOString(),
+    },
+    {
+        role: "user" as const,
+        content: "Mornings on Monday and Wednesday would be great. I'm a morning person... on those days at least.",
+        timestamp: new Date(Date.now() - 420000).toISOString(),
+    },
+    {
+        role: "agent" as const,
+        content: "A selective morning person, I respect that. So Monday and Wednesday mornings are preferred. Anything else?",
+        timestamp: new Date(Date.now() - 360000).toISOString(),
+    },
+    {
+        role: "user" as const,
+        content: "Please nothing before 8:00. I need at least 3 cups of coffee before I can function.",
+        timestamp: new Date(Date.now() - 300000).toISOString(),
+    },
+    {
+        role: "agent" as const,
+        content: "Noted — no slots before 8:00 AM. Coffee-dependent scheduling is my specialty.",
+        timestamp: new Date(Date.now() - 240000).toISOString(),
+    },
+    {
+        role: "user" as const,
+        content: "Also, can you avoid scheduling me in Building 72? The elevator there has been broken since 2019.",
+        timestamp: new Date(Date.now() - 180000).toISOString(),
+    },
+    {
+        role: "agent" as const,
+        content: "I'll do my best, but location preferences are a different feature. For now I can help with time-based constraints and preferences. Let's focus on those!",
+        timestamp: new Date(Date.now() - 120000).toISOString(),
+    },
+    {
+        role: "user" as const,
+        content: "Fine, let's also say I prefer afternoons on Thursday. But only if it's not too late — nothing after 16:00.",
+        timestamp: new Date(Date.now() - 60000).toISOString(),
+    },
+    {
+        role: "agent" as const,
+        content: "Here's what I've gathered from our conversation. Please review:",
+        timestamp: new Date().toISOString(),
+    },
+];
+
+const mockAgentReplies = [
+    "Interesting! I've noted that down. Anything else you'd like to add?",
+    "Sure, I can work with that. Any other preferences?",
+    "Good to know. Is there anything else bothering you about the current schedule?",
+    "Noted! I'm building up a pretty clear picture of your ideal week.",
+    "That makes sense. Let me know when you're ready and I'll summarize everything for you.",
+];
+
+export function ChatPage() {
+    const [messages, setMessages] = useState(initialMockMessages);
+    const [isSending, setIsSending] = useState(false);
+    const [proposal, setProposal] = useState(mockProposal);
+    const [isApproving, setIsApproving] = useState(false);
+
+    const handleSend = (content: string) => {
+        const userMessage = {
+            role: "user" as const,
+            content,
+            timestamp: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, userMessage]);
+        setIsSending(true);
+        setProposal(null!);
+
+        setTimeout(() => {
+            const reply = mockAgentReplies[Math.floor(Math.random() * mockAgentReplies.length)];
+            const agentMessage = {
+                role: "agent" as const,
+                content: reply,
+                timestamp: new Date().toISOString(),
+            };
+            setMessages((prev) => [...prev, agentMessage]);
+            setIsSending(false);
+        }, 3000);
+    };
+
+    const handleApprove = () => {
+        setIsApproving(true);
+        setTimeout(() => {
+            setProposal(null!);
+            setIsApproving(false);
+            const agentMessage = {
+                role: "agent" as const,
+                content: "Your constraints and preferences have been saved. You're all set!",
+                timestamp: new Date().toISOString(),
+            };
+            setMessages((prev) => [...prev, agentMessage]);
+            $app.notifications.showSuccess("Constraints Saved", "Your constraints and preferences have been committed successfully.");
+        }, 1500);
+    };
+
+    const handleRevise = () => {
+        setProposal(null!);
+        const agentMessage = {
+            role: "agent" as const,
+            content: "No problem! What would you like to change?",
+            timestamp: new Date().toISOString(),
+        };
+        setMessages((prev) => [...prev, agentMessage]);
+    };
+
+    return (
+        <div className={styles.chatPageContainer}>
+            <div className={styles.header}>
+                <Title order={2}>{resources.title}</Title>
+                <Divider mt="xs" />
+            </div>
+
+            <div className={styles.messageArea}>
+                <MessageList
+                    messages={messages}
+                    emptyStateMessage={resources.emptyStateMessage}
+                    isTyping={isSending}
+                >
+                    {proposal && (
+                        <ConstraintProposalCard
+                            hardConstraints={proposal.hardConstraints}
+                            softPreferences={proposal.softPreferences}
+                            onApprove={handleApprove}
+                            onRevise={handleRevise}
+                            loading={isApproving}
+                            labels={{
+                                title: resources.proposalTitle,
+                                hardConstraints: resources.hardConstraintsLabel,
+                                softPreferences: resources.softPreferencesLabel,
+                                approve: resources.approveButton,
+                                makeChanges: resources.makeChangesButton,
+                            }}
+                        />
+                    )}
+                </MessageList>
+            </div>
+
+            <div className={styles.inputArea}>
+                <ChatInput
+                    onSend={handleSend}
+                    disabled={isSending || !!proposal}
+                    placeholder={resources.inputPlaceholder}
+                />
+            </div>
+        </div>
+    );
+}

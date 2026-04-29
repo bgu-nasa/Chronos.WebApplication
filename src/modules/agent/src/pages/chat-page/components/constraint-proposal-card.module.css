@@ -1,0 +1,10 @@
+.card {
+    max-width: 500px;
+    margin: var(--mantine-spacing-xs) 0;
+}
+
+@media (max-width: 768px) {
+    .card {
+        max-width: 100%;
+    }
+}
