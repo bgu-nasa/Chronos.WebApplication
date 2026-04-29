@@ -1,4 +1,5 @@
-import { Paper, Text, Badge, Button, Group, Stack, Divider } from "@mantine/core";
+import { Card, Text, Badge, Button, Group, Stack, ThemeIcon } from "@mantine/core";
+import { HiOutlineShieldCheck, HiOutlineStar } from "react-icons/hi";
 import styles from "./constraint-proposal-card.module.css";
 
 interface ProposalItem {
@@ -25,29 +26,36 @@ function ProposalSection({
     title,
     items,
     color,
+    icon,
 }: {
     readonly title: string;
     readonly items: ProposalItem[];
     readonly color: string;
+    readonly icon: React.ReactNode;
 }) {
     if (items.length === 0) return null;
 
     return (
-        <div>
-            <Text fw={600} size="sm" mb="xs">
-                {title}
-            </Text>
-            <Stack gap="xs">
+        <Stack gap="sm">
+            <Group gap="xs">
+                <ThemeIcon variant="light" color={color} size="sm" radius="xl">
+                    {icon}
+                </ThemeIcon>
+                <Text fw={600} size="sm">
+                    {title}
+                </Text>
+            </Group>
+            <Stack gap="xs" pl="calc(var(--mantine-spacing-sm) + 22px)">
                 {items.map((item, index) => (
-                    <Group key={index} gap="sm" wrap="wrap">
-                        <Badge variant="light" color={color} size="lg">
+                    <Group key={index} gap="sm" wrap="wrap" align="center">
+                        <Badge variant="dot" color={color} size="lg">
                             {item.key}
                         </Badge>
-                        <Text size="sm">{item.value}</Text>
+                        <Text size="sm" c="dimmed">{item.value}</Text>
                     </Group>
                 ))}
             </Stack>
-        </div>
+        </Stack>
     );
 }
 
@@ -60,33 +68,42 @@ export function ConstraintProposalCard({
     labels,
 }: ConstraintProposalCardProps) {
     return (
-        <Paper
+        <Card
             className={styles.card}
-            p="md"
-            radius="md"
             withBorder
+            radius="md"
+            padding={0}
+            shadow="sm"
         >
-            <Stack gap="md">
-                <Text fw={700} size="lg">
+            <Card.Section className={styles.titleSection} p="md">
+                <Text fw={700} size="lg" c="white">
                     {labels.title}
                 </Text>
+            </Card.Section>
 
-                <Divider />
+            {hardConstraints.length > 0 && (
+                <Card.Section withBorder p="md">
+                    <ProposalSection
+                        title={labels.hardConstraints}
+                        items={hardConstraints}
+                        color="red"
+                        icon={<HiOutlineShieldCheck size={14} />}
+                    />
+                </Card.Section>
+            )}
 
-                <ProposalSection
-                    title={labels.hardConstraints}
-                    items={hardConstraints}
-                    color="red"
-                />
+            {softPreferences.length > 0 && (
+                <Card.Section withBorder p="md">
+                    <ProposalSection
+                        title={labels.softPreferences}
+                        items={softPreferences}
+                        color="blue"
+                        icon={<HiOutlineStar size={14} />}
+                    />
+                </Card.Section>
+            )}
 
-                <ProposalSection
-                    title={labels.softPreferences}
-                    items={softPreferences}
-                    color="blue"
-                />
-
-                <Divider />
-
+            <Card.Section p="md">
                 <Group justify="flex-end" gap="sm">
                     <Button
                         variant="outline"
@@ -102,7 +119,7 @@ export function ConstraintProposalCard({
                         {labels.approve}
                     </Button>
                 </Group>
-            </Stack>
-        </Paper>
+            </Card.Section>
+        </Card>
     );
 }
