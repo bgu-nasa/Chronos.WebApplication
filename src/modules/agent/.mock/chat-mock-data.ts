@@ -1,12 +1,12 @@
 export const mockProposal = {
     hardConstraints: [
-        { key: "avoid_weekday", value: "Friday" },
-        { key: "forbidden_timerange", value: "All days before 08:00" },
+        { id: "c1a2b3c4-0001-4000-a000-000000000001", key: "avoid_weekday", value: "Friday" },
+        { id: "c1a2b3c4-0001-4000-a000-000000000002", key: "forbidden_timerange", value: "All days before 08:00" },
     ],
     softPreferences: [
-        { key: "preferred_weekdays", value: "Monday, Wednesday" },
-        { key: "preferred_time_morning", value: "true" },
-        { key: "preferred_timerange", value: "Thursday 12:00 - 16:00" },
+        { id: "p1a2b3c4-0001-4000-a000-000000000001", key: "preferred_weekdays", value: "Monday, Wednesday" },
+        { id: "p1a2b3c4-0001-4000-a000-000000000002", key: "preferred_time_morning", value: "true" },
+        { id: "p1a2b3c4-0001-4000-a000-000000000003", key: "preferred_timerange", value: "Thursday 12:00 - 16:00" },
     ],
 };
 
