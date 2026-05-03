@@ -1,0 +1,22 @@
+.userRow {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-md) var(--mantine-spacing-xs) 0;
+}
+
+.agentRow {
+    display: flex;
+    justify-content: flex-start;
+    padding: var(--mantine-spacing-xs) 0 var(--mantine-spacing-xs) var(--mantine-spacing-md);
+}
+
+.bubble {
+    max-width: 70%;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .bubble {
+        max-width: 85%;
+    }
+}

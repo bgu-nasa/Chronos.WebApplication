@@ -1,0 +1,11 @@
+{
+    "title": "Assistant",
+    "inputPlaceholder": "Type your message...",
+    "sendButton": "Send",
+    "proposalTitle": "Proposed Constraints",
+    "hardConstraintsLabel": "Hard Constraints",
+    "softPreferencesLabel": "Soft Preferences",
+    "approveButton": "Approve",
+    "makeChangesButton": "Make Changes",
+    "emptyStateMessage": "Start a conversation to create constraints with AI."
+}
