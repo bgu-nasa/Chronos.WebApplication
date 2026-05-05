@@ -26,13 +26,12 @@ interface AgentStore {
 }
 
 function applyResponse(response: AgentSessionResponse, get: () => AgentStore): Partial<AgentStore> {
-    const agentMessage: ChatMessage = {
-        role: "agent",
-        content: response.assistantMessage,
-        timestamp: new Date().toISOString(),
-    };
+    const messages = response.assistantMessage
+        ? [...get().messages, { role: "agent" as const, content: response.assistantMessage, timestamp: new Date().toISOString() }]
+        : get().messages;
+
     return {
-        messages: [...get().messages, agentMessage],
+        messages,
         state: response.state,
         draft: response.draft,
         allowedActions: response.allowedActions,

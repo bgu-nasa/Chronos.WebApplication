@@ -86,7 +86,7 @@ export function ChatPage() {
                     emptyStateMessage={resources.emptyStateMessage}
                     isTyping={isSending}
                 >
-                    {draft && (
+                    {draft && state === "Submit" && (
                         <ConstraintProposalCard
                             hardConstraints={draft.hardConstraints}
                             softPreferences={draft.softPreferences}
