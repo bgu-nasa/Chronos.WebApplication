@@ -1,53 +1,68 @@
-/**
- * Agent Store
- * Zustand store for agent chat state management
- */
-
 import { create } from "zustand";
 import { agentDataRepository } from "@/modules/agent/src/data";
 import type {
+    AgentAction,
+    AgentSessionResponse,
+    AgentState,
     ChatMessage,
-    ConstraintProposal,
+    DraftResponse,
 } from "@/modules/agent/src/data";
 
 interface AgentStore {
     sessionId: string | null;
     messages: ChatMessage[];
-    proposal: ConstraintProposal | null;
+    state: AgentState | null;
+    draft: DraftResponse | null;
+    allowedActions: AgentAction[];
     isLoading: boolean;
     isSending: boolean;
-    error: string | null;
 
-    createSession: () => Promise<void>;
+    createSession: (schedulingPeriodId: string) => Promise<void>;
     sendMessage: (content: string) => Promise<void>;
+    requestSubmit: () => Promise<void>;
     approveProposal: () => Promise<void>;
     requestRevision: () => Promise<void>;
     resetSession: () => void;
 }
 
+function applyResponse(response: AgentSessionResponse, get: () => AgentStore): Partial<AgentStore> {
+    const agentMessage: ChatMessage = {
+        role: "agent",
+        content: response.assistantMessage,
+        timestamp: new Date().toISOString(),
+    };
+    return {
+        messages: [...get().messages, agentMessage],
+        state: response.state,
+        draft: response.draft,
+        allowedActions: response.allowedActions,
+    };
+}
+
 export const useAgentStore = create<AgentStore>((set, get) => ({
     sessionId: null,
     messages: [],
-    proposal: null,
+    state: null,
+    draft: null,
+    allowedActions: [],
     isLoading: false,
     isSending: false,
-    error: null,
 
-    createSession: async () => {
-        set({ isLoading: true, error: null });
+    createSession: async (schedulingPeriodId: string) => {
+        set({ isLoading: true });
         try {
-            const response = await agentDataRepository.createSession();
+            const { sessionId } = await agentDataRepository.createSession({ schedulingPeriodId });
             set({
-                sessionId: response.sessionId,
-                messages: response.messages,
-                proposal: response.proposal,
+                sessionId,
+                state: "Discovery",
+                allowedActions: ["ContinueConversation", "Submit"],
                 isLoading: false,
             });
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to start conversation";
-            set({ error: errorMessage, isLoading: false });
+            const msg = err instanceof Error ? err.message : "Failed to start conversation";
+            set({ isLoading: false });
             $app.logger.error("[AgentStore] Error creating session", err);
-            $app.notifications.showError(errorMessage);
+            $app.notifications.showError(msg);
         }
     },
 
@@ -60,20 +75,32 @@ export const useAgentStore = create<AgentStore>((set, get) => ({
             content,
             timestamp: new Date().toISOString(),
         };
-        set({ messages: [...messages, userMessage], isSending: true, error: null });
+        set({ messages: [...messages, userMessage], isSending: true });
 
         try {
-            const response = await agentDataRepository.sendMessage(sessionId, { content });
-            set({
-                messages: response.messages,
-                proposal: response.proposal,
-                isSending: false,
-            });
+            const response = await agentDataRepository.sendMessage(sessionId, { message: content });
+            set({ ...applyResponse(response, get), isSending: false });
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to send message";
-            set({ error: errorMessage, isSending: false });
+            const msg = err instanceof Error ? err.message : "Failed to send message";
+            set({ isSending: false });
             $app.logger.error("[AgentStore] Error sending message", err);
-            $app.notifications.showError(errorMessage);
+            $app.notifications.showError(msg);
+        }
+    },
+
+    requestSubmit: async () => {
+        const { sessionId } = get();
+        if (!sessionId) return;
+
+        set({ isLoading: true });
+        try {
+            const response = await agentDataRepository.requestSubmit(sessionId);
+            set({ ...applyResponse(response, get), isLoading: false });
+        } catch (err) {
+            const msg = err instanceof Error ? err.message : "Failed to generate proposal";
+            set({ isLoading: false });
+            $app.logger.error("[AgentStore] Error requesting submit", err);
+            $app.notifications.showError(msg);
         }
     },
 
@@ -81,20 +108,16 @@ export const useAgentStore = create<AgentStore>((set, get) => ({
         const { sessionId } = get();
         if (!sessionId) return;
 
-        set({ isLoading: true, error: null });
+        set({ isLoading: true });
         try {
             const response = await agentDataRepository.approveProposal(sessionId);
-            set({
-                messages: response.messages,
-                proposal: response.proposal,
-                isLoading: false,
-            });
+            set({ ...applyResponse(response, get), isLoading: false });
             $app.notifications.showSuccess("Constraints saved successfully");
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to approve proposal";
-            set({ error: errorMessage, isLoading: false });
+            const msg = err instanceof Error ? err.message : "Failed to approve proposal";
+            set({ isLoading: false });
             $app.logger.error("[AgentStore] Error approving proposal", err);
-            $app.notifications.showError(errorMessage);
+            $app.notifications.showError(msg);
         }
     },
 
@@ -102,28 +125,25 @@ export const useAgentStore = create<AgentStore>((set, get) => ({
         const { sessionId } = get();
         if (!sessionId) return;
 
-        set({ isLoading: true, error: null });
+        set({ isLoading: true });
         try {
             const response = await agentDataRepository.requestRevision(sessionId);
-            set({
-                messages: response.messages,
-                proposal: response.proposal,
-                isLoading: false,
-            });
+            set({ ...applyResponse(response, get), isLoading: false });
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Failed to request revision";
-            set({ error: errorMessage, isLoading: false });
+            const msg = err instanceof Error ? err.message : "Failed to request revision";
+            set({ isLoading: false });
             $app.logger.error("[AgentStore] Error requesting revision", err);
-            $app.notifications.showError(errorMessage);
+            $app.notifications.showError(msg);
         }
     },
 
     resetSession: () => set({
         sessionId: null,
         messages: [],
-        proposal: null,
+        state: null,
+        draft: null,
+        allowedActions: [],
         isLoading: false,
         isSending: false,
-        error: null,
     }),
 }));
