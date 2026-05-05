@@ -2,6 +2,7 @@
     "title": "Assistant",
     "inputPlaceholder": "Type your message...",
     "sendButton": "Send",
+    "generateProposalButton": "Generate Proposal",
     "proposalTitle": "Proposed Constraints",
     "hardConstraintsLabel": "Hard Constraints",
     "softPreferencesLabel": "Soft Preferences",

@@ -18,11 +18,13 @@ export function ChatPage() {
         isSending,
         isLoading,
         sendMessage,
+        requestSubmit,
         approveProposal,
         requestRevision,
     } = useAgent();
 
     const canChat = allowedActions.includes("ContinueConversation");
+    const canSubmit = allowedActions.includes("Submit");
     const inputDisabled = !canChat || isSending || isLoading;
 
     return (
@@ -60,8 +62,12 @@ export function ChatPage() {
             <div className={styles.inputArea}>
                 <ChatInput
                     onSend={sendMessage}
+                    onRequestSubmit={requestSubmit}
                     disabled={inputDisabled}
+                    submitEnabled={canSubmit && !isSending && !isLoading}
+                    submitLoading={isLoading}
                     placeholder={resources.inputPlaceholder}
+                    submitLabel={resources.generateProposalButton}
                 />
             </div>
         </div>
