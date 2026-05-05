@@ -1,10 +1,12 @@
-/**
- * Agent chat data types
- * Matches the backend Chronos.Agent conversation contracts
- */
+/** FSM states from Chronos.Agent.Conversation.AgentState */
+export type AgentState = "Discovery" | "Drafting" | "Submit" | "Revision" | "Approved";
+
+/** User-facing actions from Chronos.Agent.Conversation.AgentAction */
+export type AgentAction = "ContinueConversation" | "Submit" | "Approve" | "Revise";
 
 /**
- * A single chat message in the conversation
+ * A single chat message in the conversation.
+ * Maintained locally by the frontend — the backend only returns the latest assistant reply.
  */
 export interface ChatMessage {
     role: "user" | "agent";
@@ -12,35 +14,36 @@ export interface ChatMessage {
     timestamp: string;
 }
 
-/**
- * A single item in a constraint/preference proposal
- */
-export interface ProposalItem {
+/** Maps to Chronos.MainApi.Agent.Contracts.DraftItemResponse */
+export interface DraftItemResponse {
     key: string;
     value: string;
 }
 
-/**
- * The agent's structured constraint/preference proposal
- * Presented to the user for approval when the agent has extracted enough information
- */
-export interface ConstraintProposal {
-    hardConstraints: ProposalItem[];
-    softPreferences: ProposalItem[];
+/** Maps to Chronos.MainApi.Agent.Contracts.DraftResponse */
+export interface DraftResponse {
+    hardConstraints: DraftItemResponse[];
+    softPreferences: DraftItemResponse[];
 }
 
 /**
- * Response shape returned by the backend on every interaction
+ * Response returned by the backend on every agent interaction
+ * (sendMessage, requestSubmit, approve, revise).
  */
-export interface AgentResponse {
+export interface AgentSessionResponse {
     sessionId: string;
-    messages: ChatMessage[];
-    proposal: ConstraintProposal | null;
+    state: AgentState;
+    assistantMessage: string;
+    draft: DraftResponse | null;
+    allowedActions: AgentAction[];
 }
 
-/**
- * Request body for sending a message to the agent
- */
+/** Body for POST /api/agent/sessions */
+export interface StartSessionRequest {
+    schedulingPeriodId: string;
+}
+
+/** Body for POST /api/agent/sessions/{id}/messages */
 export interface SendMessageRequest {
-    content: string;
+    message: string;
 }
