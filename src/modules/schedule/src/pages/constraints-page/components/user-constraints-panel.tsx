@@ -9,6 +9,7 @@ import {
     useUserPreferences,
     useSchedulingPeriods
 } from "@/modules/schedule/src/hooks";
+import { AgentEntryButton } from "@/modules/agent/src/components";
 
 import { UserConstraintEditor } from "./user-constraint-editor.tsx";
 import { formatConstraintValueForDisplay } from "../utils";
@@ -203,6 +204,16 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
                     <Button variant="outline" onClick={() => handleCreate(true)}>
                         {resources.createPreferenceButton}
                     </Button>
+                    <AgentEntryButton
+                        label={resources.createWithAIButton}
+                        modalLabels={{
+                            title: resources.spModalTitle,
+                            selectLabel: resources.labels.schedulingPeriod,
+                            selectPlaceholder: resources.placeholders.selectSchedulingPeriod,
+                            confirm: resources.spModalConfirm,
+                            cancel: resources.cancelButton,
+                        }}
+                    />
                 </div>
                 {isLoading && <Loader size="xs" />}
             </div>
