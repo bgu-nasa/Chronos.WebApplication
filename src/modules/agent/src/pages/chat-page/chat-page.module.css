@@ -1,0 +1,34 @@
+.chatPageContainer {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+    padding: var(--mantine-spacing-md);
+    overflow: hidden;
+}
+
+.header {
+    flex-shrink: 0;
+    margin-bottom: var(--mantine-spacing-sm);
+}
+
+.messageArea {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding-right: 0;
+}
+
+.inputArea {
+    flex-shrink: 0;
+    padding-top: var(--mantine-spacing-sm);
+}
+
+@media (max-width: 768px) {
+    .chatPageContainer {
+        padding: var(--mantine-spacing-xs);
+    }
+
+    .header {
+        margin-bottom: var(--mantine-spacing-xs);
+    }
+}
