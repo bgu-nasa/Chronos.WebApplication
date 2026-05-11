@@ -3,7 +3,6 @@ import { HiOutlineShieldCheck, HiOutlineStar } from "react-icons/hi";
 import styles from "./constraint-proposal-card.module.css";
 
 interface ProposalItem {
-    id: string;
     key: string;
     value: string;
 }
@@ -47,8 +46,8 @@ function ProposalSection({
                 </Text>
             </Group>
             <Stack gap="xs" pl="calc(var(--mantine-spacing-sm) + 22px)">
-                {items.map((item) => (
-                    <Group key={item.id} gap="sm" wrap="wrap" align="center">
+                {items.map((item, index) => (
+                    <Group key={index} gap="sm" wrap="wrap" align="center">
                         <Badge variant="dot" color={color} size="lg">
                             {item.key}
                         </Badge>
