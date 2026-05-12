@@ -127,7 +127,6 @@ export function ActivitiesPage() {
         }
 
         const request: CreateActivityRequest = {
-            id: crypto.randomUUID(),
             organizationId: org.id,
             subjectId: subjectId,
             assignedUserId: data.assignedUserId || "",

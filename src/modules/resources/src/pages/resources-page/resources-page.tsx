@@ -107,7 +107,6 @@ export function ResourcesPage() {
         }
 
         const request = {
-            id: crypto.randomUUID(),
             organizationId: org.id,
             resourceTypeId: data.resourceTypeId,
             location: data.location,
@@ -322,7 +321,6 @@ export function ResourcesPage() {
         $app.logger.info("[ResourcesPage] Organization from context:", org);
 
         const request = {
-            id: crypto.randomUUID(),
             organizationId: org?.id!,
             title: data.title,
             description: data.description,

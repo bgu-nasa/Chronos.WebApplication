@@ -17,9 +17,9 @@ export interface SubjectResponse {
 
 /**
  * Subject creation request contract for API
+ * Note: Backend generates the ID automatically
  */
 export interface CreateSubjectRequest {
-    id: string; // Guid from C#
     organizationId: string; // Guid from C#
     departmentId: string; // Guid from C#
     schedulingPeriodId: string; // Guid from C#
