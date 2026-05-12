@@ -1,5 +1,5 @@
 import { useState, type KeyboardEvent } from "react";
-import { Textarea, ActionIcon, Button, Group } from "@mantine/core";
+import { Textarea, ActionIcon, Button, Group, Flex } from "@mantine/core";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 
 interface ChatInputProps {
@@ -38,7 +38,11 @@ export function ChatInput({
     };
 
     return (
-        <Group gap="xs" align="flex-end">
+        <Flex
+            gap="xs"
+            align={{ base: "stretch", sm: "flex-end" }}
+            direction={{ base: "column", sm: "row" }}
+        >
             <Textarea
                 style={{ flex: 1 }}
                 placeholder={placeholder}
@@ -50,22 +54,24 @@ export function ChatInput({
                 minRows={1}
                 maxRows={4}
             />
-            <ActionIcon
-                size="lg"
-                variant="filled"
-                onClick={handleSend}
-                disabled={disabled || !value.trim()}
-            >
-                <HiOutlinePaperAirplane size={18} />
-            </ActionIcon>
-            <Button
-                variant="light"
-                onClick={onRequestSubmit}
-                disabled={!submitEnabled}
-                loading={submitLoading}
-            >
-                {submitLabel}
-            </Button>
-        </Group>
+            <Group gap="xs" justify="flex-end">
+                <ActionIcon
+                    size="lg"
+                    variant="filled"
+                    onClick={handleSend}
+                    disabled={disabled || !value.trim()}
+                >
+                    <HiOutlinePaperAirplane size={18} />
+                </ActionIcon>
+                <Button
+                    variant="light"
+                    onClick={onRequestSubmit}
+                    disabled={!submitEnabled}
+                    loading={submitLoading}
+                >
+                    {submitLabel}
+                </Button>
+            </Group>
+        </Flex>
     );
 }
