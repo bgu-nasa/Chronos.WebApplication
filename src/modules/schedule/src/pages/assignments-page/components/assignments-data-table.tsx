@@ -7,6 +7,7 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resources from "../assignments-page.resources.json";
 
 interface AssignmentRow {
@@ -45,19 +46,21 @@ export function AssignmentsDataTable({
         [resourceList]
     );
 
-    const formatTime = (time: string) => {
-        const parts = time.split(":");
-        return `${parts[0]}:${parts[1]}`;
-    };
-
     const rows: AssignmentRow[] = useMemo(() => {
         return assignments.map((a) => {
             const slot = slotMap.get(a.slotId);
             const activity = activityMap.get(a.activityId);
             const resourceDisplay = resourceMap.get(a.resourceId) || a.resourceId;
             const activityDisplay = activity?.displayLabel || a.activityId;
-            const day = slot?.weekday || "—";
-            const time = slot ? `${formatTime(slot.fromTime)} - ${formatTime(slot.toTime)}` : "—";
+            let day = "—";
+            let time = "—";
+            if (slot) {
+                const fromTime = slot.fromTime.split(":").slice(0, 2).join(":");
+                const toTime = slot.toTime.split(":").slice(0, 2).join(":");
+                const local = convertSlotUtcToLocal(slot.weekday, fromTime, toTime)[0];
+                day = local.weekday;
+                time = `${local.fromTime} - ${local.toTime}`;
+            }
 
             return {
                 id: a.id,
