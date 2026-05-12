@@ -29,6 +29,6 @@
     "batchAssignmentConfirmTitle": "Run Batch Assignment",
     "batchAssignmentConfirmMessage": "This will delete all current assignments in this semester, then run batch scheduling to create new assignments. This cannot be undone. Continue?",
     "batchAssignmentConfirmButton": "Run Batch",
-    "batchAssignmentSuccess": "Batch assignment has been submitted successfully. Assignments will be created shortly.",
+    "batchAssignmentSuccess": "Batch scheduling has been queued. You will get a notification when it finishes.",
     "batchAssignmentFailed": "Failed to submit batch assignment."
 }
