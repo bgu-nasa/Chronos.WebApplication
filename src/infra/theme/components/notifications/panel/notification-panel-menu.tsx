@@ -1,5 +1,6 @@
 /**
- * Bell + menu listing notification history from $app.notifications (via notification-panel store).
+ * Bell + menu for notification history, and scheduling completion realtime (SignalR).
+ * Layout shells should only mount this component—hub/session logic lives here.
  */
 
 import {
@@ -12,6 +13,7 @@ import {
 } from "@mantine/core";
 import { FaBell } from "react-icons/fa";
 import { useNotificationPanelStore } from "./notification-panel.store";
+import { SchedulingHubConnector } from "../scheduling-hub";
 
 function typeColor(type: string): string | undefined {
     switch (type) {
@@ -29,6 +31,15 @@ function typeColor(type: string): string | undefined {
 }
 
 export function NotificationPanelMenu() {
+    return (
+        <>
+            <SchedulingHubConnector />
+            <NotificationPanelMenuContent />
+        </>
+    );
+}
+
+function NotificationPanelMenuContent() {
     const entries = useNotificationPanelStore((s) => s.entries);
     const removeEntry = useNotificationPanelStore((s) => s.removeEntry);
     const clearEntries = useNotificationPanelStore((s) => s.clearEntries);

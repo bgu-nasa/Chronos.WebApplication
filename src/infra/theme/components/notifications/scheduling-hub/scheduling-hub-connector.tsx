@@ -4,7 +4,7 @@ import { connectSchedulingHubForSession } from "./use-scheduling-hub-connection"
 
 /**
  * Renders nothing. Mounts the scheduling → notification pipeline when the user is
- * authenticated (same lifetime as the root notification provider).
+ * authenticated. Colocated with the notification bell so hub lifetime matches that UI.
  */
 export function SchedulingHubConnector() {
     const authed = $app.isAuthenticated();

@@ -4,13 +4,7 @@
  */
 
 import { NotificationList } from "./notification-list.tsx";
-import { SchedulingHubConnector } from "@/infra/theme/components/notifications/scheduling-hub";
 
 export function NotificationProvider() {
-    return (
-        <>
-            <SchedulingHubConnector />
-            <NotificationList />
-        </>
-    );
+    return <NotificationList />;
 }
