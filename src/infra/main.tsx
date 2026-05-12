@@ -8,7 +8,6 @@ import { theme } from "./theme";
 import { useLocaleStore, useThemeStore } from "./theme/state";
 import { i18n, initializeI18n } from "./i18n";
 import App from "./App";
-import { NotificationProvider } from "./service";
 import "@mantine/core/styles.css";
 import "primereact/resources/primereact.min.css";
 import "./theme/primereact-overrides.css";
@@ -55,7 +54,6 @@ const ThemedApp = () => {
             <PrimeReactProvider>
                 <BrowserRouter>
                     <App />
-                    <NotificationProvider />
                 </BrowserRouter>
             </PrimeReactProvider>
         </MantineProvider>
