@@ -1,6 +1,7 @@
 /**
  * Bell + menu for notification history, and scheduling completion realtime (SignalR).
- * Usually mounted via NotificationPanelAnchor from the root notification provider.
+ * Mount in the shell header (or another authenticated chrome) for correct alignment;
+ * hub/session logic stays in this module.
  */
 
 import {
