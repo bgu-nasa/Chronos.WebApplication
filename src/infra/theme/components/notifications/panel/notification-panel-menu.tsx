@@ -1,6 +1,6 @@
 /**
  * Bell + menu for notification history, and scheduling completion realtime (SignalR).
- * Layout shells should only mount this component—hub/session logic lives here.
+ * Usually mounted via NotificationPanelAnchor from the root notification provider.
  */
 
 import {
