@@ -1,6 +1,6 @@
 /**
  * Constraint type definitions
- * Defines types for user constraints, preferences, activity constraints, and organization policies
+ * Defines types for user constraints, preferences, and activity constraints
  */
 
 // ============================================================================
@@ -81,25 +81,3 @@ export interface UpdateActivityConstraintRequest {
     value: string;
 }
 
-// ============================================================================
-// Organization Policy
-// ============================================================================
-
-export interface OrganizationPolicyResponse {
-    id: string;
-    organizationId: string;
-    schedulingPeriodId: string;
-    key: string;
-    value: string;
-}
-
-export interface CreateOrganizationPolicyRequest {
-    schedulingPeriodId: string;
-    key: string;
-    value: string;
-}
-
-export interface UpdateOrganizationPolicyRequest {
-    key: string;
-    value: string;
-}

@@ -80,25 +80,3 @@ export function useActivityConstraints() {
     };
 }
 
-/**
- * Hook for organization policies management
- */
-export function useOrganizationPolicies() {
-    const organizationPolicies = useConstraintStore((state) => state.organizationPolicies);
-    const isLoading = useConstraintStore((state) => state.isLoading);
-    const error = useConstraintStore((state) => state.error);
-    const fetchOrganizationPolicies = useConstraintStore((state) => state.fetchOrganizationPolicies);
-    const createOrganizationPolicy = useConstraintStore((state) => state.createOrganizationPolicy);
-    const updateOrganizationPolicy = useConstraintStore((state) => state.updateOrganizationPolicy);
-    const deleteOrganizationPolicy = useConstraintStore((state) => state.deleteOrganizationPolicy);
-
-    return {
-        organizationPolicies,
-        isLoading,
-        error,
-        fetchOrganizationPolicies,
-        createOrganizationPolicy,
-        updateOrganizationPolicy,
-        deleteOrganizationPolicy,
-    };
-}
