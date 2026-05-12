@@ -13,9 +13,6 @@ import type {
     ActivityConstraintResponse,
     CreateActivityConstraintRequest,
     UpdateActivityConstraintRequest,
-    OrganizationPolicyResponse,
-    CreateOrganizationPolicyRequest,
-    UpdateOrganizationPolicyRequest,
 } from "./constraints.types";
 
 /**
@@ -346,86 +343,6 @@ export class ConstraintDataRepository {
         }
     }
 
-    // ========================================================================
-    // Organization Policies
-    // ========================================================================
-
-    /**
-     * Fetch all organization policies for the current organization
-     */
-    async getAllOrganizationPolicies(): Promise<OrganizationPolicyResponse[]> {
-        const url = "/api/schedule/constraints/policy";
-        const headers = this.getHeaders();
-
-        $app.logger.info("[ConstraintDataRepository] Fetching all organization policies:", { url, headers });
-
-        try {
-            const response = await $app.ajax.get<OrganizationPolicyResponse[]>(url, { headers });
-            $app.logger.info("[ConstraintDataRepository] Fetched organization policies:", response.length);
-            return response;
-        } catch (error) {
-            $app.logger.error("[ConstraintDataRepository] Fetch organization policies failed:", error);
-            throw error;
-        }
-    }
-
-    /**
-     * Create a new organization policy
-     */
-    async createOrganizationPolicy(request: CreateOrganizationPolicyRequest): Promise<OrganizationPolicyResponse> {
-        const url = "/api/schedule/constraints/policy";
-        const headers = this.getHeaders();
-
-        $app.logger.info("[ConstraintDataRepository] Creating organization policy:", { url, headers, request });
-
-        try {
-            const response = await $app.ajax.post<OrganizationPolicyResponse>(url, request, { headers });
-            $app.logger.info("[ConstraintDataRepository] Create organization policy response:", response);
-            return response;
-        } catch (error) {
-            $app.logger.error("[ConstraintDataRepository] Create organization policy failed:", error);
-            throw error;
-        }
-    }
-
-    /**
-     * Update an existing organization policy
-     */
-    async updateOrganizationPolicy(
-        policyId: string,
-        request: UpdateOrganizationPolicyRequest
-    ): Promise<void> {
-        const url = `/api/schedule/constraints/policy/${policyId}`;
-        const headers = this.getHeaders();
-
-        $app.logger.info("[ConstraintDataRepository] Updating organization policy:", { url, headers, request });
-
-        try {
-            await $app.ajax.patch<void>(url, request, { headers });
-            $app.logger.info("[ConstraintDataRepository] Update organization policy successful");
-        } catch (error) {
-            $app.logger.error("[ConstraintDataRepository] Update organization policy failed:", error);
-            throw error;
-        }
-    }
-
-    /**
-     * Delete an organization policy
-     */
-    async deleteOrganizationPolicy(policyId: string): Promise<void> {
-        const url = `/api/schedule/constraints/policy/${policyId}`;
-        const headers = this.getHeaders();
-
-        $app.logger.info("[ConstraintDataRepository] Deleting organization policy:", { url, headers });
-
-        try {
-            await $app.ajax.delete<void>(url, { headers });
-            $app.logger.info("[ConstraintDataRepository] Delete organization policy successful");
-        } catch (error) {
-            $app.logger.error("[ConstraintDataRepository] Delete organization policy failed:", error);
-            throw error;
-        }
-    }
 }
 
 // Export singleton instance

@@ -8,15 +8,10 @@
         "activity": {
             "value": "פעילות",
             "label": "מגבלות פעילות"
-        },
-        "organization": {
-            "value": "ארגון",
-            "label": "מדיניות הארגון"
         }
     },
     "userConstraintsTab": "מגבלות / העדפות משתמש",
     "activityConstraintsTab": "מגבלות פעילות",
-    "organizationConstraintsTab": "מגבלות ארגון",
     "createConstraintButton": "יצירת אילוץ",
     "createPreferenceButton": "יצירת העדפה",
     "createButton": "יצור",
@@ -70,13 +65,11 @@
         "selectConstraintType": "בחירת סוג אילוץ",
         "keyExamples": {
             "user": "לדוגמה, preferred_time, max_hours_per_day",
-            "activity": "לדוגמה, required_room_type, max_students",
-            "organization": "למשל, max_daily_hours, min_break_time"
+            "activity": "לדוגמה, required_room_type, max_students"
         },
         "valueExamples": {
             "user": "לדוגמה, 09:00-12:00, 8",
-            "activity": "לדוגמה, מעבדה, 30",
-            "organization": "לדוגמה, 8, 30"
+            "activity": "לדוגמה, מעבדה, 30"
         }
     },
     "modalTitles": {
@@ -85,9 +78,7 @@
         "createUserPreference": "יצירת העדפת משתמש",
         "editUserPreference": "עריכה: העדפת משתמש",
         "createActivityConstraint": "יצירת מגבלת פעילות",
-        "editActivityConstraint": "עריכת מגבלת פעילות",
-        "createOrganizationPolicy": "מדיניות יצירת ארגון",
-        "editOrganizationPolicy": "עריכת מדיניות הארגון"
+        "editActivityConstraint": "עריכת מגבלת פעילות"
     },
     "validationMessages": {
         "userRequired": "משתמש נדרש",
@@ -169,16 +160,13 @@
         "deleteConstraint": "מחיקת אילוץ",
         "deletePreference": "מחיקת העדפה",
         "deleteActivityConstraint": "מחיקת מגבלת פעילות",
-        "deleteOrganizationPolicy": "מדיניות מחיקת ארגון",
         "confirmDeleteConstraint": "אתה בטוח שאתה רוצה למחוק את ההגבלה הזו?",
         "confirmDeletePreference": "אתה בטוח שאתה רוצה למחוק את ההעדפה הזו?",
-        "confirmDeleteActivityConstraint": "אתה בטוח שאתה רוצה למחוק את מגבלת הפעילות הזו?",
-        "confirmDeleteOrganizationPolicy": "אתה בטוח שאתה רוצה למחוק את מדיניות הארגון הזו?"
+        "confirmDeleteActivityConstraint": "אתה בטוח שאתה רוצה למחוק את מגבלת הפעילות הזו?"
     },
     "emptyStateMessages": {
         "noConstraintsOrPreferences": "לא נמצאו מגבלות או העדפות.",
-        "noActivityConstraints": "לא נמצאו מגבלות פעילות.",
-        "noOrganizationPolicies": "לא נמצאה מדיניות ארגון."
+        "noActivityConstraints": "לא נמצאו מגבלות פעילות."
     },
     "constraintTypes": {
         "constraint": "אילוץ",
@@ -206,8 +194,7 @@
     },
     "errorMessages": {
         "saveUserConstraint": "מגבלת המשתמש לשמירת שגיאות:",
-        "saveActivityConstraint": "אילוץ פעילות לשמירת שגיאה:",
-        "saveOrganizationPolicy": "מדיניות ארגון שמירת שגיאות:"
+        "saveActivityConstraint": "אילוץ פעילות לשמירת שגיאה:"
     },
     "notifications": {
         "userConstraints": {
@@ -231,17 +218,6 @@
             "createdMessage": "מגבלת הפעילות נוצרה בהצלחה",
             "failedToDelete": "נכשל למחוק",
             "failedToSaveConstraint": "לא הצלחתי לשמור מגבלה",
-            "unexpectedError": "אירעה שגיאה בלתי צפויה"
-        },
-        "organizationPolicies": {
-            "deleted": "נמחק",
-            "deletedMessage": "מדיניות הארגון נמחקה בהצלחה",
-            "updated": "מדיניות מעודכנת",
-            "created": "מדיניות שנוצרה",
-            "updatedMessage": "מדיניות הארגון עודכנה בהצלחה",
-            "createdMessage": "מדיניות הארגון נוצרה בהצלחה",
-            "failedToDelete": "נכשל למחוק",
-            "failedToSavePolicy": "כישלון בשמירת המדיניות",
             "unexpectedError": "אירעה שגיאה בלתי צפויה"
         }
     }

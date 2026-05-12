@@ -15,9 +15,6 @@ import type {
     ActivityConstraintResponse,
     CreateActivityConstraintRequest,
     UpdateActivityConstraintRequest,
-    OrganizationPolicyResponse,
-    CreateOrganizationPolicyRequest,
-    UpdateOrganizationPolicyRequest,
 } from "@/modules/schedule/src/data/constraints.types";
 import { $app } from "@/infra/service";
 
@@ -26,7 +23,6 @@ interface ConstraintStore {
     userConstraints: UserConstraintResponse[];
     userPreferences: UserPreferenceResponse[];
     activityConstraints: ActivityConstraintResponse[];
-    organizationPolicies: OrganizationPolicyResponse[];
     isLoading: boolean;
     error: string | null;
 
@@ -51,12 +47,6 @@ interface ConstraintStore {
     updateActivityConstraint: (id: string, request: UpdateActivityConstraintRequest) => Promise<boolean>;
     deleteActivityConstraint: (id: string) => Promise<boolean>;
 
-    // Organization Policies Actions
-    fetchOrganizationPolicies: () => Promise<void>;
-    createOrganizationPolicy: (request: CreateOrganizationPolicyRequest) => Promise<OrganizationPolicyResponse | null>;
-    updateOrganizationPolicy: (id: string, request: UpdateOrganizationPolicyRequest) => Promise<boolean>;
-    deleteOrganizationPolicy: (id: string) => Promise<boolean>;
-
     // Utility actions
     setError: (error: string | null) => void;
     clearError: () => void;
@@ -67,7 +57,6 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
     userConstraints: [],
     userPreferences: [],
     activityConstraints: [],
-    organizationPolicies: [],
     isLoading: false,
     error: null,
 
@@ -384,93 +373,6 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                     : "Failed to delete activity constraint";
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("[ConstraintStore] Error deleting activity constraint:", err);
-            return false;
-        }
-    },
-
-    // ========================================================================
-    // Organization Policies
-    // ========================================================================
-
-    fetchOrganizationPolicies: async () => {
-        $app.logger.info("[ConstraintStore] fetchOrganizationPolicies called");
-        set({ isLoading: true, error: null });
-        try {
-            const data = await constraintDataRepository.getAllOrganizationPolicies();
-            $app.logger.info("[ConstraintStore] Fetched organization policies:", data.length);
-            set({ organizationPolicies: data, isLoading: false });
-        } catch (err) {
-            const errorMessage =
-                err instanceof Error
-                    ? err.message
-                    : "Failed to fetch organization policies";
-            set({ error: errorMessage, isLoading: false });
-            $app.logger.error("[ConstraintStore] Error fetching organization policies:", err);
-        }
-    },
-
-    createOrganizationPolicy: async (request: CreateOrganizationPolicyRequest) => {
-        $app.logger.info("[ConstraintStore] createOrganizationPolicy called", { request });
-        set({ isLoading: true, error: null });
-        try {
-            const newPolicy = await constraintDataRepository.createOrganizationPolicy(request);
-            $app.logger.info("[ConstraintStore] Organization policy created successfully:", newPolicy);
-            set({ isLoading: false });
-
-            // Refetch to update the list
-            await get().fetchOrganizationPolicies();
-            return newPolicy;
-        } catch (err) {
-            const errorMessage =
-                err instanceof Error
-                    ? err.message
-                    : "Failed to create organization policy";
-            set({ error: errorMessage, isLoading: false });
-            $app.logger.error("[ConstraintStore] Error creating organization policy:", err);
-            return null;
-        }
-    },
-
-    updateOrganizationPolicy: async (id: string, request: UpdateOrganizationPolicyRequest) => {
-        $app.logger.info("[ConstraintStore] updateOrganizationPolicy called", { id, request });
-        set({ isLoading: true, error: null });
-        try {
-            await constraintDataRepository.updateOrganizationPolicy(id, request);
-            $app.logger.info("[ConstraintStore] Organization policy updated successfully");
-            set({ isLoading: false });
-
-            // Refetch to update the list
-            await get().fetchOrganizationPolicies();
-            return true;
-        } catch (err) {
-            const errorMessage =
-                err instanceof Error
-                    ? err.message
-                    : "Failed to update organization policy";
-            set({ error: errorMessage, isLoading: false });
-            $app.logger.error("[ConstraintStore] Error updating organization policy:", err);
-            return false;
-        }
-    },
-
-    deleteOrganizationPolicy: async (id: string) => {
-        $app.logger.info("[ConstraintStore] deleteOrganizationPolicy called", { id });
-        set({ isLoading: true, error: null });
-        try {
-            await constraintDataRepository.deleteOrganizationPolicy(id);
-            $app.logger.info("[ConstraintStore] Organization policy deleted successfully");
-            set({ isLoading: false });
-
-            // Refetch to update the list
-            await get().fetchOrganizationPolicies();
-            return true;
-        } catch (err) {
-            const errorMessage =
-                err instanceof Error
-                    ? err.message
-                    : "Failed to delete organization policy";
-            set({ error: errorMessage, isLoading: false });
-            $app.logger.error("[ConstraintStore] Error deleting organization policy:", err);
             return false;
         }
     },

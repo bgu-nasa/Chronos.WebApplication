@@ -9,8 +9,7 @@ import { $app } from "@/infra/service";
 
 import {
     UserConstraintsPanel,
-    ActivityConstraintsPanel,
-    OrganizationPoliciesPanel
+    ActivityConstraintsPanel
 } from "./components";
 import resourcesJson from "./constraints-page.resources.json";
 import styles from "./constraints-page.module.css";
@@ -48,14 +47,9 @@ export function ConstraintsPage() {
                             {resources.tabs.user.label}
                         </Tabs.Tab>
                         {isAdmin && (
-                            <>
-                                <Tabs.Tab value={resources.tabs.activity.value}>
-                                    {resources.tabs.activity.label}
-                                </Tabs.Tab>
-                                <Tabs.Tab value={resources.tabs.organization.value}>
-                                    {resources.tabs.organization.label}
-                                </Tabs.Tab>
-                            </>
+                            <Tabs.Tab value={resources.tabs.activity.value}>
+                                {resources.tabs.activity.label}
+                            </Tabs.Tab>
                         )}
                     </Tabs.List>
 
@@ -69,23 +63,13 @@ export function ConstraintsPage() {
                     </Tabs.Panel>
 
                     {isAdmin && (
-                        <>
-                            <Tabs.Panel value={resources.tabs.activity.value} className={styles.tabPanel}>
-                                {activeTab === resources.tabs.activity.value && (
-                                    <ActivityConstraintsPanel
-                                        openConfirmation={openConfirmation}
-                                    />
-                                )}
-                            </Tabs.Panel>
-
-                            <Tabs.Panel value={resources.tabs.organization.value} className={styles.tabPanel}>
-                                {activeTab === resources.tabs.organization.value && (
-                                    <OrganizationPoliciesPanel
-                                        openConfirmation={openConfirmation}
-                                    />
-                                )}
-                            </Tabs.Panel>
-                        </>
+                        <Tabs.Panel value={resources.tabs.activity.value} className={styles.tabPanel}>
+                            {activeTab === resources.tabs.activity.value && (
+                                <ActivityConstraintsPanel
+                                    openConfirmation={openConfirmation}
+                                />
+                            )}
+                        </Tabs.Panel>
                     )}
                 </Tabs>
 
