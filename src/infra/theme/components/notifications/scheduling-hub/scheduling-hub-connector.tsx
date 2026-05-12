@@ -1,9 +1,20 @@
-import { useSchedulingHubConnection } from "./use-scheduling-hub-connection";
+import { useEffect } from "react";
+import { $app } from "@/infra/service/app";
+import { connectSchedulingHubForSession } from "./use-scheduling-hub-connection";
 
 /**
- * Renders nothing; mounts the scheduling SignalR subscription for authenticated layout shells.
+ * Renders nothing. Mounts the scheduling → notification pipeline when the user is
+ * authenticated (same lifetime as the root notification provider).
  */
 export function SchedulingHubConnector() {
-    useSchedulingHubConnection();
+    const authed = $app.isAuthenticated();
+
+    useEffect(() => {
+        if (!authed) {
+            return undefined;
+        }
+        return connectSchedulingHubForSession();
+    }, [authed]);
+
     return null;
 }

@@ -1,6 +1,5 @@
-import { useEffect } from "react";
-import { $app } from "@/infra/service";
 import { createSchedulingHubConnection } from "./create-scheduling-hub-connection";
+import { $app } from "@/infra/service/app";
 import type { SchedulingCompletedPayload } from "./scheduling-hub.types";
 
 function schedulingSummary(payload: SchedulingCompletedPayload): string {
@@ -15,29 +14,28 @@ function schedulingSummary(payload: SchedulingCompletedPayload): string {
 }
 
 /**
- * Subscribes to scheduling completion events and surfaces them through
- * {@link $app.notifications} (toasts + top bar history).
+ * Start the scheduling SignalR connection for the current session.
+ * @returns cleanup to stop the connection (for useEffect return).
  */
-export function useSchedulingHubConnection(): void {
-    useEffect(() => {
-        const conn = createSchedulingHubConnection((payload) => {
-            const summary = schedulingSummary(payload);
-            if (payload.success) {
-                $app.notifications.showSuccess("Scheduling complete", summary);
-            } else {
-                $app.notifications.showError(
-                    "Scheduling failed",
-                    payload.failureReason ?? summary,
-                );
-            }
-        });
+export function connectSchedulingHubForSession(): () => void {
+    const conn = createSchedulingHubConnection((payload) => {
+        const summary = schedulingSummary(payload);
+        if (payload.success) {
+            $app.notifications.showSuccess("Scheduling complete", summary);
+        } else {
+            $app.notifications.showError(
+                "Scheduling failed",
+                payload.failureReason ?? summary,
+            );
+        }
+    });
 
-        void conn.start().catch((err) => {
-            console.error("[scheduling hub]", err);
-        });
+    void conn.start().catch((err) => {
+        console.error("[scheduling hub]", err);
+    });
 
-        return () => {
-            void conn.stop();
-        };
-    }, []);
+    return () => {
+        void conn.stop();
+    };
 }
+

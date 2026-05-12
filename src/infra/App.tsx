@@ -7,7 +7,6 @@ import {
     DashboardLayout,
     PublicLayout,
 } from "./theme";
-import { NotificationProvider } from "./service";
 
 function App() {
     const publicRoutes = ApplicationRoutesRepository.getPublicRoutes();
@@ -45,7 +44,6 @@ function App() {
                 </Route>
             </Routes>
 
-            <NotificationProvider />
         </>
     );
 }

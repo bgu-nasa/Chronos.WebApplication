@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router";
 import { $app } from "@/infra/service";
-import { SchedulingHubConnector } from "@/infra/theme/components/notifications";
 
 const LoginPageRoute = "/";
 
@@ -24,10 +23,5 @@ export default function AuthenticatedPageFilter() {
         return null;
     }
 
-    return (
-        <>
-            <SchedulingHubConnector />
-            <Outlet />
-        </>
-    );
+    return <Outlet />;
 }
