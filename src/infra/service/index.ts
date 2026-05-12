@@ -32,11 +32,17 @@ export {
     type LogEntry,
 } from "./logger";
 
-// Notification service exports
+// Notification service exports (panel UI lives under theme/components/notifications)
 export {
     notificationService,
     NotificationProvider,
+    useNotificationStore,
     type INotificationService,
     type NotificationOptions,
     type NotificationType,
 } from "./notification";
+export {
+    NotificationPanelMenu,
+    useNotificationPanelStore,
+    type NotificationPanelEntry,
+} from "@/infra/theme/components/notifications";

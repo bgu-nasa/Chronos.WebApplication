@@ -6,3 +6,4 @@ export * from "./mantine-theme";
 export * from "./state";
 export * from "./components/language-switcher";
 export * from "./components/theme-toggle-button";
+export * from "./components/notifications";

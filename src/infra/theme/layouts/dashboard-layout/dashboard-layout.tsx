@@ -14,6 +14,7 @@ import styles from "./dashboard-layout.module.css";
 import { useDashboardNavigation } from "./use-dashboard-navigation";
 import { UserCard } from "@/infra/theme/components/user-card";
 import { ThemeToggleButton } from "@/infra/theme/components/theme-toggle-button";
+import { NotificationPanelMenu } from "@/infra/theme/components/notifications";
 import { useOrganization } from "@/infra/service";
 import type { NavigationItem } from "@/infra/federation/module.types";
 import { DashboardLoadingScreen } from "./dashboard-loading-screen";
@@ -202,6 +203,7 @@ export default function DashboardLayout() {
                         </div>
                     </Group>
                     <Group gap="sm">
+                        <NotificationPanelMenu />
                         <ThemeToggleButton />
                         <UserCard />
                     </Group>
