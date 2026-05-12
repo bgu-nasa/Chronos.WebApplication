@@ -123,7 +123,6 @@ export function SubjectsPage() {
         }
 
         const request = {
-            id: crypto.randomUUID(),
             organizationId: org.id,
             departmentId: currentDepartmentId,
             schedulingPeriodId: data.schedulingPeriodId,

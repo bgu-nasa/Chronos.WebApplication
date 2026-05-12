@@ -15,9 +15,9 @@ export interface ResourceAttributeResponse {
 
 /**
  * Resource Attribute creation request contract for API
+ * Note: Backend generates the ID automatically
  */
 export interface CreateResourceAttributeRequest {
-    id: string; // Guid from C#
     organizationId: string; // Guid from C#
     title: string;
     description: string | null;

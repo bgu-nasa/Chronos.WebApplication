@@ -18,9 +18,9 @@ export interface ActivityResponse {
 
 /**
  * Activity creation request contract for API
+ * Note: Backend generates the ID automatically
  */
 export interface CreateActivityRequest {
-    id: string; // Guid from C#
     organizationId: string; // Guid from C#
     subjectId: string; // Guid from C#
     assignedUserId: string; // Guid from C#
