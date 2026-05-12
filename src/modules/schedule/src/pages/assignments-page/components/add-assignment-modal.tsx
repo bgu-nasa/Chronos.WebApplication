@@ -6,6 +6,7 @@ import type { ResourceResponse } from "@/modules/schedule/src/data/resource.type
 import { WeekdayOrder } from "@/modules/schedule/src/data/slot.types";
 import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment-data-repository";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resources from "../assignments-page.resources.json";
 
 interface AddAssignmentModalProps {
@@ -36,29 +37,33 @@ export function AddAssignmentModal({
 
     const isEditMode = !!editingAssignment;
 
+    const localSlots = useMemo(() => {
+        return slots.map((s) => {
+            const fromTime = s.fromTime.split(":").slice(0, 2).join(":");
+            const toTime = s.toTime.split(":").slice(0, 2).join(":");
+            const local = convertSlotUtcToLocal(s.weekday, fromTime, toTime)[0];
+            return { slot: s, localWeekday: local.weekday, localFromTime: local.fromTime, localToTime: local.toTime };
+        });
+    }, [slots]);
+
     const availableDays = useMemo(() => {
-        const daysWithSlots = new Set(slots.map((s) => s.weekday));
+        const daysWithSlots = new Set(localSlots.map((s) => s.localWeekday));
         return WeekdayOrder.filter((day) => daysWithSlots.has(day)).map((day) => ({
             value: day,
             label: day,
         }));
-    }, [slots]);
-
-    const formatTime = (time: string) => {
-        const parts = time.split(":");
-        return `${parts[0]}:${parts[1]}`;
-    };
+    }, [localSlots]);
 
     const filteredSlots = useMemo(() => {
         if (!selectedDay) return [];
-        return slots
-            .filter((s) => s.weekday === selectedDay)
-            .sort((a, b) => a.fromTime.localeCompare(b.fromTime))
+        return localSlots
+            .filter((s) => s.localWeekday === selectedDay)
+            .sort((a, b) => a.localFromTime.localeCompare(b.localFromTime))
             .map((s) => ({
-                value: s.id,
-                label: `${formatTime(s.fromTime)} - ${formatTime(s.toTime)}`,
+                value: s.slot.id,
+                label: `${s.localFromTime} - ${s.localToTime}`,
             }));
-    }, [selectedDay, slots]);
+    }, [selectedDay, localSlots]);
 
     const activityOptions = useMemo(() => {
         return activities.map((a) => ({
@@ -78,8 +83,8 @@ export function AddAssignmentModal({
         if (opened) {
             setErrors({});
             if (isEditMode && editingAssignment) {
-                const slot = slots.find((s) => s.id === editingAssignment.slotId);
-                setSelectedDay(slot?.weekday || null);
+                const localSlot = localSlots.find((s) => s.slot.id === editingAssignment.slotId);
+                setSelectedDay(localSlot?.localWeekday || null);
                 setSelectedSlotId(editingAssignment.slotId);
                 setSelectedActivityId(editingAssignment.activityId);
                 setSelectedResourceId(editingAssignment.resourceId);
