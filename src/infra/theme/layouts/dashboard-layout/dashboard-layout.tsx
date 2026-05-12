@@ -14,7 +14,8 @@ import styles from "./dashboard-layout.module.css";
 import { useDashboardNavigation } from "./use-dashboard-navigation";
 import { UserCard } from "@/infra/theme/components/user-card";
 import { ThemeToggleButton } from "@/infra/theme/components/theme-toggle-button";
-import { useOrganization, $app } from "@/infra/service";
+import { NotificationPanelMenu } from "@/infra/theme/components/notifications";
+import { useOrganization } from "@/infra/service";
 import type { NavigationItem } from "@/infra/federation/module.types";
 import { DashboardLoadingScreen } from "./dashboard-loading-screen";
 import {
@@ -27,9 +28,6 @@ import { DeletedOrganizationAlert } from "./deleted-organization-alert";
 import { useNavbarStore } from "./navbar.store";
 import resources from "./navbar-collapse.resources.json";
 import { filterNavigationByRoles } from "./filter-navigation-by-roles";
-import { startSchedulingHub } from "./scheduling-hub";
-import { useSchedulingAlertsStore } from "./scheduling-alerts.store";
-import { TopbarNotificationPanel } from "./topbar-notification-panel";
 
 function renderNavigationItems(
     items: NavigationItem[],
@@ -171,34 +169,6 @@ export default function DashboardLayout() {
         return filterNavigationByRoles(navigationItems, organization.userRoles);
     }, [navigationItems, organization]);
 
-    useEffect(() => {
-        const conn = startSchedulingHub((payload) => {
-            const summary = payload.success
-                ? `Assignments created: ${payload.assignmentsCreated}, modified: ${payload.assignmentsModified}` +
-                  (payload.unscheduledActivityIds?.length
-                      ? `. Could not schedule ${payload.unscheduledActivityIds.length} activities.`
-                      : "")
-                : payload.failureReason ?? "Scheduling failed";
-
-            useSchedulingAlertsStore.getState().add({
-                message: summary,
-                success: payload.success,
-            });
-
-            if (payload.success) {
-                $app.notifications.showSuccess("Scheduling complete", summary);
-            } else {
-                $app.notifications.showError(
-                    "Scheduling failed",
-                    payload.failureReason ?? summary,
-                );
-            }
-        });
-        return () => {
-            void conn.stop();
-        };
-    }, []);
-
     return (
         <AppShell
             padding="md"
@@ -233,7 +203,7 @@ export default function DashboardLayout() {
                         </div>
                     </Group>
                     <Group gap="sm">
-                        <TopbarNotificationPanel />
+                        <NotificationPanelMenu />
                         <ThemeToggleButton />
                         <UserCard />
                     </Group>

@@ -1,16 +1,8 @@
 import * as signalR from "@microsoft/signalr";
 import { tokenService } from "@/infra/service/ajax/token.service";
+import type { SchedulingCompletedPayload } from "./scheduling-hub.types";
 
-export interface SchedulingCompletedPayload {
-    requestId: string;
-    success: boolean;
-    assignmentsCreated: number;
-    assignmentsModified: number;
-    unscheduledActivityIds: string[];
-    failureReason: string | null;
-}
-
-function getApiBase(): string {
+function apiBaseUrl(): string {
     return (
         window.__ENV__?.VITE_API_BASE_URL ||
         import.meta.env.VITE_API_BASE_URL ||
@@ -18,10 +10,10 @@ function getApiBase(): string {
     );
 }
 
-export function startSchedulingHub(
+export function createSchedulingHubConnection(
     onCompleted: (payload: SchedulingCompletedPayload) => void,
 ): signalR.HubConnection {
-    const base = getApiBase().replace(/\/$/, "");
+    const base = apiBaseUrl().replace(/\/$/, "");
     const conn = new signalR.HubConnectionBuilder()
         .withUrl(`${base}/hubs/scheduling`, {
             accessTokenFactory: () => tokenService.getToken() ?? "",
@@ -30,8 +22,5 @@ export function startSchedulingHub(
         .build();
 
     conn.on("SchedulingCompleted", onCompleted);
-    void conn.start().catch((err) => {
-        console.error("[scheduling hub]", err);
-    });
     return conn;
 }

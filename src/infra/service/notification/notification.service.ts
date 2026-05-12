@@ -4,6 +4,7 @@
  */
 
 import { useNotificationStore } from "./notification.store";
+import { useNotificationPanelStore } from "@/infra/theme/components/notifications/panel/notification-panel.store";
 import type {
     INotificationService,
     NotificationOptions,
@@ -50,10 +51,21 @@ class NotificationService implements INotificationService {
         // Add notification to store
         useNotificationStore.getState().addNotification(notification);
 
-        // Auto-remove notification after duration if autoClose is true
+        if (type !== "loading") {
+            useNotificationPanelStore.getState().addEntry({
+                id,
+                type,
+                title,
+                message,
+                at: Date.now(),
+            });
+        }
+
+        // Auto-remove toast from overlay list after duration if autoClose is true
+        // (panel history keeps the entry until the user dismisses it there)
         if (autoClose && duration > 0) {
             setTimeout(() => {
-                this.remove(id);
+                useNotificationStore.getState().removeNotification(id);
             }, duration);
         }
 
@@ -106,10 +118,12 @@ class NotificationService implements INotificationService {
 
     remove(id: string): void {
         useNotificationStore.getState().removeNotification(id);
+        useNotificationPanelStore.getState().removeEntry(id);
     }
 
     clear(): void {
         useNotificationStore.getState().clearNotifications();
+        useNotificationPanelStore.getState().clearEntries();
     }
 }
 

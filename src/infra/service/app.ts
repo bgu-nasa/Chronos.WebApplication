@@ -47,8 +47,7 @@ interface IApp {
 
     /**
      * Notification service
-     * Shows ephemeral notifications at the bottom right of the screen
-     * All notifications auto-dismiss after 15 seconds by default
+     * Toasts bottom-right; same events are listed in the dashboard notification panel (history).
      */
     notifications: INotificationService;
 
