@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Modal, Select, Button, Stack, Text, Group, Chip, Box, ActionIcon } from "@mantine/core";
+import { Modal, Select, Button, Stack, Text, Group, Chip } from "@mantine/core";
 import { useSlotEditorStore } from "@/modules/schedule/src/stores";
 import { useCreateSlot, useUpdateSlot } from "@/modules/schedule/src/hooks";
 import { Weekday, WeekdayOrder } from "@/modules/schedule/src/data";
 import { convertSlotLocalToUtc, convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
+import { TimeSpinner } from "@/common/components/time-spinner";
 import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
 
 interface SlotEditorProps {
@@ -19,74 +20,6 @@ const durationOptions = [
     { value: "150", label: "2.5 hours" },
     { value: "180", label: "3 hours" },
 ];
-
-// TimeSpinner component with + above and - below, stepping by 30 minutes with wrap-around
-interface TimeSpinnerProps {
-    label: string;
-    totalMinutes: number; // 0-1439 (24 hours * 60 minutes)
-    onChange: (totalMinutes: number) => void;
-    error?: string;
-}
-
-function TimeSpinner({ label, totalMinutes, onChange, error }: Readonly<TimeSpinnerProps>) {
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-
-    const displayTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-
-    const handleIncrement = () => {
-        // Add 30 minutes with wrap-around (1440 = 24 hours in minutes)
-        const newValue = (totalMinutes + 30) % 1440;
-        onChange(newValue);
-    };
-
-    const handleDecrement = () => {
-        // Subtract 30 minutes with wrap-around
-        const newValue = (totalMinutes - 30 + 1440) % 1440;
-        onChange(newValue);
-    };
-
-    return (
-        <Box>
-            <Text size="sm" fw={500} mb={4}>
-                {label} <span style={{ color: "var(--mantine-color-error)" }}>*</span>
-            </Text>
-            <Stack gap={4} align="center" style={{ width: "fit-content" }}>
-                <ActionIcon
-                    variant="light"
-                    size="lg"
-                    onClick={handleIncrement}
-                    aria-label="Add 30 minutes"
-                >
-                    +
-                </ActionIcon>
-                <Box
-                    style={{
-                        padding: "8px 16px",
-                        border: "1px solid var(--mantine-color-default-border)",
-                        borderRadius: "var(--mantine-radius-sm)",
-                        fontWeight: 600,
-                        fontSize: "1.1rem",
-                        minWidth: "80px",
-                        textAlign: "center",
-                        backgroundColor: "var(--mantine-color-default)",
-                    }}
-                >
-                    {displayTime}
-                </Box>
-                <ActionIcon
-                    variant="light"
-                    size="lg"
-                    onClick={handleDecrement}
-                    aria-label="Subtract 30 minutes"
-                >
-                    −
-                </ActionIcon>
-            </Stack>
-            {error && <Text size="xs" c="var(--mantine-color-error)" mt={4}>{error}</Text>}
-        </Box>
-    );
-}
 
 // Day options for multi-select (Sunday first) - uses string values directly
 const dayOptions = WeekdayOrder.map((day) => ({

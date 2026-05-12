@@ -3,6 +3,7 @@ import type { DataTableSelectionSingleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Text, Stack } from "@mantine/core";
 import type { ActivityData } from "./types";
+import { formatMinutes } from "@/common/components/time-spinner";
 import resources from "../../activities-page.resources.json";
 
 interface ActivityTableProps {
@@ -69,6 +70,7 @@ export function ActivityTable({
                 field="duration" 
                 header={resources.durationColumn} 
                 sortable 
+                body={(rowData: ActivityData) => formatMinutes(rowData.duration)}
             />
         </DataTable>
     );
