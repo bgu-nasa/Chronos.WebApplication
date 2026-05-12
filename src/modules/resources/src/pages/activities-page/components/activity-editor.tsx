@@ -1,6 +1,7 @@
 import { Modal, TextInput, Button, Stack, NumberInput, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { userRepository } from "@/modules/resources/src/data";
+import { TimeSpinner } from "@/common/components/time-spinner";
 
 interface ActivityEditorProps {
     readonly opened: boolean;
@@ -144,14 +145,18 @@ export function ActivityEditor({
                     onChange={(value) => setExpectedStudents(value === "" ? null : Number(value))}
                     min={0}
                 />
-                <NumberInput
+                <TimeSpinner
                     label="Duration"
-                    placeholder="Duration in hours"
-                    value={duration}
-                    onChange={(value) => setDuration(value === "" ? 0 : Number(value))}
-                    onBlur={() => setDurationTouched(true)}
+                    totalMinutes={duration}
+                    onChange={(value) => {
+                        setDuration(value);
+                        setDurationTouched(true);
+                    }}
+                    step={30}
                     min={0}
-                    required
+                    max={24 * 60}
+                    wrap={false}
+                    orientation="horizontal"
                     error={durationTouched && duration <= 0 ? "Duration must be greater than 0" : undefined}
                 />
                 <Button
