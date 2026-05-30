@@ -35,5 +35,8 @@
     "activityFilterLabel": "Activity",
     "activityFilterPlaceholder": "All activities",
     "resourceFilterLabel": "Resource",
-    "resourceFilterPlaceholder": "All resources"
+    "resourceFilterPlaceholder": "All resources",
+    "weekNumLabel": "Week Number",
+    "weekNumPlaceholder": "Enter week number",
+    "weekNumColumn": "Week"
 }

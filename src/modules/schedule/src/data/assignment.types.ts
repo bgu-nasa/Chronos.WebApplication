@@ -12,7 +12,7 @@ export interface AssignmentResponse {
     slotId: string;
     resourceId: string;
     activityId: string;
-    weekNum?: number | null;
+    weekNum: number;
 }
 
 /**
@@ -22,7 +22,7 @@ export interface CreateAssignmentRequest {
     slotId: string;
     resourceId: string;
     activityId: string;
-    weekNum?: number | null;
+    weekNum: number;
 }
 
 /**
@@ -32,5 +32,5 @@ export interface UpdateAssignmentRequest {
     slotId?: string;
     resourceId?: string;
     activityId?: string;
-    weekNum?: number | null;
+    weekNum?: number;
 }
