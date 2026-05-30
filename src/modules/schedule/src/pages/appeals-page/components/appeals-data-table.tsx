@@ -8,6 +8,7 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resources from "../appeals-page.resources.json";
 
 interface AppealRow {
@@ -31,11 +32,6 @@ interface AppealsDataTableProps {
     onSelectionChange: (appeal: AppealResponse | null) => void;
     isLoading?: boolean;
 }
-
-const formatTime = (time: string) => {
-    const parts = time.split(":");
-    return `${parts[0]}:${parts[1]}`;
-};
 
 export function AppealsDataTable({
     appeals,
@@ -70,12 +66,22 @@ export function AppealsDataTable({
             const slot = assignment ? slotMap.get(assignment.slotId) : undefined;
             const activity = assignment ? activityMap.get(assignment.activityId) : undefined;
 
+            let day = "—";
+            let time = "—";
+            if (slot) {
+                const fromTime = slot.fromTime.split(":").slice(0, 2).join(":");
+                const toTime = slot.toTime.split(":").slice(0, 2).join(":");
+                const local = convertSlotUtcToLocal(slot.weekday, fromTime, toTime)[0];
+                day = local.weekday;
+                time = `${local.fromTime} - ${local.toTime}`;
+            }
+
             return {
                 id: appeal.id,
                 title: appeal.title,
                 description: appeal.description,
-                day: slot?.weekday || "—",
-                time: slot ? `${formatTime(slot.fromTime)} - ${formatTime(slot.toTime)}` : "—",
+                day,
+                time,
                 activityDisplay: activity?.displayLabel || "—",
                 resourceDisplay: assignment ? (resourceMap.get(assignment.resourceId) || "—") : "—",
                 raw: appeal,
