@@ -31,7 +31,7 @@ export function connectSchedulingHubForSession(): () => void {
     });
 
     void conn.start().catch((err) => {
-        console.error("[scheduling hub]", err);
+        $app.logger.error("[SchedulingHub] Connection failed", err);
     });
 
     return () => {

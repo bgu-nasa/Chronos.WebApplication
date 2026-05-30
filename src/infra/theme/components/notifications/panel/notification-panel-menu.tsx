@@ -13,23 +13,9 @@ import {
     Text,
 } from "@mantine/core";
 import { FaBell } from "react-icons/fa";
+import { getNotificationColor } from "@/infra/service/notification/notification-list";
 import { useNotificationPanelStore } from "./notification-panel.store";
 import { SchedulingHubConnector } from "../scheduling-hub";
-
-function typeColor(type: string): string | undefined {
-    switch (type) {
-        case "success":
-            return "green";
-        case "error":
-            return "red";
-        case "warning":
-            return "yellow";
-        case "info":
-            return "blue";
-        default:
-            return undefined;
-    }
-}
 
 export function NotificationPanelMenu() {
     return (
@@ -78,7 +64,7 @@ function NotificationPanelMenuContent() {
                                         size="sm"
                                         fw={500}
                                         lineClamp={2}
-                                        c={typeColor(entry.type)}
+                                        c={getNotificationColor(entry.type)}
                                     >
                                         {entry.title}
                                     </Text>
@@ -92,7 +78,7 @@ function NotificationPanelMenuContent() {
                                     </Text>
                                     <Text
                                         size="xs"
-                                        c="blue"
+                                        c="brand"
                                         style={{ cursor: "pointer" }}
                                         onClick={() => removeEntry(entry.id)}
                                     >
