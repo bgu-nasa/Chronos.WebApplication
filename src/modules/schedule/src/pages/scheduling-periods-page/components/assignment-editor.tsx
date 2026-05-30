@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState, useMemo } from "react";
-import { Modal, Select, Button, Group, Stack } from "@mantine/core";
+import { Modal, Select, Button, Group, Stack, NumberInput } from "@mantine/core";
 import { useAssignmentEditorStore } from "@/modules/schedule/src/stores";
 import {
     useCreateAssignment,
@@ -22,6 +22,7 @@ export function AssignmentEditor() {
 
     const [resourceId, setResourceId] = useState<string | null>(null);
     const [activityId, setActivityId] = useState<string | null>(null);
+    const [weekNum, setWeekNum] = useState<number | string>('');
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     // Transform resources to Select options - show Location / Identifier, value is ID
@@ -50,9 +51,11 @@ export function AssignmentEditor() {
             if (mode === "edit" && assignment) {
                 setResourceId(assignment.resourceId);
                 setActivityId(assignment.activityId);
+                setWeekNum(assignment.weekNum);
             } else {
                 setResourceId(null);
                 setActivityId(null);
+                setWeekNum('');
             }
         }
     }, [isOpen, mode, assignment]);
@@ -64,6 +67,9 @@ export function AssignmentEditor() {
         }
         if (!activityId) {
             newErrors.activityId = "Activity is required";
+        }
+        if (weekNum === '' || weekNum === null || weekNum === undefined) {
+            newErrors.weekNum = "Week number is required";
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -81,6 +87,7 @@ export function AssignmentEditor() {
                 slotId,
                 resourceId,
                 activityId,
+                weekNum: weekNum as number,
             });
             success = result !== null;
             if (success) {
@@ -93,6 +100,7 @@ export function AssignmentEditor() {
                 slotId: assignment.slotId,
                 resourceId,
                 activityId,
+                weekNum: weekNum as number,
             });
             if (success) {
                 $app.notifications.showSuccess("Success", "Assignment updated successfully");
@@ -110,6 +118,7 @@ export function AssignmentEditor() {
         close();
         setResourceId(null);
         setActivityId(null);
+        setWeekNum('');
         setErrors({});
         clearCreateError();
         clearUpdateError();
@@ -171,6 +180,24 @@ export function AssignmentEditor() {
                         disabled={isLoading || isLoadingActivities || activityOptions.length === 0}
                         searchable
                         clearable
+                    />
+
+                    <NumberInput
+                        label="Week Number"
+                        placeholder="Enter week number"
+                        value={weekNum}
+                        onChange={(value) => {
+                            setWeekNum(value);
+                            setErrors((prev) => {
+                                const { weekNum: _, ...rest } = prev;
+                                return rest;
+                            });
+                        }}
+                        error={errors.weekNum}
+                        required
+                        min={1}
+                        max={53}
+                        disabled={isLoading}
                     />
 
                     <Group justify="flex-end" mt="md">

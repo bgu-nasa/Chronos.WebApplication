@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Modal, Select, Button, Group, Stack } from "@mantine/core";
+import { Modal, Select, Button, Group, Stack, NumberInput } from "@mantine/core";
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
@@ -32,6 +32,7 @@ export function AddAssignmentModal({
     const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
     const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
     const [selectedResourceId, setSelectedResourceId] = useState<string | null>(null);
+    const [weekNum, setWeekNum] = useState<number | string>('');
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -88,11 +89,13 @@ export function AddAssignmentModal({
                 setSelectedSlotId(editingAssignment.slotId);
                 setSelectedActivityId(editingAssignment.activityId);
                 setSelectedResourceId(editingAssignment.resourceId);
+                setWeekNum(editingAssignment.weekNum);
             } else {
                 setSelectedDay(null);
                 setSelectedSlotId(null);
                 setSelectedActivityId(null);
                 setSelectedResourceId(null);
+                setWeekNum('');
             }
         }
     }, [opened, editingAssignment]);
@@ -109,6 +112,7 @@ export function AddAssignmentModal({
         if (!selectedSlotId) newErrors.slot = "Slot is required";
         if (!selectedActivityId) newErrors.activity = "Activity is required";
         if (!selectedResourceId) newErrors.resource = "Resource is required";
+        if (weekNum === '' || weekNum === null || weekNum === undefined) newErrors.weekNum = "Week number is required";
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -124,6 +128,7 @@ export function AddAssignmentModal({
                     slotId: selectedSlotId!,
                     resourceId: selectedResourceId!,
                     activityId: selectedActivityId!,
+                    weekNum: weekNum as number,
                 });
                 $app.notifications.showSuccess("Success", "Assignment updated successfully");
             } else {
@@ -131,6 +136,7 @@ export function AddAssignmentModal({
                     slotId: selectedSlotId!,
                     resourceId: selectedResourceId!,
                     activityId: selectedActivityId!,
+                    weekNum: weekNum as number,
                 });
                 $app.notifications.showSuccess("Success", "Assignment created successfully");
             }
@@ -194,6 +200,24 @@ export function AddAssignmentModal({
                         required
                         disabled={isSubmitting || !selectedDay || filteredSlots.length === 0}
                         searchable
+                    />
+
+                    <NumberInput
+                        label={resources.weekNumLabel}
+                        placeholder={resources.weekNumPlaceholder}
+                        value={weekNum}
+                        onChange={(value) => {
+                            setWeekNum(value);
+                            setErrors((prev) => {
+                                const { weekNum: _, ...rest } = prev;
+                                return rest;
+                            });
+                        }}
+                        error={errors.weekNum}
+                        required
+                        min={1}
+                        max={53}
+                        disabled={isSubmitting}
                     />
 
                     <Select

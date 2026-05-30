@@ -89,6 +89,9 @@ export function AssignmentTable({
                 >
                     <Stack gap={4}>
                         <Text size="sm">
+                            <Text span fw={500}>Week:</Text> {assignment.weekNum}
+                        </Text>
+                        <Text size="sm">
                             <Text span fw={500}>Resource:</Text> {getResourceDisplay(assignment.resourceId)}
                         </Text>
                         <Text size="sm">

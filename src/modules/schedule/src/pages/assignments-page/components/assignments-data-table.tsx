@@ -17,6 +17,7 @@ interface AssignmentRow {
     userDisplay: string;
     day: string;
     time: string;
+    weekNum: number;
     raw: AssignmentResponse;
 }
 
@@ -69,6 +70,7 @@ export function AssignmentsDataTable({
                 userDisplay: activity?.userFullName || "—",
                 day,
                 time,
+                weekNum: a.weekNum,
                 raw: a,
             };
         });
@@ -111,6 +113,7 @@ export function AssignmentsDataTable({
             }}
         >
             <Column selectionMode="single" headerStyle={{ width: "3rem" }} />
+            <Column field="weekNum" header={resources.weekNumColumn} sortable />
             <Column field="day" header={resources.dayColumn} sortable />
             <Column field="time" header={resources.timeColumn} sortable />
             <Column field="activityDisplay" header={resources.activityColumn} sortable />
