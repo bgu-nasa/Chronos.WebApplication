@@ -37,7 +37,7 @@ interface ConstraintStore {
     fetchUserPreferences: () => Promise<void>;
     fetchUserPreferencesByUser: (userId: string) => Promise<void>;
     createUserPreference: (request: CreateUserPreferenceRequest) => Promise<UserPreferenceResponse | null>;
-    updateUserPreference: (userId: string, schedulingPeriodId: string, key: string, request: UpdateUserPreferenceRequest) => Promise<boolean>;
+    updateUserPreference: (id: string, request: UpdateUserPreferenceRequest) => Promise<boolean>;
     deleteUserPreference: (id: string) => Promise<boolean>;
 
     // Activity Constraints Actions
@@ -225,15 +225,13 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
     },
 
     updateUserPreference: async (
-        userId: string,
-        schedulingPeriodId: string,
-        key: string,
+        id: string,
         request: UpdateUserPreferenceRequest
     ) => {
-        $app.logger.info("[ConstraintStore] updateUserPreference called", { userId, schedulingPeriodId, key, request });
+        $app.logger.info("[ConstraintStore] updateUserPreference called", { id, request });
         set({ isLoading: true, error: null });
         try {
-            await constraintDataRepository.updateUserPreference(userId, schedulingPeriodId, key, request);
+            await constraintDataRepository.updateUserPreference(id, request);
             $app.logger.info("[ConstraintStore] User preference updated successfully");
             set({ isLoading: false });
 

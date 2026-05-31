@@ -52,6 +52,9 @@ export interface CreateUserPreferenceRequest {
 }
 
 export interface UpdateUserPreferenceRequest {
+    userId: string;
+    schedulingPeriodId: string;
+    key: string;
     value: string;
 }
 

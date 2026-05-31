@@ -305,6 +305,11 @@ export function UserConstraintEditor({
             return validationMessage ? { value: validationMessage } : null;
         }
 
+        if (constraintKey === "preferred_timerange") {
+            const validationMessage = validateRepeatedForbiddenTimeRanges(timeRangeEntries);
+            return validationMessage ? { value: validationMessage } : null;
+        }
+
         if (constraintKey === "preferred_weekdays" && selectedWeekdays.length === 0) {
             return { value: resources.validationMessages.atLeastOneWeekday };
         }
