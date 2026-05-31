@@ -116,79 +116,72 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
             title,
             message,
             onConfirm: async () => {
-                try {
-                    if (isPreferenceType) {
-                        await deleteUserPreference(item.id);
-                    } else {
-                        await deleteUserConstraint(item.id);
-                    }
+                const success = isPreferenceType
+                    ? await deleteUserPreference(item.id)
+                    : await deleteUserConstraint(item.id);
 
+                const itemType = isPreferenceType ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
+
+                if (success) {
                     await refetchData(isPreferenceType);
-
-                    const itemType = isPreferenceType ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
                     $app.notifications.showSuccess(
                         resources.notifications.userConstraints.deleted,
                         resources.notifications.userConstraints.deletedMessage.replace("{type}", itemType)
                     );
-                } catch (error) {
-                    $app.logger.error("[UserConstraintsPanel] Error deleting constraint/preference:", error);
+                } else {
+                    $app.logger.error("[UserConstraintsPanel] Error deleting constraint/preference");
                     $app.notifications.showError(
                         resources.notifications.userConstraints.failedToDelete,
-                        error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
+                        resources.notifications.userConstraints.unexpectedError
                     );
                 }
             },
         });
     };
 
-    const performUpdate = async (values: any) => {
+    const performUpdate = async (values: any): Promise<boolean> => {
         if (isPreference) {
-            await updateUserPreference(editingItem.id, {
+            return await updateUserPreference(editingItem.id, {
                 userId: values.userId,
                 schedulingPeriodId: values.schedulingPeriodId,
                 key: values.key,
                 value: values.value,
             });
         } else {
-            await updateUserConstraint(editingItem.id, values);
+            return await updateUserConstraint(editingItem.id, values);
         }
     };
 
-    const performCreate = async (values: any) => {
+    const performCreate = async (values: any): Promise<boolean> => {
         if (isPreference) {
-            await createUserPreference(values);
+            const result = await createUserPreference(values);
+            return result !== null;
         } else {
-            await createUserConstraint(values);
+            const result = await createUserConstraint(values);
+            return result !== null;
         }
     };
 
     const handleSubmit = async (values: any) => {
-        try {
-            if (editingItem) {
-                await performUpdate(values);
-            } else {
-                await performCreate(values);
-            }
+        const success = editingItem
+            ? await performUpdate(values)
+            : await performCreate(values);
 
-            await refetchData(isPreference);
-
-            const isUpdate = !!editingItem;
-            const itemType = isPreference ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
-            const title = isUpdate ? resources.notifications.userConstraints.updated : resources.notifications.userConstraints.created;
-            const message = isUpdate 
-                ? resources.notifications.userConstraints.updatedMessage.replace("{type}", itemType)
-                : resources.notifications.userConstraints.createdMessage.replace("{type}", itemType);
-
-            $app.notifications.showSuccess(title, message);
-
-            setModalOpened(false);
-        } catch (error) {
-            $app.logger.error("[UserConstraintsPanel] Error saving constraint/preference:", error);
-            $app.notifications.showError(
-                resources.notifications.userConstraints.failedToSave,
-                error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
-            );
+        if (!success) {
+            $app.logger.error("[UserConstraintsPanel] Error saving constraint/preference");
+            throw new Error(resources.notifications.userConstraints.unexpectedError);
         }
+
+        await refetchData(isPreference);
+
+        const isUpdate = !!editingItem;
+        const itemType = isPreference ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
+        const title = isUpdate ? resources.notifications.userConstraints.updated : resources.notifications.userConstraints.created;
+        const message = isUpdate
+            ? resources.notifications.userConstraints.updatedMessage.replace("{type}", itemType)
+            : resources.notifications.userConstraints.createdMessage.replace("{type}", itemType);
+
+        $app.notifications.showSuccess(title, message);
     };
 
     if (isLoading && enrichedData.length === 0 && !modalOpened) {
