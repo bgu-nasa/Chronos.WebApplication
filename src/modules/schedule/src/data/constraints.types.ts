@@ -26,6 +26,8 @@ export interface CreateUserConstraintRequest {
 }
 
 export interface UpdateUserConstraintRequest {
+    userId: string;
+    schedulingPeriodId: string;
     weekNum?: number | null;
     key: string;
     value: string;

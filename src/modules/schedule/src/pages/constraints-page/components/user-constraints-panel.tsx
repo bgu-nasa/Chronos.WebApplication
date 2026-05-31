@@ -148,7 +148,13 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
                 value: values.value,
             });
         } else {
-            return await updateUserConstraint(editingItem.id, values);
+            return await updateUserConstraint(editingItem.id, {
+                userId: values.userId,
+                schedulingPeriodId: values.schedulingPeriodId,
+                key: values.key,
+                value: values.value,
+                weekNum: values.weekNum,
+            });
         }
     };
 
@@ -162,19 +168,23 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
         }
     };
 
-    const handleSubmit = async (values: any) => {
-        const success = editingItem
+    const handleSubmit = async (values: any): Promise<boolean> => {
+        const isUpdate = !!editingItem;
+        const success = isUpdate
             ? await performUpdate(values)
             : await performCreate(values);
 
         if (!success) {
             $app.logger.error("[UserConstraintsPanel] Error saving constraint/preference");
-            throw new Error(resources.notifications.userConstraints.unexpectedError);
+            $app.notifications.showError(
+                resources.notifications.userConstraints.failedToSave,
+                resources.notifications.userConstraints.unexpectedError
+            );
+            return false;
         }
 
         await refetchData(isPreference);
 
-        const isUpdate = !!editingItem;
         const itemType = isPreference ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
         const title = isUpdate ? resources.notifications.userConstraints.updated : resources.notifications.userConstraints.created;
         const message = isUpdate
@@ -182,6 +192,7 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
             : resources.notifications.userConstraints.createdMessage.replace("{type}", itemType);
 
         $app.notifications.showSuccess(title, message);
+        return true;
     };
 
     if (isLoading && enrichedData.length === 0 && !modalOpened) {

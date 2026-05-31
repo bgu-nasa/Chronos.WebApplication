@@ -36,7 +36,7 @@ interface UserConstraintEditorSubmitData {
 interface UserConstraintEditorProps {
     readonly opened: boolean;
     readonly onClose: () => void;
-    readonly onSubmit: (data: UserConstraintEditorSubmitData) => Promise<void>;
+    readonly onSubmit: (data: UserConstraintEditorSubmitData) => Promise<boolean>;
     readonly initialData?: {
         userId: string;
         schedulingPeriodId: string;
@@ -341,21 +341,26 @@ export function UserConstraintEditor({
             return;
         }
 
-        try {
-            const { serializedValue, weekNum } = serializeConstraintValue(
-                constraintKey,
-                constraintMode,
-                timeRangeEntries,
-                oneTimeDate,
-                selectedWeekdays
-            );
+        const { serializedValue, weekNum } = serializeConstraintValue(
+            constraintKey,
+            constraintMode,
+            timeRangeEntries,
+            oneTimeDate,
+            selectedWeekdays
+        );
 
-            await onSubmit({
+        try {
+            const success = await onSubmit({
                 ...formValues,
                 value: serializedValue,
                 weekNum,
                 isPreference: initialData?.isPreference ?? isPreference,
             });
+
+            if (!success) {
+                // onSubmit returned false — error notification was already shown by the panel
+                return;
+            }
 
             setFormValues({
                 userId: !isAdmin && currentUserId ? currentUserId : "",
@@ -370,7 +375,8 @@ export function UserConstraintEditor({
             setSelectedWeekdays([]);
             onClose();
         } catch (error) {
-            $app.logger.error("[UserConstraintEditor] Error submitting constraint:", error);
+            // Safety net: if onSubmit throws instead of returning false
+            $app.logger.error("[UserConstraintEditor] Unexpected error in onSubmit:", error);
             $app.notifications.showError(
                 resources.notifications.userConstraints.failedToSaveConstraint,
                 error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
