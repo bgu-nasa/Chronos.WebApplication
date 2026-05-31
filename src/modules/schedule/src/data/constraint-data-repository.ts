@@ -206,12 +206,10 @@ export class ConstraintDataRepository {
      * Update an existing user preference
      */
     async updateUserPreference(
-        userId: string,
-        schedulingPeriodId: string,
-        key: string,
+        preferenceId: string,
         request: UpdateUserPreferenceRequest
     ): Promise<void> {
-        const url = `/api/schedule/constraints/preferenceConstraint/${userId}/${schedulingPeriodId}/${key}`;
+        const url = `/api/schedule/constraints/preferenceConstraint/${preferenceId}`;
         const headers = this.getHeaders();
 
         $app.logger.info("[ConstraintDataRepository] Updating user preference:", { url, headers, request });

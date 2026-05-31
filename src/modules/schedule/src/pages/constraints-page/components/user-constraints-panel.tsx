@@ -143,7 +143,12 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
 
     const performUpdate = async (values: any) => {
         if (isPreference) {
-            await updateUserPreference(editingItem.userId, editingItem.schedulingPeriodId, editingItem.key, { value: values.value });
+            await updateUserPreference(editingItem.id, {
+                userId: values.userId,
+                schedulingPeriodId: values.schedulingPeriodId,
+                key: values.key,
+                value: values.value,
+            });
         } else {
             await updateUserConstraint(editingItem.id, values);
         }
