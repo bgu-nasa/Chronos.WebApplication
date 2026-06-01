@@ -2,7 +2,10 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding: 2rem;
+    /* account for header height (60px) so content doesn't get covered */
+    padding: calc(2rem + 60px) 2rem 2rem 2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .homePageFeatureTabs {
