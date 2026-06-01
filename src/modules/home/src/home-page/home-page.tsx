@@ -1,4 +1,4 @@
-import { Modal, Text, Title } from "@mantine/core";
+import { Modal, Text } from "@mantine/core";
 import HomeCarousel from "./home-carousel";
 import { useEffect, useState } from "react";
 import resourcesJson from "./home-page.resources.json";
@@ -28,10 +28,6 @@ export function HomePage() {
         <>
             <div className={styles.homePageContainer}>
                 <div className={styles.homePageHero}>
-                    <Title>{resources.hero.title}</Title>
-                    <Text>{resources.hero.subtitle}</Text>
-                    <Text>{resources.hero.paragraph}</Text>
-
                     <div className={styles.homePageFeatureTabs}>
                         <HomeCarousel items={carouselItems} />
                     </div>

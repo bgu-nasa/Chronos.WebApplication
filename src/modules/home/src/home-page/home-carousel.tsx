@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Title, Text, ActionIcon, useMantineTheme } from "@mantine/core";
 import styles from "./home-carousel.module.css";
+import type { IconType } from "react-icons";
+import { FiBriefcase, FiUsers, FiMessageSquare } from "react-icons/fi";
 
 type CarouselItem = { title: string; content: string };
 
@@ -12,6 +14,10 @@ interface HomeCarouselProps {
 export default function HomeCarousel({ items, intervalMs = 5000 }: HomeCarouselProps) {
     const [index, setIndex] = useState(0);
     const theme = useMantineTheme();
+
+    const icons: IconType[] = [FiBriefcase, FiUsers, FiMessageSquare];
+    const primaryShade = 6;
+    const primaryColor = (theme.colors as any)[theme.primaryColor]?.[primaryShade] ?? (theme.colors as any)["blue"][6];
 
     useEffect(() => {
         if (!items || items.length === 0) return;
@@ -26,6 +32,15 @@ export default function HomeCarousel({ items, intervalMs = 5000 }: HomeCarouselP
             <div className={styles.slides}>
                 {items.map((it, idx) => (
                     <div key={idx} className={`${styles.slide} ${idx === index ? styles.active : ""}`}>
+                        {icons[idx] ? (
+                            <div className={styles.iconWrapper}>
+                                {(() => {
+                                    const IconComp = icons[idx];
+                                    return <IconComp className={styles.icon} style={{ color: primaryColor }} aria-hidden />;
+                                })()}
+                            </div>
+                        ) : null}
+
                         <Title order={3} className={styles.title}>{it.title}</Title>
                         <Text className={styles.content}>{it.content}</Text>
                     </div>
