@@ -19,6 +19,19 @@ export default function HomeCarousel({ items, intervalMs = 5000 }: HomeCarouselP
     const primaryShade = 6;
     const primaryColor = (theme.colors as any)[theme.primaryColor]?.[primaryShade] ?? (theme.colors as any)["blue"][6];
 
+function hexToRgba(hex: string, alpha = 1) {
+    if (!hex) return `rgba(0,0,0,${alpha})`;
+    const h = hex.replace('#', '');
+    const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+    const bigint = parseInt(full, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+const backdropGradient = `linear-gradient(135deg, ${hexToRgba(primaryColor, 0.12)}, ${hexToRgba(primaryColor, 0.04)})`;
+
     useEffect(() => {
         if (!items || items.length === 0) return;
         const id = setInterval(() => setIndex((i) => (i + 1) % items.length), intervalMs);
@@ -29,6 +42,8 @@ export default function HomeCarousel({ items, intervalMs = 5000 }: HomeCarouselP
 
     return (
         <div className={styles.container}>
+            <div className={styles.backdrop} style={{ background: backdropGradient }} aria-hidden />
+
             <div className={styles.slides}>
                 {items.map((it, idx) => (
                     <div key={idx} className={`${styles.slide} ${idx === index ? styles.active : ""}`}>

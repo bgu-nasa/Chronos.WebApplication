@@ -4,13 +4,27 @@
   max-width: 800px;
   text-align: center;
   padding: 1rem;
-  min-height: 200px;
+  min-height: 220px;
+  position: relative;
+  overflow: visible;
+  border-radius: 12px;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  filter: blur(10px);
+  transform: scale(1.02);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .slides {
   position: relative;
   width: 100%;
   height: auto;
+  z-index: 2;
 }
 
 .slide {
@@ -24,6 +38,7 @@
   transform: translateY(8px);
   transition: opacity 600ms ease, transform 600ms ease;
   pointer-events: none;
+  z-index: 2;
 }
 
 .slide.active {
@@ -46,6 +61,8 @@
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+  z-index: 3;
+  position: relative;
 }
 
 .dot {
