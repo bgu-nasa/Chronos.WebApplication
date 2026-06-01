@@ -30,7 +30,7 @@ function hexToRgba(hex: string, alpha = 1) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const backdropGradient = `linear-gradient(135deg, ${hexToRgba(primaryColor, 0.12)}, ${hexToRgba(primaryColor, 0.04)})`;
+const backdropGradient = `linear-gradient(135deg, ${hexToRgba(primaryColor, 0.16)}, ${hexToRgba(primaryColor, 0.06)})`;
 
     useEffect(() => {
         if (!items || items.length === 0) return;
