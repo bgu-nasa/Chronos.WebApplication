@@ -89,19 +89,18 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
             title: resources.deleteMessages.deleteActivityConstraint,
             message: resources.deleteMessages.confirmDeleteActivityConstraint,
             onConfirm: async () => {
-                try {
-                    await deleteActivityConstraint(item.id);
+                const success = await deleteActivityConstraint(item.id);
 
-                    // Show success notification
+                if (success) {
                     $app.notifications.showSuccess(
                         resources.notifications.activityConstraints.deleted,
                         resources.notifications.activityConstraints.deletedMessage
                     );
-                } catch (error) {
-                    $app.logger.error("[ActivityConstraintsPanel] Error deleting constraint:", error);
+                } else {
+                    $app.logger.error("[ActivityConstraintsPanel] Error deleting constraint");
                     $app.notifications.showError(
                         resources.notifications.activityConstraints.failedToDelete,
-                        error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
+                        resources.notifications.activityConstraints.unexpectedError
                     );
                 }
             },
@@ -109,27 +108,23 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
     };
 
     const handleSubmit = async (values: any) => {
-        try {
-            if (editingItem) {
-                await updateActivityConstraint(editingItem.id, values);
-            } else {
-                await createActivityConstraint(values);
-            }
+        const success = editingItem
+            ? await updateActivityConstraint(editingItem.id, values)
+            : (await createActivityConstraint(values)) !== null;
 
-            // Show success notification
+        if (success) {
             $app.notifications.showSuccess(
                 editingItem ? resources.notifications.activityConstraints.updated : resources.notifications.activityConstraints.created,
                 editingItem
                     ? resources.notifications.activityConstraints.updatedMessage
                     : resources.notifications.activityConstraints.createdMessage
             );
-
             setModalOpened(false);
-        } catch (error) {
-            $app.logger.error("[ActivityConstraintsPanel] Error saving constraint:", error);
+        } else {
+            $app.logger.error("[ActivityConstraintsPanel] Error saving constraint");
             $app.notifications.showError(
                 resources.notifications.activityConstraints.failedToSaveConstraint,
-                error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
+                resources.notifications.activityConstraints.unexpectedError
             );
         }
     };
