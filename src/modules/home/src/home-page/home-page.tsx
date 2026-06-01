@@ -1,4 +1,5 @@
-import { Card, Modal, Tabs, Text, Title } from "@mantine/core";
+import { Modal, Text, useMantineTheme } from "@mantine/core";
+import HomeCarousel from "./home-carousel";
 import { useEffect, useState } from "react";
 import resourcesJson from "./home-page.resources.json";
 import styles from "./home-page.module.css";
@@ -8,56 +9,46 @@ const resources = translatedResources("src/modules/home/src/home-page/home-page.
 
 export function HomePage() {
     const [previewNoticeOpen, setPreviewNoticeOpen] = useState(false);
+    const carouselItems = resources.carousel ?? [];
+    const theme = useMantineTheme();
+
+    const primaryShade = 6;
+    const primaryHex = (theme.colors as any)[theme.primaryColor]?.[primaryShade] ?? (theme.colors as any)["blue"][6];
+    function hexToRgba(hex: string, alpha = 1) {
+        if (!hex) return `rgba(0,0,0,${alpha})`;
+        const h = hex.replace('#', '');
+        const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+        const bigint = parseInt(full, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    const lineColor = hexToRgba(primaryHex, 0.06);
+    const fillColor = hexToRgba(primaryHex, 0.02);
+    const gridBackground = `linear-gradient(to right, ${lineColor} 1px, transparent 1px), linear-gradient(to bottom, ${lineColor} 1px, transparent 1px)`;
+    const homeBgStyle: React.CSSProperties = { backgroundImage: gridBackground, backgroundSize: '40px 40px', backgroundColor: fillColor };
 
     const handleClosePreviewNotice = () => {
         setPreviewNoticeOpen(false);
     };
 
+
     // Show the preview notice modal after 5 seconds
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setPreviewNoticeOpen(true);
         }, 5000);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
         <>
-            <div className={styles.homePageContainer}>
+            <div className={styles.homePageContainer} style={homeBgStyle}>
                 <div className={styles.homePageHero}>
-                    <Title>{resources.hero.title}</Title>
-                    <Text>{resources.hero.subtitle}</Text>
-                    <Text>{resources.hero.paragraph}</Text>
-
                     <div className={styles.homePageFeatureTabs}>
-                        <Tabs
-                            className={styles.homePageTabs}
-                            defaultValue="overview"
-                            orientation="vertical"
-                        >
-                            <Tabs.List>
-                                {(
-                                    Object.keys(resources.tabs) as Array<
-                                        keyof typeof resources.tabs
-                                    >
-                                ).map((key) => (
-                                    <Tabs.Tab key={key} value={key}>
-                                        {resources.tabs[key].title}
-                                    </Tabs.Tab>
-                                ))}
-                            </Tabs.List>
-
-                            {(
-                                Object.keys(resources.tabs) as Array<
-                                    keyof typeof resources.tabs
-                                >
-                            ).map((key) => (
-                                <Tabs.Panel key={key} value={key} p="xl">
-                                    <Card shadow="xl" p="lg">
-                                        {resources.tabs[key].content}
-                                    </Card>
-                                </Tabs.Panel>
-                            ))}
-                        </Tabs>
+                        <HomeCarousel items={carouselItems} />
                     </div>
                 </div>
             </div>
