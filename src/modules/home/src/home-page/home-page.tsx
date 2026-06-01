@@ -1,4 +1,5 @@
-import { Card, Modal, Tabs, Text, Title } from "@mantine/core";
+import { Modal, Text, Title } from "@mantine/core";
+import HomeCarousel from "./home-carousel";
 import { useEffect, useState } from "react";
 import resourcesJson from "./home-page.resources.json";
 import styles from "./home-page.module.css";
@@ -8,16 +9,19 @@ const resources = translatedResources("src/modules/home/src/home-page/home-page.
 
 export function HomePage() {
     const [previewNoticeOpen, setPreviewNoticeOpen] = useState(false);
+    const carouselItems = resources.carousel ?? [];
 
     const handleClosePreviewNotice = () => {
         setPreviewNoticeOpen(false);
     };
 
+
     // Show the preview notice modal after 5 seconds
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setPreviewNoticeOpen(true);
         }, 5000);
+        return () => clearTimeout(timer);
     }, []);
 
     return (
@@ -29,35 +33,7 @@ export function HomePage() {
                     <Text>{resources.hero.paragraph}</Text>
 
                     <div className={styles.homePageFeatureTabs}>
-                        <Tabs
-                            className={styles.homePageTabs}
-                            defaultValue="overview"
-                            orientation="vertical"
-                        >
-                            <Tabs.List>
-                                {(
-                                    Object.keys(resources.tabs) as Array<
-                                        keyof typeof resources.tabs
-                                    >
-                                ).map((key) => (
-                                    <Tabs.Tab key={key} value={key}>
-                                        {resources.tabs[key].title}
-                                    </Tabs.Tab>
-                                ))}
-                            </Tabs.List>
-
-                            {(
-                                Object.keys(resources.tabs) as Array<
-                                    keyof typeof resources.tabs
-                                >
-                            ).map((key) => (
-                                <Tabs.Panel key={key} value={key} p="xl">
-                                    <Card shadow="xl" p="lg">
-                                        {resources.tabs[key].content}
-                                    </Card>
-                                </Tabs.Panel>
-                            ))}
-                        </Tabs>
+                        <HomeCarousel items={carouselItems} />
                     </div>
                 </div>
             </div>
