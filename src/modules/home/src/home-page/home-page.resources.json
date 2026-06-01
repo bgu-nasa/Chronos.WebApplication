@@ -4,20 +4,20 @@
         "subtitle": "A modern modular application platform",
         "paragraph": "Build scalable applications with our federated module architecture. Get started quickly with pre-built modules and customize to your needs."
     },
-    "tabs": {
-        "overview": {
-            "title": "Overview",
-            "content": "TODO Actual content"
+    "carousel": [
+        {
+            "title": "Enterprise Scheduling, Reimagined",
+            "content": "Whether you're managing hundreds or thousands of employees across multiple departments, our platform brings every schedule, preference, and workforce decision together in one intelligent system."
         },
-        "features": {
-            "title": "Features",
-            "content": "TODO Actual content"
+        {
+            "title": "Let Your Team Be Heard. Let AI Handle the Rest.",
+            "content": "Stop spending hours balancing employee preferences, coverage requirements, and operational needs. Employees tell us what works for them—we automatically create schedules that keep both your people and your business running smoothly."
         },
-        "gettingStarted": {
-            "title": "Getting Started",
-            "content": "TODO Actual content"
+        {
+            "title": "Natural Language In. Optimized Schedules Out.",
+            "content": "Your workforce shouldn't have to learn another complex system. With AI-powered scheduling, employees simply communicate their availability the same way they would to a manager, and our platform takes care of the rest."
         }
-    },
+    ],
     "privatePreviewNotice": {
         "title": "Private Preview",
         "paragraph": "This application is currently in private preview. Features and functionality may change as we continue development. Thank you for your feedback and participation!"
