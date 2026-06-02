@@ -1,5 +1,6 @@
 {
     "successTitle": "הצלחה",
     "errorTitle": "שגיאה",
+    "warningTitle": "אזהרה",
     "validationTitle": "אימות"
 }
