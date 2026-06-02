@@ -1,45 +1,47 @@
 {
     "notifications": {
         "constraintCreated": {
-            "message": "טווח זמן לא זמין נקבע בהצלחה"
+            "title": "האילוץ נוצר",
+            "message": "טווח הזמן סומן כלא זמין"
         },
         "constraintCreateFailed": {
+            "title": "יצירת האילוץ נכשלה",
             "message": "אירעה שגיאה בלתי צפויה"
         }
     },
     "eventDetailsModal": {
-        "title": "פרטי האירוע",
+        "title": "פרטי שיבוץ",
         "labels": {
-            "subject": "נושא",
+            "subject": "קורס",
             "activityType": "סוג פעילות",
-            "schedule": "לוח זמנים",
+            "schedule": "מועד",
             "resource": "חדר",
-            "location": "מיקום:",
-            "capacity": "קיבולת:",
-            "expectedStudents": "תלמידים צפויים"
+            "location": "מיקום",
+            "capacity": "קיבולת",
+            "expectedStudents": "מספר סטודנטים צפוי"
         },
         "unknown": {
             "day": "יום לא ידוע",
-            "subject": "נושא לא ידוע",
+            "subject": "קורס לא ידוע",
             "activityType": "לא ידוע"
         },
-        "loading": "פרטי חדר טעינה...",
-        "closeButton": "סגור"
+        "loading": "טוען פרטי חדר...",
+        "closeButton": "סגירה"
     },
     "timeRangeSelectionModal": {
-        "title": "הוגדר כלא זמין",
-        "message": "צור מגבלת טווח זמן אסור ל:",
+        "title": "סימון כלא זמין",
+        "message": "יצירת אילוץ טווח זמן אסור:",
         "cancelButton": "ביטול",
-        "confirmButton": "הוגדר כלא זמין"
+        "confirmButton": "אישור"
     },
     "userSelect": {
         "label": "משתמש",
-        "placeholder": "בחירת משתמש לצפייה באילוצים",
+        "placeholder": "בחר משתמש לצפייה באילוצים",
         "nothingFoundMessage": "לא נמצאו משתמשים"
     },
     "schedulingPeriodSelect": {
-        "label": "תקופת תזמון",
-        "placeholder": "תקופה נבחרת",
-        "nothingFoundMessage": "לא נמצאו תקופות"
+        "label": "סמסטר",
+        "placeholder": "בחר סמסטר",
+        "nothingFoundMessage": "לא נמצאו סמסטרים"
     }
 }

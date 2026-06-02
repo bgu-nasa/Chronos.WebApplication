@@ -10,7 +10,7 @@
     "durationColumn": "משך",
     "emptyStateMessage": "עדיין אין קבוצות לקורס הזה.",
     "deleteConfirmTitle": "מחיקת קבוצה",
-    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את הקבוצה הזו?",
+    "deleteConfirmMessage": "האם למחוק את הקבוצה?",
     "deleteConfirmButton": "מחק",
     "deleteCancelButton": "ביטול",
     "notifications": {

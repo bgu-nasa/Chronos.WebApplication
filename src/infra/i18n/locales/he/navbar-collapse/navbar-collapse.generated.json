@@ -1,6 +1,6 @@
 {
     "expandSidebar": "הרחבת סרגל הצד",
-    "collapseSidebar": "סרגל צד של Collapse",
+    "collapseSidebar": "כיווץ סרגל צד",
     "expandSidebarAriaLabel": "הרחבת סרגל הצד כדי להציג תוויות ניווט",
-    "collapseSidebarAriaLabel": "קמט את סרגל הצד כדי להציג רק אייקונים"
+    "collapseSidebarAriaLabel": "כיווץ סרגל הצד להצגת אייקונים בלבד"
 }

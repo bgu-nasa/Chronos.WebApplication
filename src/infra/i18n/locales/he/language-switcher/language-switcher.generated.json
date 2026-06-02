@@ -2,7 +2,7 @@
     "interfaceLanguage": "שפת ממשק",
     "aria": {
         "selectInterfaceLanguage": "בחירת שפת ממשק",
-        "switchInterfaceLanguage": "שפת ממשק מתגים"
+        "switchInterfaceLanguage": "החלפת שפת ממשק"
     },
     "languageLabels": {
         "en": "אנגלית",
