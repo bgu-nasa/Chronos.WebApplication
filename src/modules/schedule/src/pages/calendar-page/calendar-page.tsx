@@ -10,6 +10,7 @@ const notificationResources = translatedResources(
 
 const resources = translatedResources("src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json", resourcesJson);
 
+import { getEnglishWeekdayName } from "@/common/weekdays";
 import { WeekView } from "@/common/components/calendar";
 import { useUsers } from "@/modules/auth/src/hooks";
 import { useUserConstraints, useSchedulingPeriods } from "@/modules/schedule/src/hooks";
@@ -294,7 +295,7 @@ export function CalendarPage() {
 
     try {
       // Get weekday name from the date (in user's local timezone)
-      const weekdayName = timeRangeSelection.date.toLocaleDateString('en-US', { weekday: 'long' });
+      const weekdayName = getEnglishWeekdayName(timeRangeSelection.date);
 
       // Create the constraint entry (times are in user's local timezone)
       const entry: ForbiddenTimeRangeEntry = {

@@ -15,7 +15,9 @@ import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import { getWeekdayLabel } from "@/common/weekdays";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
 const notificationResources = translatedResources(
@@ -35,6 +37,7 @@ interface AssignmentPanelProps {
 }
 
 export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPanelProps>) {
+    useLocaleStore((state) => state.language);
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
 
     const { assignments, isLoading, fetchAssignments, clearAssignments } = useAssignments();
@@ -95,8 +98,8 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
         if (!selectedAssignment) return;
 
         openConfirmation({
-            title: "Delete Assignment",
-            message: "Are you sure you want to delete this assignment?",
+            title: resources.assignmentDeleteConfirmTitle,
+            message: resources.assignmentDeleteConfirmMessage,
             onConfirm: async () => {
                 const success = await deleteAssignment(selectedAssignment.id);
                 if (success) {
@@ -135,6 +138,15 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
 
     if (!slot) return null;
 
+    const weekdayLabel = localSlotHeader?.weekday
+        ? getWeekdayLabel(localSlotHeader.weekday)
+        : "";
+
+    const slotHeaderText = resources.assignmentsPanelSlotHeader
+        .replace("{weekday}", weekdayLabel)
+        .replace("{fromTime}", formatTime(localSlotHeader?.fromTime ?? ""))
+        .replace("{toTime}", formatTime(localSlotHeader?.toTime ?? ""));
+
     return (
         <>
             <Modal
@@ -142,9 +154,9 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
                 onClose={handleClose}
                 title={
                     <Stack gap={0}>
-                        <Title order={4}>Assignments</Title>
+                        <Title order={4}>{resources.assignmentsPanelTitle}</Title>
                         <Text size="sm" c="dimmed">
-                            {localSlotHeader?.weekday} • {formatTime(localSlotHeader?.fromTime ?? "")} - {formatTime(localSlotHeader?.toTime ?? "")}
+                            {slotHeaderText}
                         </Text>
                     </Stack>
                 }
@@ -170,7 +182,7 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
 
                 <Group justify="flex-end" mt="lg">
                     <Button variant="subtle" onClick={handleClose}>
-                        Close
+                        {resources.assignmentsPanelCloseButton}
                     </Button>
                 </Group>
             </Modal>
@@ -183,8 +195,8 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
                 onConfirm={handleConfirm}
                 title={confirmationState.title}
                 message={confirmationState.message}
-                confirmText="Delete"
-                cancelText="Cancel"
+                confirmText={resources.deleteConfirmButton}
+                cancelText={resources.deleteCancelButton}
                 loading={isConfirming}
             />
         </>

@@ -9,6 +9,7 @@ import { useSchedulingPeriods } from "@/modules/schedule/src/hooks";
 
 import resourcesJson from "../constraints-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
 const notificationResources = translatedResources(
@@ -20,6 +21,10 @@ const resources = translatedResources(
     "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",
     resourcesJson,
 );
+import {
+    ENGLISH_WEEKDAY_ORDER,
+    getWeekdaySelectOptions,
+} from "@/common/weekdays";
 import {
     getDateFromIsoWeek,
     getIsoWeekNumber,
@@ -63,7 +68,7 @@ interface UserConstraintEditorProps {
     readonly isPreference: boolean;
 }
 
-const weekdays = resources.other.weekdays;
+const englishWeekdays = [...ENGLISH_WEEKDAY_ORDER];
 
 function createEmptyTimeRangeEntry(): ForbiddenTimeRangeEntry & { id: string } {
     return {
@@ -137,7 +142,7 @@ function serializeConstraintValue(
             return {
                 serializedValue: serializeForbiddenTimeRange([
                     {
-                        weekday: getWeekdayFromDateKey(oneTimeDate, weekdays) || entry?.weekday || "",
+                        weekday: getWeekdayFromDateKey(oneTimeDate, englishWeekdays) || entry?.weekday || "",
                         startTime: entry?.startTime || "",
                         endTime: entry?.endTime || "",
                     },
@@ -176,6 +181,7 @@ export function UserConstraintEditor({
     loading = false,
     isPreference,
 }: UserConstraintEditorProps) {
+    useLocaleStore((state) => state.language);
     const { users, fetchUsers } = useUsers();
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
 
@@ -276,7 +282,7 @@ export function UserConstraintEditor({
         }
 
         const year = new Date(selectedPeriod.fromDate).getFullYear();
-        setOneTimeDate(getDateFromIsoWeek(year, initialData.weekNum!, firstEntry.weekday, weekdays));
+        setOneTimeDate(getDateFromIsoWeek(year, initialData.weekNum!, firstEntry.weekday, englishWeekdays));
     }, [opened, initialData, isOneTimeForbiddenEdit, schedulingPeriods, oneTimeDate]);
 
     const initializeNewData = () => {
@@ -534,7 +540,7 @@ export function UserConstraintEditor({
                                     {
                                         ...firstEntry,
                                         weekday: nextMode === "oneTime" && oneTimeDate
-                                            ? getWeekdayFromDateKey(oneTimeDate, weekdays)
+                                            ? getWeekdayFromDateKey(oneTimeDate, englishWeekdays)
                                             : firstEntry.weekday,
                                     },
                                 ]);
@@ -553,7 +559,7 @@ export function UserConstraintEditor({
                                     setFormErrors({ ...formErrors, oneTimeDate: "" });
                                     setTimeRangeEntries(previousEntries => {
                                         const firstEntry = previousEntries[0] ?? createEmptyTimeRangeEntry();
-                                        return [{ ...firstEntry, weekday: getWeekdayFromDateKey(value, weekdays) }];
+                                        return [{ ...firstEntry, weekday: getWeekdayFromDateKey(value, englishWeekdays) }];
                                     });
                                 }}
                                 error={formErrors.oneTimeDate}
@@ -579,7 +585,7 @@ export function UserConstraintEditor({
                                     <Select
                                         label={index === 0 ? resources.labels.weekday : undefined}
                                         placeholder={resources.placeholders.selectWeekday}
-                                        data={resources.other.weekdays}
+                                        data={getWeekdaySelectOptions()}
                                         value={entry.weekday}
                                         onChange={(value) => updateTimeRangeEntry(entry.id, "weekday", value || "")}
                                         style={{ flex: 1 }}
@@ -635,7 +641,7 @@ export function UserConstraintEditor({
                                 <Select
                                     label={index === 0 ? resources.labels.weekday : undefined}
                                     placeholder={resources.placeholders.selectWeekday}
-                                    data={resources.other.weekdays}
+                                    data={getWeekdaySelectOptions()}
                                     value={entry.weekday}
                                     onChange={(value) => updateTimeRangeEntry(entry.id, "weekday", value || "")}
                                     style={{ flex: 1 }}
@@ -679,7 +685,7 @@ export function UserConstraintEditor({
                     <MultiSelect
                         label={resources.labels.value}
                         placeholder={resources.placeholders.selectWeekday}
-                        data={resources.other.weekdays}
+                        data={getWeekdaySelectOptions()}
                         value={selectedWeekdays}
                         onChange={(value) => {
                             setSelectedWeekdays(value);

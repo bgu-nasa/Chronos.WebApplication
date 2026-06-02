@@ -4,8 +4,11 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
+import { getWeekdayLabel } from "@/common/weekdays";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resourcesJson from "../appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/appeals-page/appeals-page.resources.json",
@@ -43,12 +46,19 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 }
 
 export function ViewAppealModal({ appeal, details, onClose }: ViewAppealModalProps) {
+    useLocaleStore((state) => state.language);
+
     if (!appeal) return null;
 
-    const day = details?.slot?.weekday || "—";
-    const time = details?.slot
-        ? `${formatTime(details.slot.fromTime)} - ${formatTime(details.slot.toTime)}`
-        : "—";
+    let day = "—";
+    let time = "—";
+    if (details?.slot) {
+        const fromTime = formatTime(details.slot.fromTime);
+        const toTime = formatTime(details.slot.toTime);
+        const local = convertSlotUtcToLocal(details.slot.weekday, fromTime, toTime)[0];
+        day = getWeekdayLabel(local.weekday);
+        time = `${local.fromTime} - ${local.toTime}`;
+    }
     const activity = details?.activity?.displayLabel || "—";
     const resource = details?.resource
         ? `${details.resource.location} / ${details.resource.identifier}`

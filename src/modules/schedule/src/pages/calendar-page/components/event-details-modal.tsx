@@ -2,8 +2,10 @@ import { Modal, Button, Group, Text, Stack, Divider, Badge } from "@mantine/core
 import { useState, useEffect } from "react";
 import { resourceDataRepository } from "@/modules/schedule/src/data/resource-data-repository";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
+import { getWeekdayLabel } from "@/common/weekdays";
 import resourcesJson from "../calendar-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json",
@@ -33,6 +35,7 @@ export function EventDetailsModal({
     onClose,
     eventBlock,
 }: EventDetailsModalProps) {
+    useLocaleStore((state) => state.language);
     const [resource, setResource] = useState<ResourceResponse | null>(null);
     const [loadingResource, setLoadingResource] = useState(false);
 
@@ -59,7 +62,9 @@ export function EventDetailsModal({
         return null;
     }
 
-    const weekdayName = eventBlock.weekday || resources.eventDetailsModal.unknown.day;
+    const weekdayName = eventBlock.weekday
+        ? getWeekdayLabel(eventBlock.weekday)
+        : resources.eventDetailsModal.unknown.day;
     const timeRange = `${eventBlock.startTime} - ${eventBlock.endTime}`;
 
     return (

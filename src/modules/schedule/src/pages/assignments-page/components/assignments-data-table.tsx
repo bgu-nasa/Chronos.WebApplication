@@ -7,7 +7,9 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
+import { getWeekdayLabel } from "@/common/weekdays";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
+import { useLocaleStore } from "@/infra/theme/state";
 import resourcesJson from "../assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
 
@@ -45,6 +47,7 @@ export function AssignmentsDataTable({
     onSelectionChange,
     isLoading = false,
 }: AssignmentsDataTableProps) {
+    const language = useLocaleStore((state) => state.language);
     const slotMap = useMemo(() => new Map(slots.map((s) => [s.id, s])), [slots]);
     const activityMap = useMemo(() => new Map(activities.map((a) => [a.id, a])), [activities]);
     const resourceMap = useMemo(
@@ -64,7 +67,7 @@ export function AssignmentsDataTable({
                 const fromTime = slot.fromTime.split(":").slice(0, 2).join(":");
                 const toTime = slot.toTime.split(":").slice(0, 2).join(":");
                 const local = convertSlotUtcToLocal(slot.weekday, fromTime, toTime)[0];
-                day = local.weekday;
+                day = getWeekdayLabel(local.weekday);
                 time = `${local.fromTime} - ${local.toTime}`;
             }
 
@@ -79,7 +82,7 @@ export function AssignmentsDataTable({
                 raw: a,
             };
         });
-    }, [assignments, slotMap, activityMap, resourceMap]);
+    }, [assignments, slotMap, activityMap, resourceMap, language]);
 
     const selectedRow = useMemo(() => {
         if (!selectedAssignment) return null;

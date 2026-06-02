@@ -3,12 +3,13 @@ import { Modal, Select, Button, Group, Stack, NumberInput } from "@mantine/core"
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
-import { WeekdayOrder } from "@/modules/schedule/src/data/slot.types";
+import { getWeekdaySelectOptions } from "@/common/weekdays";
 import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment-data-repository";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resourcesJson from "../assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
 const notificationResources = translatedResources(
@@ -39,6 +40,7 @@ export function AddAssignmentModal({
     onCreated,
     editingAssignment,
 }: AddAssignmentModalProps) {
+    const language = useLocaleStore((state) => state.language);
     const [selectedDay, setSelectedDay] = useState<string | null>(null);
     const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
     const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
@@ -60,11 +62,10 @@ export function AddAssignmentModal({
 
     const availableDays = useMemo(() => {
         const daysWithSlots = new Set(localSlots.map((s) => s.localWeekday));
-        return WeekdayOrder.filter((day) => daysWithSlots.has(day)).map((day) => ({
-            value: day,
-            label: day,
-        }));
-    }, [localSlots]);
+        return getWeekdaySelectOptions().filter((option) =>
+            daysWithSlots.has(option.value),
+        );
+    }, [localSlots, language]);
 
     const filteredSlots = useMemo(() => {
         if (!selectedDay) return [];
