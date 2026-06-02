@@ -11,7 +11,14 @@ import {
     useCreateSchedulingPeriod,
     useUpdateSchedulingPeriod,
 } from "@/modules/schedule/src/hooks/use-scheduling-periods";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
+    resourcesJson,
+);
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/components/scheduling-period-editor.module.css";
 
 export function SchedulingPeriodEditor() {
@@ -80,16 +87,28 @@ export function SchedulingPeriodEditor() {
             const result = await createSchedulingPeriod(request);
             success = result !== null;
             if (success) {
-                $app.notifications.showSuccess("Success", "Semester created successfully");
+                $app.notifications.showSuccess(
+                    sharedNotifications.successTitle,
+                    resources.notifications.semesterCreateSuccess,
+                );
             } else {
-                $app.notifications.showError("Error", "Failed to create semester");
+                $app.notifications.showError(
+                    sharedNotifications.errorTitle,
+                    resources.notifications.semesterCreateError,
+                );
             }
         } else if (mode === "edit" && schedulingPeriod) {
             success = await updateSchedulingPeriod(schedulingPeriod.id, request);
             if (success) {
-                $app.notifications.showSuccess("Success", "Semester updated successfully");
+                $app.notifications.showSuccess(
+                    sharedNotifications.successTitle,
+                    resources.notifications.semesterUpdateSuccess,
+                );
             } else {
-                $app.notifications.showError("Error", "Failed to update semester");
+                $app.notifications.showError(
+                    sharedNotifications.errorTitle,
+                    resources.notifications.semesterUpdateError,
+                );
             }
         }
 

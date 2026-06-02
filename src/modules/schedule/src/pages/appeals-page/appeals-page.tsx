@@ -11,7 +11,14 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import { AppealsDataTable } from "./components/appeals-data-table";
 import { ViewAppealModal } from "./components/view-appeal-modal";
-import resources from "./appeals-page.resources.json";
+import resourcesJson from "./appeals-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/appeals-page/appeals-page.resources.json",
+    resourcesJson,
+);
 import styles from "./appeals-page.module.css";
 
 export function AppealsPage() {
@@ -57,7 +64,10 @@ export function AppealsPage() {
             setSlots(slotResults.filter((s): s is SlotResponse => s !== null));
         } catch (err) {
             $app.logger.error("Failed to fetch appeals:", err);
-            $app.notifications.showError("Error", "Failed to fetch appeals");
+            $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.notifications.fetchError,
+            );
             setAppeals([]);
         } finally {
             setIsLoading(false);
@@ -95,7 +105,10 @@ export function AppealsPage() {
             } catch (err) {
                 if (cancelled) return;
                 $app.logger.error("Failed to fetch appeals:", err);
-                $app.notifications.showError("Error", "Failed to fetch appeals");
+                $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.notifications.fetchError,
+            );
                 setAppeals([]);
             } finally {
                 if (!cancelled) {
@@ -121,10 +134,16 @@ export function AppealsPage() {
                 try {
                     await appealDataRepository.deleteAppeal(selectedAppeal.id);
                     setSelectedAppeal(null);
-                    $app.notifications.showSuccess("Success", resources.dismissSuccess);
+                    $app.notifications.showSuccess(
+                        sharedNotifications.successTitle,
+                        resources.dismissSuccess,
+                    );
                     fetchAppeals();
                 } catch {
-                    $app.notifications.showError("Error", resources.dismissError);
+                    $app.notifications.showError(
+                        sharedNotifications.errorTitle,
+                        resources.dismissError,
+                    );
                 }
             },
         });

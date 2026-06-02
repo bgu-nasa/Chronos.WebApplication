@@ -7,7 +7,14 @@ import { TimeInput } from "@mantine/dates";
 import { useUsers } from "@/modules/auth/src/hooks";
 import { useSchedulingPeriods } from "@/modules/schedule/src/hooks";
 
-import resources from "../constraints-page.resources.json";
+import resourcesJson from "../constraints-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",
+    resourcesJson,
+);
 import {
     getDateFromIsoWeek,
     getIsoWeekNumber,
@@ -378,7 +385,7 @@ export function UserConstraintEditor({
             // Safety net: if onSubmit throws instead of returning false
             $app.logger.error("[UserConstraintEditor] Unexpected error in onSubmit:", error);
             $app.notifications.showError(
-                resources.notifications.userConstraints.failedToSaveConstraint,
+                sharedNotifications.errorTitle,
                 error instanceof Error ? error.message : resources.notifications.userConstraints.unexpectedError
             );
         }

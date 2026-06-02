@@ -13,7 +13,14 @@ import { AgentEntryButton } from "@/modules/agent/src/components";
 
 import { UserConstraintEditor } from "./user-constraint-editor.tsx";
 import { formatConstraintValueForDisplay } from "../utils";
-import resources from "../constraints-page.resources.json";
+import resourcesJson from "../constraints-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",
+    resourcesJson,
+);
 import styles from "../constraints-page.module.css";
 
 interface UserConstraintsPanelProps {
@@ -125,13 +132,13 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
                 if (success) {
                     await refetchData(isPreferenceType);
                     $app.notifications.showSuccess(
-                        resources.notifications.userConstraints.deleted,
+                        sharedNotifications.successTitle,
                         resources.notifications.userConstraints.deletedMessage.replace("{type}", itemType)
                     );
                 } else {
                     $app.logger.error("[UserConstraintsPanel] Error deleting constraint/preference");
                     $app.notifications.showError(
-                        resources.notifications.userConstraints.failedToDelete,
+                        sharedNotifications.errorTitle,
                         resources.notifications.userConstraints.unexpectedError
                     );
                 }
@@ -177,7 +184,7 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
         if (!success) {
             $app.logger.error("[UserConstraintsPanel] Error saving constraint/preference");
             $app.notifications.showError(
-                resources.notifications.userConstraints.failedToSave,
+                sharedNotifications.errorTitle,
                 resources.notifications.userConstraints.unexpectedError
             );
             return false;
@@ -186,12 +193,11 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
         await refetchData(isPreference);
 
         const itemType = isPreference ? resources.constraintTypes.preference : resources.constraintTypes.constraint;
-        const title = isUpdate ? resources.notifications.userConstraints.updated : resources.notifications.userConstraints.created;
         const message = isUpdate
             ? resources.notifications.userConstraints.updatedMessage.replace("{type}", itemType)
             : resources.notifications.userConstraints.createdMessage.replace("{type}", itemType);
 
-        $app.notifications.showSuccess(title, message);
+        $app.notifications.showSuccess(sharedNotifications.successTitle, message);
         return true;
     };
 

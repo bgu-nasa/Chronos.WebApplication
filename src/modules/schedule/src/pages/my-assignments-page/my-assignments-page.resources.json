@@ -10,5 +10,11 @@
     "dayColumn": "Day",
     "timeColumn": "Time",
     "resourceFilterLabel": "Resource",
-    "resourceFilterPlaceholder": "All resources"
+    "resourceFilterPlaceholder": "All resources",
+    "notifications": {
+        "fetchError": "Failed to fetch assignments",
+        "appealSuccess": "Appeal submitted",
+        "appealCreateSuccess": "Appeal created successfully",
+        "appealCreateError": "Failed to create appeal"
+    }
 }

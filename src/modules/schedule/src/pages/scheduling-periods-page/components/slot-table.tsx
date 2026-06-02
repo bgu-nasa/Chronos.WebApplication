@@ -3,8 +3,13 @@ import { Paper, Text, Group, Stack, Badge } from "@mantine/core";
 import { WeekdayOrder } from "@/modules/schedule/src/data";
 import type { SlotResponse } from "@/modules/schedule/src/data";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json",
+    resourcesJson,
+);
 interface SlotTableProps {
     slots: SlotResponse[];
     selectedSlot: SlotResponse | null;

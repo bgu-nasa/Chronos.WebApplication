@@ -7,8 +7,14 @@ import { WeekdayOrder } from "@/modules/schedule/src/data/slot.types";
 import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment-data-repository";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
-import resources from "../assignments-page.resources.json";
+import resourcesJson from "../assignments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
+    resourcesJson,
+);
 interface AddAssignmentModalProps {
     opened: boolean;
     onClose: () => void;
@@ -130,7 +136,10 @@ export function AddAssignmentModal({
                     activityId: selectedActivityId!,
                     weekNum: weekNum as number,
                 });
-                $app.notifications.showSuccess("Success", "Assignment updated successfully");
+                $app.notifications.showSuccess(
+                    sharedNotifications.successTitle,
+                    resources.notifications.updateSuccess,
+                );
             } else {
                 await assignmentDataRepository.createAssignment({
                     slotId: selectedSlotId!,
@@ -138,15 +147,18 @@ export function AddAssignmentModal({
                     activityId: selectedActivityId!,
                     weekNum: weekNum as number,
                 });
-                $app.notifications.showSuccess("Success", "Assignment created successfully");
+                $app.notifications.showSuccess(
+                    sharedNotifications.successTitle,
+                    resources.notifications.createSuccess,
+                );
             }
             onCreated();
             onClose();
         } catch (error) {
             $app.logger.error("Failed to save assignment:", error);
             $app.notifications.showError(
-                "Error",
-                isEditMode ? "Failed to update assignment" : "Failed to create assignment"
+                sharedNotifications.errorTitle,
+                isEditMode ? resources.notifications.updateError : resources.notifications.createError,
             );
         } finally {
             setIsSubmitting(false);

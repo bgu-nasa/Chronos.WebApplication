@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import { Modal, TextInput, Textarea, Button, Group, Stack } from "@mantine/core";
 import { appealDataRepository } from "@/modules/schedule/src/data/appeal-data-repository";
 import type { AppealResponse } from "@/modules/schedule/src/data/appeal.types";
-import resources from "../my-appeals-page.resources.json";
+import resourcesJson from "../my-appeals-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/my-appeals-page/my-appeals-page.resources.json",
+    resourcesJson,
+);
 interface EditAppealModalProps {
     appeal: AppealResponse | null;
     onClose: () => void;
@@ -42,12 +48,18 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
                 title: title.trim(),
                 description: description.trim(),
             });
-            $app.notifications.showSuccess("Success", resources.editSuccess);
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.editSuccess,
+            );
             onUpdated();
             onClose();
         } catch (error) {
             $app.logger.error("Failed to update appeal:", error);
-            $app.notifications.showError("Error", resources.editError);
+            $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.editError,
+            );
         } finally {
             setIsSubmitting(false);
         }

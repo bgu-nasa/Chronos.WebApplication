@@ -21,6 +21,7 @@ import type { SlotResponse } from "@/modules/schedule/src/data";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.module.css";
 import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
 const resources = translatedResources("src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json", resourcesJson);
 
@@ -143,9 +144,15 @@ export function SchedulingPeriodsPage() {
                 if (success) {
                     setSelectedPeriod(null);
                     setShowSlots(false);
-                    $app.notifications.showSuccess("Success", "Semester deleted successfully");
+                    $app.notifications.showSuccess(
+                        sharedNotifications.successTitle,
+                        resources.notifications.semesterDeleteSuccess,
+                    );
                 } else {
-                    $app.notifications.showError("Error", "Failed to delete semester");
+                    $app.notifications.showError(
+                        sharedNotifications.errorTitle,
+                        resources.notifications.semesterDeleteError,
+                    );
                 }
             },
         });
@@ -211,9 +218,15 @@ export function SchedulingPeriodsPage() {
                 const success = await deleteSlot(selectedSlot.id);
                 if (success) {
                     setSelectedSlot(null);
-                    $app.notifications.showSuccess("Success", "Slot deleted successfully");
+                    $app.notifications.showSuccess(
+                        sharedNotifications.successTitle,
+                        resources.notifications.slotDeleteSuccess,
+                    );
                 } else {
-                    $app.notifications.showError("Error", "Failed to delete slot");
+                    $app.notifications.showError(
+                        sharedNotifications.errorTitle,
+                        resources.notifications.slotDeleteError,
+                    );
                 }
             },
         });

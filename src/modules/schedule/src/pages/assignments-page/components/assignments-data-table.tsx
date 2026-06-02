@@ -8,8 +8,13 @@ import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
-import resources from "../assignments-page.resources.json";
+import resourcesJson from "../assignments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
+    resourcesJson,
+);
 interface AssignmentRow {
     id: string;
     resourceDisplay: string;

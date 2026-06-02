@@ -14,6 +14,14 @@ import { useAssignmentEditorStore } from "@/modules/schedule/src/stores/assignme
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
+    resourcesJson,
+);
 
 interface AssignmentPanelProps {
     isOpen: boolean;
@@ -88,9 +96,15 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
                 const success = await deleteAssignment(selectedAssignment.id);
                 if (success) {
                     setSelectedAssignment(null);
-                    $app.notifications.showSuccess("Success", "Assignment deleted successfully");
+                    $app.notifications.showSuccess(
+                        sharedNotifications.successTitle,
+                        resources.notifications.assignmentDeleteSuccess,
+                    );
                 } else {
-                    $app.notifications.showError("Error", "Failed to delete assignment");
+                    $app.notifications.showError(
+                        sharedNotifications.errorTitle,
+                        resources.notifications.assignmentDeleteError,
+                    );
                 }
             },
         });

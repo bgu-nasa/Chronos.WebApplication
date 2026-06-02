@@ -1,0 +1,32 @@
+{
+    "titleCreate": "Add Assignment",
+    "titleEdit": "Edit Assignment",
+    "submitCreate": "Create",
+    "submitSave": "Save",
+    "cancel": "Cancel",
+    "labels": {
+        "resource": "Resource (Location)",
+        "activity": "Activity",
+        "weekNumber": "Week Number"
+    },
+    "placeholders": {
+        "loadingResources": "Loading resources...",
+        "noResources": "There are no resources yet",
+        "selectResource": "Select a resource",
+        "loadingActivities": "Loading activities...",
+        "noActivities": "There are no activities yet",
+        "selectActivity": "Select an activity",
+        "weekNumber": "Enter week number"
+    },
+    "validation": {
+        "resourceRequired": "Resource is required",
+        "activityRequired": "Activity is required",
+        "weekNumRequired": "Week number is required"
+    },
+    "notifications": {
+        "createSuccess": "Assignment created successfully",
+        "createError": "Failed to create assignment",
+        "updateSuccess": "Assignment updated successfully",
+        "updateError": "Failed to update assignment"
+    }
+}

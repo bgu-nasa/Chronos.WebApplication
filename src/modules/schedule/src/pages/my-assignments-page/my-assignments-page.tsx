@@ -10,7 +10,14 @@ import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { AssignmentsDataTable } from "@/modules/schedule/src/pages/assignments-page/components/assignments-data-table";
 import { CreateAppealModal } from "./components/create-appeal-modal";
-import resources from "./my-assignments-page.resources.json";
+import resourcesJson from "./my-assignments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/my-assignments-page/my-assignments-page.resources.json",
+    resourcesJson,
+);
 import styles from "./my-assignments-page.module.css";
 
 export function MyAssignmentsPage() {
@@ -96,7 +103,10 @@ export function MyAssignmentsPage() {
             setAssignments(data);
         } catch (err) {
             $app.logger.error("Failed to fetch assignments:", err);
-            $app.notifications.showError("Error", "Failed to fetch assignments");
+            $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.notifications.fetchError,
+            );
             setAssignments([]);
         } finally {
             setIsLoadingAssignments(false);
@@ -179,7 +189,10 @@ export function MyAssignmentsPage() {
                     onClose={() => setIsAppealModalOpen(false)}
                     assignmentId={selectedAssignment?.id ?? null}
                     onCreated={() => {
-                        $app.notifications.showSuccess("Success", "Appeal submitted");
+                        $app.notifications.showSuccess(
+                            sharedNotifications.successTitle,
+                            resources.notifications.appealSuccess,
+                        );
                     }}
                 />
             </div>

@@ -5,8 +5,14 @@ import { useCreateSlot, useUpdateSlot } from "@/modules/schedule/src/hooks";
 import { Weekday, WeekdayOrder } from "@/modules/schedule/src/data";
 import { convertSlotLocalToUtc, convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import { TimeSpinner } from "@/common/components/time-spinner";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json",
+    resourcesJson,
+);
 interface SlotEditorProps {
     schedulingPeriodId: string;
 }
@@ -193,10 +199,17 @@ export function SlotEditor({ schedulingPeriodId }: Readonly<SlotEditorProps>) {
         }
 
         if (createdCount === slotsToCreate.length) {
-            const pluralSuffix = createdCount === 1 ? "" : "s";
-            $app.notifications.showSuccess("Success", `${createdCount} slot${pluralSuffix} created successfully`);
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.slotsCreatedSuccess.replace("{count}", String(createdCount)),
+            );
         } else {
-            $app.notifications.showError("Error", `Only ${createdCount} of ${slotsToCreate.length} slots were created`);
+            $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.notifications.slotsCreatedPartial
+                    .replace("{created}", String(createdCount))
+                    .replace("{total}", String(slotsToCreate.length)),
+            );
         }
 
         close();
@@ -219,12 +232,18 @@ export function SlotEditor({ schedulingPeriodId }: Readonly<SlotEditorProps>) {
         });
 
         if (success) {
-            $app.notifications.showSuccess("Success", "Slot updated successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.slotUpdateSuccess,
+            );
             close();
             return;
         }
 
-        $app.notifications.showError("Error", "Failed to update slot");
+        $app.notifications.showError(
+            sharedNotifications.errorTitle,
+            resources.notifications.slotUpdateError,
+        );
     };
 
     const handleSubmit = async (e: React.FormEvent) => {

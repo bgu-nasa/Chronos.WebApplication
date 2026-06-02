@@ -3,8 +3,13 @@ import type { DataTableSelectionSingleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Text, Stack } from "@mantine/core";
 import type { SchedulingPeriodDataWithExpired } from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
+    resourcesJson,
+);
 interface SchedulingPeriodTableProps {
     schedulingPeriods: SchedulingPeriodDataWithExpired[];
     selectedPeriod: SchedulingPeriodDataWithExpired | null;

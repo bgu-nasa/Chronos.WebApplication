@@ -18,5 +18,8 @@
     "deleteConfirmButton": "Delete",
     "deleteCancelButton": "Cancel",
     "deleteSuccess": "Appeal deleted successfully",
-    "deleteError": "Failed to delete appeal"
+    "deleteError": "Failed to delete appeal",
+    "notifications": {
+        "fetchError": "Failed to fetch appeals"
+    }
 }

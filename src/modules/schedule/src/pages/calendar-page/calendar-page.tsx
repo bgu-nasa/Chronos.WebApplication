@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, Flex, Paper, Group } from "@mantine/core";
 import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
 const resources = translatedResources("src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json", resourcesJson);
 
@@ -317,7 +318,7 @@ export function CalendarPage() {
 
       // Show success notification
       $app.notifications.showSuccess(
-        resources.notifications.constraintCreated.title,
+        sharedNotifications.successTitle,
         resources.notifications.constraintCreated.message
       );
 
@@ -327,7 +328,7 @@ export function CalendarPage() {
     } catch (error) {
       $app.logger.error("[CalendarPage] Error creating constraint:", error);
       $app.notifications.showError(
-        resources.notifications.constraintCreateFailed.title,
+        sharedNotifications.errorTitle,
         error instanceof Error ? error.message : resources.notifications.constraintCreateFailed.message
       );
     }

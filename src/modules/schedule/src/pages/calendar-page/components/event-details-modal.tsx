@@ -2,8 +2,13 @@ import { Modal, Button, Group, Text, Stack, Divider, Badge } from "@mantine/core
 import { useState, useEffect } from "react";
 import { resourceDataRepository } from "@/modules/schedule/src/data/resource-data-repository";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
-import resources from "../calendar-page.resources.json";
+import resourcesJson from "../calendar-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json",
+    resourcesJson,
+);
 interface EventBlock {
     weekday?: string;
     startTime: string;

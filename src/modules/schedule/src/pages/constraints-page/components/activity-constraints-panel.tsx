@@ -8,7 +8,14 @@ import {
 } from "@/modules/schedule/src/hooks";
 
 import { ActivityConstraintEditor } from "./activity-constraint-editor";
-import resources from "../constraints-page.resources.json";
+import resourcesJson from "../constraints-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",
+    resourcesJson,
+);
 import styles from "../constraints-page.module.css";
 
 interface ActivityConstraintsPanelProps {
@@ -93,13 +100,13 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
                 if (success) {
                     $app.notifications.showSuccess(
-                        resources.notifications.activityConstraints.deleted,
+                        sharedNotifications.successTitle,
                         resources.notifications.activityConstraints.deletedMessage
                     );
                 } else {
                     $app.logger.error("[ActivityConstraintsPanel] Error deleting constraint");
                     $app.notifications.showError(
-                        resources.notifications.activityConstraints.failedToDelete,
+                        sharedNotifications.errorTitle,
                         resources.notifications.activityConstraints.unexpectedError
                     );
                 }
@@ -114,7 +121,7 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
 
         if (success) {
             $app.notifications.showSuccess(
-                editingItem ? resources.notifications.activityConstraints.updated : resources.notifications.activityConstraints.created,
+                sharedNotifications.successTitle,
                 editingItem
                     ? resources.notifications.activityConstraints.updatedMessage
                     : resources.notifications.activityConstraints.createdMessage
@@ -123,7 +130,7 @@ export function ActivityConstraintsPanel({ openConfirmation }: Readonly<Omit<Act
         } else {
             $app.logger.error("[ActivityConstraintsPanel] Error saving constraint");
             $app.notifications.showError(
-                resources.notifications.activityConstraints.failedToSaveConstraint,
+                sharedNotifications.errorTitle,
                 resources.notifications.activityConstraints.unexpectedError
             );
         }

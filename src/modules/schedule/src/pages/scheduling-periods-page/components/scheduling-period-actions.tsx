@@ -1,6 +1,11 @@
 import { Button, Group } from "@mantine/core";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
+    resourcesJson,
+);
 interface SchedulingPeriodActionsProps {
     selectedPeriod: any | null;
     isExpired: boolean;
