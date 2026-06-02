@@ -1,6 +1,12 @@
 import { Button, SegmentedControl, Stack, Text } from "@mantine/core";
 import { type Language, useLocaleStore } from "@/infra/theme/state";
-import resources from "./language-switcher.resources.json";
+import languageSwitcherResourcesJson from "./language-switcher.resources.json";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources(
+    "src/infra/theme/components/language-switcher/language-switcher.resources.json",
+    languageSwitcherResourcesJson,
+);
 
 type LanguageSwitcherVariant = "compact" | "settings";
 

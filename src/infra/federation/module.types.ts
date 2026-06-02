@@ -65,6 +65,13 @@ export type ModuleRouteConfiguration = {
     element: JSX.Element;
 };
 
+export type NavigationModuleKey =
+    | "schedule"
+    | "resources"
+    | "management"
+    | "auth"
+    | "home";
+
 /**
  * A navigation item for the application's navigation menu
  */
@@ -73,6 +80,14 @@ export type NavigationItem = {
      * The label of the navigation item
      */
     label: string;
+    /**
+     * Key into the module's navigation.resources.json labels map
+     */
+    labelKey?: string;
+    /**
+     * Module that owns navigation.resources.json for this label
+     */
+    navigationModule?: NavigationModuleKey;
     /**
      * The href of the navigation item
      */

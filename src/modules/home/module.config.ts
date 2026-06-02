@@ -30,12 +30,16 @@ export const moduleConfig: ModuleConfig = {
         {
             location: "public",
             label: "Home",
+            labelKey: "home",
+            navigationModule: "home",
             href: "/",
             order: -1,
         },
         {
             location: "dashboard",
             label: "Home",
+            labelKey: "home",
+            navigationModule: "home",
             href: "/dashboard/home",
             icon: React.createElement(HomeIcon),
             order: 0,

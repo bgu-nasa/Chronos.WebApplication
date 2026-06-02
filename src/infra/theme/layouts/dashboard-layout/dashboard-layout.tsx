@@ -26,7 +26,13 @@ import {
 } from "@/common";
 import { DeletedOrganizationAlert } from "./deleted-organization-alert";
 import { useNavbarStore } from "./navbar.store";
-import resources from "./navbar-collapse.resources.json";
+import navbarCollapseResourcesJson from "./navbar-collapse.resources.json";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources(
+    "src/infra/theme/layouts/dashboard-layout/navbar-collapse.resources.json",
+    navbarCollapseResourcesJson,
+);
 import { filterNavigationByRoles } from "./filter-navigation-by-roles";
 
 function renderNavigationItems(

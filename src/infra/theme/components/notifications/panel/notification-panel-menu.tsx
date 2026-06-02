@@ -16,6 +16,13 @@ import { FaBell } from "react-icons/fa";
 import { getNotificationColor } from "@/infra/service/notification/notification-list";
 import { useNotificationPanelStore } from "./notification-panel.store";
 import { SchedulingHubConnector } from "../scheduling-hub";
+import notificationPanelMenuResourcesJson from "./notification-panel-menu.resources.json";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources(
+    "src/infra/theme/components/notifications/panel/notification-panel-menu.resources.json",
+    notificationPanelMenuResourcesJson,
+);
 
 export function NotificationPanelMenu() {
     return (
@@ -42,7 +49,7 @@ function NotificationPanelMenuContent() {
                 >
                     <ActionIcon
                         variant="subtle"
-                        aria-label="Notifications"
+                        aria-label={resources.ariaLabel}
                         size="lg"
                     >
                         <FaBell size={20} />
@@ -50,10 +57,10 @@ function NotificationPanelMenuContent() {
                 </Indicator>
             </Menu.Target>
             <Menu.Dropdown>
-                <Menu.Label>Notifications</Menu.Label>
+                <Menu.Label>{resources.menuLabel}</Menu.Label>
                 {entries.length === 0 ? (
                     <Text size="sm" c="dimmed" px="sm" py="xs">
-                        No notifications yet
+                        {resources.emptyState}
                     </Text>
                 ) : (
                     <ScrollArea h={280}>
@@ -82,7 +89,7 @@ function NotificationPanelMenuContent() {
                                         style={{ cursor: "pointer" }}
                                         onClick={() => removeEntry(entry.id)}
                                     >
-                                        Dismiss
+                                        {resources.dismiss}
                                     </Text>
                                 </div>
                             ))}
@@ -93,7 +100,7 @@ function NotificationPanelMenuContent() {
                     <>
                         <Menu.Divider />
                         <Menu.Item onClick={clearEntries}>
-                            Clear history
+                            {resources.clearHistory}
                         </Menu.Item>
                     </>
                 ) : null}
