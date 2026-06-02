@@ -8,7 +8,7 @@ import { authDataRepository } from "@/modules/auth/src/data/auth-data-repository
 import type { PasswordUpdateRequest } from "@/modules/auth/src/data/auth.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import resourcesJson from "./use-auth.resources.json";
 
 const resources = translatedResources(

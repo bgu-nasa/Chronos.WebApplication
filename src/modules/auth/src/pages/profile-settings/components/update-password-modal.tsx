@@ -14,7 +14,7 @@ import {
 } from "@/modules/auth/src/common/validation.service";
 import resourcesJson from "./update-password-modal.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/auth/src/pages/profile-settings/components/update-password-modal.resources.json",

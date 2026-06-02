@@ -12,7 +12,7 @@ import type {
 } from "@/modules/management/src/data/role.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import resourcesJson from "./role.store.resources.json";
 
 const resources = translatedResources(

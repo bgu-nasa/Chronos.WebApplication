@@ -12,7 +12,7 @@ import type {
 } from "@/modules/auth/src/data/user.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import resourcesJson from "./user.store.resources.json";
 
 const resources = translatedResources(
