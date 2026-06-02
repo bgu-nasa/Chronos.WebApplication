@@ -8,9 +8,16 @@ import type { CalendarEvent } from "@/common/types";
 import { EventItem } from './event-item';
 import { ConstraintItem } from './constraint-item';
 import { EventBlockItem } from './event-block-item';
+import { getEnglishWeekdayName, weekdayNamesMatch } from './calendar-weekday';
 import { getIsoWeekNumber } from './iso-week';
+import { translatedResources } from "@/infra/i18n";
 import styles from './day-column.module.css';
-import resources from './day-column.resources.json';
+import resourcesJson from './day-column.resources.json';
+
+const resources = translatedResources(
+    "src/common/components/calendar/week-view/day-column.resources.json",
+    resourcesJson,
+);
 
 interface TimeRangeSelection {
   startTime: number; // minutes from dayStartHour
@@ -268,7 +275,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   const selectionHeight = selection ? Math.abs(selection.endTime - selection.startTime) / 60 * hourHeight : null;
 
   // Get weekday name for this column
-  const weekdayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+  const weekdayName = getEnglishWeekdayName(date);
   const weekNum = getIsoWeekNumber(date);
   const isInsideSelectedPeriod = useMemo(() => {
     if (!periodFromDate || !periodToDate) {
@@ -293,7 +300,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     }
 
     return constraints.filter(c => {
-      if (c.weekday !== weekdayName) {
+      if (!weekdayNamesMatch(c.weekday, weekdayName)) {
         return false;
       }
 
@@ -312,7 +319,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     }
 
     return eventBlocks.filter(eb => {
-      if (eb.weekday !== weekdayName) {
+      if (!weekdayNamesMatch(eb.weekday, weekdayName)) {
         return false;
       }
 

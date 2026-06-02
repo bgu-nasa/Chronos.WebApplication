@@ -2,8 +2,14 @@
 import React from 'react';
 import { Box, Text } from '@mantine/core';
 
+import { translatedResources } from "@/infra/i18n";
 import styles from './time-column.module.css';
-import resources from './time-column.resources.json';
+import resourcesJson from './time-column.resources.json';
+
+const resources = translatedResources(
+    "src/common/components/calendar/week-view/time-column.resources.json",
+    resourcesJson,
+);
 
 interface TimeColumnProps {
   hourHeight?: number;
