@@ -15,6 +15,7 @@ interface EventBlock {
     slotId?: string;
     resourceId?: string;
     expectedStudents?: number | null;
+    assignmentIds?: string[];
 }
 
 interface EventDetailsModalProps {
@@ -97,6 +98,14 @@ export function EventDetailsModal({
                     <Text>
                         {timeRange}
                     </Text>
+                    {eventBlock.assignmentIds && eventBlock.assignmentIds.length > 1 && (
+                        <Text size="sm" c="dimmed">
+                            {resources.eventDetailsModal.consecutiveSlots.replace(
+                                '{count}',
+                                String(eventBlock.assignmentIds.length)
+                            )}
+                        </Text>
+                    )}
                 </div>
 
                 {eventBlock.expectedStudents !== null && eventBlock.expectedStudents !== undefined && (

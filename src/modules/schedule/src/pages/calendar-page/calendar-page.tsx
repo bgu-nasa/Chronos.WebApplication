@@ -5,6 +5,7 @@ import { translatedResources } from "@/infra/i18n";
 const resources = translatedResources("src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json", resourcesJson);
 
 import { WeekView } from "@/common/components/calendar";
+import { mergeConsecutiveEventBlocks } from "@/common/components/calendar/week-view/merge-consecutive-event-blocks";
 import { useUsers } from "@/modules/auth/src/hooks";
 import { useUserConstraints, useSchedulingPeriods } from "@/modules/schedule/src/hooks";
 import { serializeForbiddenTimeRange, parseForbiddenTimeRange, type ForbiddenTimeRangeEntry } from "@/modules/schedule/src/pages/constraints-page/utils";
@@ -44,6 +45,8 @@ export function CalendarPage() {
     slotId?: string;
     resourceId?: string;
     expectedStudents?: number | null;
+    assignmentIds?: string[];
+    slotIds?: string[];
   }
 
   interface ConstraintVisualization {
@@ -269,7 +272,7 @@ export function CalendarPage() {
         });
       });
 
-    return userEventBlocks;
+    return mergeConsecutiveEventBlocks(userEventBlocks);
   }, [assignments, activities, slots, subjects, isAdmin, selectedUserId, currentUserId, selectedPeriodId]);
 
   const handleTimeRangeSelect = (selection: { date: Date; startTime: string; endTime: string }) => {
