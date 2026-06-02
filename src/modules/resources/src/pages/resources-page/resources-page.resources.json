@@ -1,5 +1,10 @@
 {
     "title": "Rooms Management",
+    "tabs": {
+        "rooms": "Rooms",
+        "roomTypes": "Room Types",
+        "roomAttributes": "Room Attributes"
+    },
     "createButton": "Create",
     "editButton": "Edit",
     "deleteButton": "Delete",

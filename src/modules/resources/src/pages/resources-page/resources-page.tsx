@@ -24,6 +24,7 @@ import resourceTypesJsonJson from "../resource-types-page/resource-types-page.re
 import resourceAttributesJsonJson from "../resource-attributes-page/resource-attributes-page.resources.json";
 import styles from "./resources-page.module.css";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
 const notificationResources = translatedResources(
@@ -38,6 +39,7 @@ const resourceAttributesJson = translatedResources("src/modules/resources/src/pa
 const resources = resourcesJson;
 
 export function ResourcesPage() {
+    useLocaleStore((state) => state.language);
     const [activeTab, setActiveTab] = useState<string | null>("resources");
     
     // Resources state
@@ -530,9 +532,9 @@ export function ResourcesPage() {
 
                 <Tabs value={activeTab} onChange={setActiveTab}>
                     <Tabs.List>
-                        <Tabs.Tab value="resources">Rooms</Tabs.Tab>
-                        <Tabs.Tab value="resource-types">Room Types</Tabs.Tab>
-                        <Tabs.Tab value="resource-attributes">Room Attributes</Tabs.Tab>
+                        <Tabs.Tab value="resources">{resources.tabs.rooms}</Tabs.Tab>
+                        <Tabs.Tab value="resource-types">{resources.tabs.roomTypes}</Tabs.Tab>
+                        <Tabs.Tab value="resource-attributes">{resources.tabs.roomAttributes}</Tabs.Tab>
                     </Tabs.List>
 
                     <Tabs.Panel value="resources" pt="md">
