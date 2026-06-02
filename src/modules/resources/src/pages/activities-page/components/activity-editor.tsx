@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { userRepository } from "@/modules/resources/src/data";
 import { TimeSpinner } from "@/common/components/time-spinner";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import resourcesJson from "../activities-page.resources.json";
 
 const resources = translatedResources(

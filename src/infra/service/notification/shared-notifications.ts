@@ -2,7 +2,7 @@ import { translatedResources } from "@/infra/i18n";
 import sharedNotificationsResourcesJson from "./shared-notifications.resources.json";
 
 const resources = translatedResources(
-    "src/infra/i18n/shared-notifications.resources.json",
+    "src/infra/service/notification/shared-notifications.resources.json",
     sharedNotificationsResourcesJson,
 );
 

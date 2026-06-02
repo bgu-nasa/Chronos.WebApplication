@@ -8,7 +8,7 @@ import {
 } from "@/modules/resources/src/hooks";
 import type { CreateResourceAttributeAssignmentRequest } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import resourcesJson from "../resources-page.resources.json";
 
 const resources = translatedResources(

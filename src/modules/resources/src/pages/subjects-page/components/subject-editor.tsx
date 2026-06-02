@@ -2,7 +2,7 @@ import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import resourcesJson from "../subjects-page.resources.json";
 
 const resources = translatedResources(

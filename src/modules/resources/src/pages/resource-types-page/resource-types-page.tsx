@@ -7,7 +7,7 @@ import { useResourceTypes, useCreateResourceType, useUpdateResourceType, useDele
 import resourcesJson from "./resource-types-page.resources.json";
 import styles from "./resource-types-page.module.css";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources("src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json", resourcesJson);
 

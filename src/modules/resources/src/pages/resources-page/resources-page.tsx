@@ -24,7 +24,7 @@ import resourceTypesJsonJson from "../resource-types-page/resource-types-page.re
 import resourceAttributesJsonJson from "../resource-attributes-page/resource-attributes-page.resources.json";
 import styles from "./resources-page.module.css";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resourcesJson = translatedResources("src/modules/resources/src/pages/resources-page/resources-page.resources.json", resourcesJsonJson);
 const resourceTypesJson = translatedResources("src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json", resourceTypesJsonJson);
