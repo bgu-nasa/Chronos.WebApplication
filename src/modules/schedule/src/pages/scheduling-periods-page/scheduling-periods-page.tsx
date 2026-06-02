@@ -21,7 +21,7 @@ import type { SlotResponse } from "@/modules/schedule/src/data";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.module.css";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources("src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json", resourcesJson);
 

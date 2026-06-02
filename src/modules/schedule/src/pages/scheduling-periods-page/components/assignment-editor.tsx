@@ -13,7 +13,7 @@ import {
     useActivities,
 } from "@/modules/schedule/src/hooks";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 import assignmentEditorResourcesJson from "./assignment-editor.resources.json";
 
 const resources = translatedResources(

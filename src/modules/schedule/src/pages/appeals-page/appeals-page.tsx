@@ -13,7 +13,7 @@ import { AppealsDataTable } from "./components/appeals-data-table";
 import { ViewAppealModal } from "./components/view-appeal-modal";
 import resourcesJson from "./appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/appeals-page/appeals-page.resources.json",

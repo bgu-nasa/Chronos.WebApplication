@@ -15,7 +15,7 @@ import { UserConstraintEditor } from "./user-constraint-editor.tsx";
 import { formatConstraintValueForDisplay } from "../utils";
 import resourcesJson from "../constraints-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",

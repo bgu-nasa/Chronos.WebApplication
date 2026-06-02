@@ -4,7 +4,7 @@ import { appealDataRepository } from "@/modules/schedule/src/data/appeal-data-re
 import type { AppealResponse } from "@/modules/schedule/src/data/appeal.types";
 import resourcesJson from "../my-appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/my-appeals-page/my-appeals-page.resources.json",

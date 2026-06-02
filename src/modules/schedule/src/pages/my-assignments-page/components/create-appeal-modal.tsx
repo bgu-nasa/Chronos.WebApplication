@@ -3,7 +3,7 @@ import { Modal, TextInput, Textarea, Button, Group, Stack } from "@mantine/core"
 import { appealDataRepository } from "@/modules/schedule/src/data/appeal-data-repository";
 import resourcesJson from "../my-assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/my-assignments-page/my-assignments-page.resources.json",

@@ -7,7 +7,7 @@ import { convertSlotLocalToUtc, convertSlotUtcToLocal } from "@/modules/schedule
 import { TimeSpinner } from "@/common/components/time-spinner";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json",

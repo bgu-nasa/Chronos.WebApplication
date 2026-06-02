@@ -10,7 +10,7 @@ import {
 import { ActivityConstraintEditor } from "./activity-constraint-editor";
 import resourcesJson from "../constraints-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",

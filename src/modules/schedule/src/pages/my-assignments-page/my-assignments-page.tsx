@@ -12,7 +12,7 @@ import { AssignmentsDataTable } from "@/modules/schedule/src/pages/assignments-p
 import { CreateAppealModal } from "./components/create-appeal-modal";
 import resourcesJson from "./my-assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/my-assignments-page/my-assignments-page.resources.json",

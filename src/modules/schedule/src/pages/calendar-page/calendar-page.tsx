@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, Flex, Paper, Group } from "@mantine/core";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import { sharedNotifications } from "@/infra/service/notification";
 
 const resources = translatedResources("src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json", resourcesJson);
 
