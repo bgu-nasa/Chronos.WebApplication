@@ -5,9 +5,16 @@ import { useHotkeys } from '@mantine/hooks';
 
 import type { CalendarEvent } from "@/common/types";
 
+import { translatedResources } from "@/infra/i18n";
+
 import { WeekHeader, TimeGrid } from './';
 import styles from './week-view.module.css';
-import resources from './week-view.resources.json';
+import resourcesJson from './week-view.resources.json';
+
+const resources = translatedResources(
+    "src/common/components/calendar/week-view/week-view.resources.json",
+    resourcesJson,
+);
 
 interface ConstraintVisualization {
   weekday: string;

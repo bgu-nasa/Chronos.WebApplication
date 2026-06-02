@@ -1,8 +1,14 @@
 /** @author noamarg */
 import React from 'react';
 import { Box, Text } from '@mantine/core';
+import { translatedResources } from "@/infra/i18n";
 import styles from './week-header.module.css';
-import resources from './week-header.resources.json';
+import resourcesJson from './week-header.resources.json';
+
+const resources = translatedResources(
+    "src/common/components/calendar/week-view/week-header.resources.json",
+    resourcesJson,
+);
 
 interface WeekHeaderProps {
   weekDates: Date[];

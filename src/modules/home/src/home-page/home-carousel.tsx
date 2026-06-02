@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { Title, Text, ActionIcon, useMantineTheme } from "@mantine/core";
+import { getTranslationKey, i18n, translatedResources } from "@/infra/i18n";
 import styles from "./home-carousel.module.css";
 import type { IconType } from "react-icons";
 import { FiBriefcase, FiUsers, FiMessageSquare } from "react-icons/fi";
+import resourcesJson from "./home-carousel.resources.json";
+
+const resources = translatedResources(
+    "src/modules/home/src/home-page/home-carousel.resources.json",
+    resourcesJson,
+);
 
 type CarouselItem = { title: string; content: string };
 
@@ -38,7 +45,7 @@ const backdropGradient = `linear-gradient(135deg, ${hexToRgba(primaryColor, 0.16
         return () => clearInterval(id);
     }, [items, intervalMs]);
 
-    if (!items || items.length === 0) return <div className={styles.empty}>No features available.</div>;
+    if (!items || items.length === 0) return <div className={styles.empty}>{resources.emptyState}</div>;
 
     return (
         <div className={styles.container}>
@@ -69,7 +76,13 @@ const backdropGradient = `linear-gradient(135deg, ${hexToRgba(primaryColor, 0.16
                         variant={idx === index ? "filled" : "light"}
                         color={theme.primaryColor as any}
                         onClick={() => setIndex(idx)}
-                        aria-label={`Go to slide ${idx + 1}`}
+                        aria-label={i18n.t(
+                            getTranslationKey(
+                                "src/modules/home/src/home-page/home-carousel.resources.json",
+                                "goToSlideAriaLabel",
+                            ),
+                            { number: idx + 1, defaultValue: `Go to slide ${idx + 1}` },
+                        )}
                         size="sm"
                         radius="xl"
                         className={styles.dot}

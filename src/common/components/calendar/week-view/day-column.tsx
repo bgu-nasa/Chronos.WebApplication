@@ -9,8 +9,14 @@ import { EventItem } from './event-item';
 import { ConstraintItem } from './constraint-item';
 import { EventBlockItem } from './event-block-item';
 import { getIsoWeekNumber } from './iso-week';
+import { translatedResources } from "@/infra/i18n";
 import styles from './day-column.module.css';
-import resources from './day-column.resources.json';
+import resourcesJson from './day-column.resources.json';
+
+const resources = translatedResources(
+    "src/common/components/calendar/week-view/day-column.resources.json",
+    resourcesJson,
+);
 
 interface TimeRangeSelection {
   startTime: number; // minutes from dayStartHour
