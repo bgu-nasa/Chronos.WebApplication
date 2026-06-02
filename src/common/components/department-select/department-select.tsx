@@ -16,6 +16,7 @@ interface DepartmentSelectProps {
     onChange?: (departmentId: string | null) => void;
     label?: string;
     placeholder?: string;
+    nothingFoundMessage?: string;
     disabled?: boolean;
     required?: boolean;
     error?: string;
@@ -53,6 +54,7 @@ export function DepartmentSelect({
     onChange,
     label = "Department",
     placeholder = "Select a department",
+    nothingFoundMessage = "No departments found",
     disabled = false,
     required = false,
     error,
@@ -98,7 +100,7 @@ export function DepartmentSelect({
             style={style}
             className={className}
             searchable
-            nothingFoundMessage="No departments found"
+            nothingFoundMessage={nothingFoundMessage}
             renderOption={(item) => (
                 <SelectItem
                     label={item.option.label}

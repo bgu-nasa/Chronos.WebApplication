@@ -4,10 +4,19 @@ import { useNavigate } from "react-router";
 import { $app } from "@/infra/service";
 import { useOrganization } from "@/infra/service";
 import { SettingsIcon, LogoutIcon } from "@/common/icons";
+import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
+import userCardResourcesJson from "./user-card.resources.json";
+
+const resources = translatedResources(
+    "src/infra/theme/components/user-card/user-card.resources.json",
+    userCardResourcesJson,
+);
 
 export default function UserCard() {
     const navigate = useNavigate();
     const { organization } = useOrganization();
+    useLocaleStore((state) => state.language);
 
     const handleLogout = () => {
         // Clear the authentication token
@@ -61,14 +70,14 @@ export default function UserCard() {
                     leftSection={<SettingsIcon size={16} />}
                     onClick={() => navigate("/auth/profile-settings")}
                 >
-                    Settings
+                    {resources.settings}
                 </Menu.Item>
                 <Menu.Item
                     leftSection={<LogoutIcon size={16} />}
                     onClick={handleLogout}
                     color="red"
                 >
-                    Logout
+                    {resources.logout}
                 </Menu.Item>
             </Menu.Dropdown>
         </Menu>

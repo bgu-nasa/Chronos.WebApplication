@@ -46,13 +46,14 @@ function renderNavigationItems(
     return items.map((item) => {
         const hasChildren = item.children && item.children.length > 0;
         const itemKey = item.href || item.label;
+        const reactKey = item.href ?? itemKey;
         const isOpen = openItems[itemKey] ?? false;
 
         // For collapsed state with children, show popover on hover
         if (collapsed && hasChildren) {
             return (
                 <HoverCard
-                    key={item.href}
+                    key={reactKey}
                     position="right"
                     withArrow
                     shadow="md"
@@ -75,6 +76,7 @@ function renderNavigationItems(
                             {/* Show parent as first item if it has an href */}
                             {item.href && (
                                 <NavLink
+                                    key={item.href}
                                     label={item.label}
                                     leftSection={item.icon}
                                     active={currentPath === item.href}
@@ -101,7 +103,7 @@ function renderNavigationItems(
         if (collapsed) {
             return (
                 <Tooltip
-                    key={item.href}
+                    key={reactKey}
                     label={item.label}
                     position="right"
                     withArrow
@@ -122,7 +124,7 @@ function renderNavigationItems(
         // For expanded state, render normally with children
         return (
             <NavLink
-                key={item.href}
+                key={reactKey}
                 label={item.label}
                 leftSection={item.icon}
                 active={currentPath === item.href}
