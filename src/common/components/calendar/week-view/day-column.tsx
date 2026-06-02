@@ -41,6 +41,7 @@ interface DayColumnProps {
   eventBlocks?: EventBlock[];
   periodFromDate?: string;
   periodToDate?: string;
+  periodWeekIndex?: number | null;
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
@@ -55,6 +56,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   eventBlocks = [],
   periodFromDate,
   periodToDate,
+  periodWeekIndex = null,
   hourHeight = 60,
   dayStartHour = 8,
   hoursPerDay = 24,
@@ -318,9 +320,13 @@ export const DayColumn: React.FC<DayColumnProps> = ({
         return true;
       }
 
+      if (periodWeekIndex != null) {
+        return eb.weekNum === periodWeekIndex;
+      }
+
       return eb.weekNum === weekNum;
     });
-  }, [eventBlocks, weekdayName, weekNum, isInsideSelectedPeriod]);
+  }, [eventBlocks, weekdayName, weekNum, periodWeekIndex, isInsideSelectedPeriod]);
 
   return (
     <Box
@@ -363,9 +369,9 @@ export const DayColumn: React.FC<DayColumnProps> = ({
         />
       ))}
 
-      {dailyEventBlocks.map((eventBlock, index) => (
+      {dailyEventBlocks.map((eventBlock) => (
         <EventBlockItem
-          key={`event-block-${index}-${eventBlock.startTime}-${eventBlock.endTime}`}
+          key={`event-block-${eventBlock.activityId ?? 'event'}-${eventBlock.weekNum ?? 'w'}-${eventBlock.startTime}-${eventBlock.endTime}`}
           startTime={eventBlock.startTime}
           endTime={eventBlock.endTime}
           hourHeight={hourHeight}

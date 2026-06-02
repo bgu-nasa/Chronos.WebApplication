@@ -31,6 +31,7 @@ interface TimeGridProps {
   eventBlocks?: EventBlock[];
   periodFromDate?: string;
   periodToDate?: string;
+  periodWeekIndex?: number | null;
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
@@ -45,6 +46,7 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
   eventBlocks = [],
   periodFromDate,
   periodToDate,
+  periodWeekIndex = null,
   hourHeight,
   dayStartHour = 0,
   hoursPerDay = 24,
@@ -69,6 +71,7 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
             eventBlocks={eventBlocks}
             periodFromDate={periodFromDate}
             periodToDate={periodToDate}
+            periodWeekIndex={periodWeekIndex}
             hourHeight={hourHeight}
             dayStartHour={dayStartHour}
             hoursPerDay={hoursPerDay}

@@ -6,6 +6,7 @@ import { useHotkeys } from '@mantine/hooks';
 import type { CalendarEvent } from "@/common/types";
 
 import { WeekHeader, TimeGrid } from './';
+import { getPeriodWeekIndex } from './period-week';
 import styles from './week-view.module.css';
 import resources from './week-view.resources.json';
 
@@ -96,6 +97,13 @@ export const WeekView: React.FC<WeekViewProps> = ({
 
   const monthLabel = weekDates[0].toLocaleString('default', { month: 'long', year: 'numeric' });
 
+  const periodWeekIndex = useMemo(() => {
+    if (!periodFromDate || weekDates.length === 0) {
+      return null;
+    }
+    return getPeriodWeekIndex(periodFromDate, weekDates[0]);
+  }, [periodFromDate, weekDates]);
+
   const hoursPerDay = Math.max(1, dayEndHour - dayStartHour);
 
   return (
@@ -120,6 +128,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
           eventBlocks={eventBlocks}
           periodFromDate={periodFromDate}
           periodToDate={periodToDate}
+          periodWeekIndex={periodWeekIndex}
           dayStartHour={dayStartHour}
           hoursPerDay={hoursPerDay}
           hourHeight={resources.config.hourHeight || 60}
