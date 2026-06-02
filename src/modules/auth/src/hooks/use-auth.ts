@@ -8,7 +8,12 @@ import { authDataRepository } from "@/modules/auth/src/data/auth-data-repository
 import type { PasswordUpdateRequest } from "@/modules/auth/src/data/auth.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "./use-auth.resources.json";
 
 const resources = translatedResources(
@@ -33,7 +38,7 @@ export function useUpdatePassword() {
             setIsLoading(false);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.updateSuccess,
             );
             return true;
@@ -46,7 +51,7 @@ export function useUpdatePassword() {
             $app.logger.error("Error updating password:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.updateError,

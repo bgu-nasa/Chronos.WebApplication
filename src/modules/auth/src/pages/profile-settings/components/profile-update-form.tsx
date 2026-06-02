@@ -16,7 +16,12 @@ import {
 } from "@/modules/auth/src/common/validation.service";
 import resourcesJson from "./profile-update-form.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/auth/src/pages/profile-settings/components/profile-update-form.resources.json",
@@ -125,7 +130,7 @@ export function ProfileUpdateForm() {
             <form onSubmit={handleSubmit}>
                 <Stack gap="md">
                     {successMessage && (
-                        <Alert color="green" title={sharedNotifications.successTitle}>
+                        <Alert color="green" title={notificationResources.successTitle}>
                             {successMessage}
                         </Alert>
                     )}

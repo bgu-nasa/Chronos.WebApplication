@@ -11,7 +11,12 @@ import type {
 } from "@/modules/management/src/data/department.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "./department.store.resources.json";
 
 const resources = translatedResources(
@@ -68,7 +73,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.createSuccess,
             );
             return newDepartment;
@@ -80,7 +85,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             $app.logger.error("Error creating department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.createError,
@@ -106,7 +111,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.updateSuccess,
             );
             return true;
@@ -118,7 +123,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             $app.logger.error("Error updating department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.updateError,
@@ -138,7 +143,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.deleteSuccess,
             );
             return true;
@@ -150,7 +155,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             $app.logger.error("Error deleting department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.deleteError,
@@ -170,7 +175,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             await get().fetchDepartments();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.restoreSuccess,
             );
             return true;
@@ -182,7 +187,7 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
             $app.logger.error("Error restoring department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.restoreError,

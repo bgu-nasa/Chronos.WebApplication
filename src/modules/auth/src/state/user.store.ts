@@ -12,7 +12,12 @@ import type {
 } from "@/modules/auth/src/data/user.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "./user.store.resources.json";
 
 const resources = translatedResources(
@@ -66,7 +71,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.createSuccess,
             );
             return newUser;
@@ -78,7 +83,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             $app.logger.error("Error creating user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.createError,
@@ -98,7 +103,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.updateSuccess,
             );
             return true;
@@ -110,7 +115,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             $app.logger.error("Error updating user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.updateError,
@@ -130,7 +135,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.updateProfileSuccess,
             );
             return true;
@@ -142,7 +147,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             $app.logger.error("Error updating profile:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.updateProfileError,
@@ -162,7 +167,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             await get().fetchUsers();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.deleteSuccess,
             );
             return true;
@@ -174,7 +179,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             $app.logger.error("Error deleting user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.deleteError,

@@ -12,7 +12,12 @@ import type {
 } from "@/modules/management/src/data/role.types";
 import type { ApiError } from "@/infra/service/ajax/types";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "./role.store.resources.json";
 
 const resources = translatedResources(
@@ -64,7 +69,7 @@ export const useRoleStore = create<RoleStore>((set, get) => ({
             await get().fetchRoleAssignments();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.createSuccess,
             );
             return newAssignment;
@@ -76,7 +81,7 @@ export const useRoleStore = create<RoleStore>((set, get) => ({
             $app.logger.error("Error creating role assignment:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.createError,
@@ -96,7 +101,7 @@ export const useRoleStore = create<RoleStore>((set, get) => ({
             await get().fetchRoleAssignments();
             $app.notifications.remove(loadingNotification);
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.removeSuccess,
             );
             return true;
@@ -108,7 +113,7 @@ export const useRoleStore = create<RoleStore>((set, get) => ({
             $app.logger.error("Error removing role assignment:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 apiError.details
                     ? String(apiError.details)
                     : resources.notifications.removeError,
