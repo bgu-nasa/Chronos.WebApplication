@@ -39,16 +39,12 @@ export const moduleConfig: ModuleConfig = {
     navigationItems: [
         {
             label: "Login",
-            labelKey: "login",
-            navigationModule: "auth",
             href: "/auth/login",
             location: "public",
             order: 10,
         },
         {
             label: "Users",
-            labelKey: "users",
-            navigationModule: "auth",
             href: "/auth/users",
             location: "dashboard",
             // Only admins and user managers can interact with the user mgmt, but the rest can see it
