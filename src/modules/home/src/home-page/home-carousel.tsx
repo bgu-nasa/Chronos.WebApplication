@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Title, Text, ActionIcon, useMantineTheme } from "@mantine/core";
-import { getTranslationKey, i18n, translatedResources } from "@/infra/i18n";
+import { translatedResources } from "@/infra/i18n";
 import styles from "./home-carousel.module.css";
 import type { IconType } from "react-icons";
 import { FiBriefcase, FiUsers, FiMessageSquare } from "react-icons/fi";
@@ -76,12 +76,9 @@ const backdropGradient = `linear-gradient(135deg, ${hexToRgba(primaryColor, 0.16
                         variant={idx === index ? "filled" : "light"}
                         color={theme.primaryColor as any}
                         onClick={() => setIndex(idx)}
-                        aria-label={i18n.t(
-                            getTranslationKey(
-                                "src/modules/home/src/home-page/home-carousel.resources.json",
-                                "goToSlideAriaLabel",
-                            ),
-                            { number: idx + 1, defaultValue: `Go to slide ${idx + 1}` },
+                        aria-label={resources.goToSlideAriaLabel.replace(
+                            "{number}",
+                            String(idx + 1),
                         )}
                         size="sm"
                         radius="xl"
