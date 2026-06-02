@@ -5,7 +5,8 @@ import { useHotkeys } from '@mantine/hooks';
 
 import type { CalendarEvent } from "@/common/types";
 
-import { translatedResources } from "@/infra/i18n";
+import { getIntlLocale, translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
 import { WeekHeader, TimeGrid } from './';
 import styles from './week-view.module.css';
@@ -53,11 +54,13 @@ export const WeekView: React.FC<WeekViewProps> = ({
   eventBlocks = [],
   periodFromDate,
   periodToDate,
-  dayStartHour = resources.config.defaultStartHour,
-  dayEndHour = resources.config.defaultEndHour,
+  dayStartHour = resourcesJson.config.defaultStartHour,
+  dayEndHour = resourcesJson.config.defaultEndHour,
   onTimeRangeSelect,
   onEventBlockClick
 }) => {
+  const language = useLocaleStore((state) => state.language);
+  const direction = useLocaleStore((state) => state.direction);
   const [currentDate, setCurrentDate] = useState(initialDate);
 
   useEffect(() => {
@@ -97,11 +100,18 @@ export const WeekView: React.FC<WeekViewProps> = ({
 
   useHotkeys([
     ['t', handleToday],
-    ['ArrowLeft', handlePreviousWeek],
-    ['ArrowRight', handleNextWeek],
+    direction === 'rtl'
+      ? ['ArrowLeft', handleNextWeek]
+      : ['ArrowLeft', handlePreviousWeek],
+    direction === 'rtl'
+      ? ['ArrowRight', handlePreviousWeek]
+      : ['ArrowRight', handleNextWeek],
   ]);
 
-  const monthLabel = weekDates[0].toLocaleString('default', { month: 'long', year: 'numeric' });
+  const monthLabel = weekDates[0].toLocaleString(getIntlLocale(language), {
+    month: 'long',
+    year: 'numeric',
+  });
 
   const hoursPerDay = Math.max(1, dayEndHour - dayStartHour);
 
@@ -129,7 +139,7 @@ export const WeekView: React.FC<WeekViewProps> = ({
           periodToDate={periodToDate}
           dayStartHour={dayStartHour}
           hoursPerDay={hoursPerDay}
-          hourHeight={resources.config.hourHeight || 60}
+          hourHeight={resourcesJson.config.hourHeight || 60}
           onTimeRangeSelect={onTimeRangeSelect}
           onEventBlockClick={onEventBlockClick}
         />
