@@ -3,6 +3,7 @@
  * Converts UTC times to local timezone for display in tables
  */
 
+import { getWeekdayLabel, formatPreferredWeekdaysDisplay } from "@/common/weekdays";
 import { parseForbiddenTimeRange } from "./constraint-value-parser";
 
 interface SchedulingPeriodRange {
@@ -140,9 +141,13 @@ export function formatConstraintValueForDisplay(
                     }
                 }
 
-                return `${entry.weekday} ${entry.startTime} - ${entry.endTime}`;
+                return `${getWeekdayLabel(entry.weekday)} ${entry.startTime} - ${entry.endTime}`;
             })
             .join(", ");
+    }
+
+    if (key === "preferred_weekdays") {
+        return formatPreferredWeekdaysDisplay(value);
     }
 
     return value;

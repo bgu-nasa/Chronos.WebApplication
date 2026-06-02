@@ -2,8 +2,13 @@ import { useEffect } from "react";
 import { Select, Stack, Text } from "@mantine/core";
 
 import { useUsers } from "@/modules/auth/src/hooks";
-import resources from "../calendar-page.resources.json";
+import resourcesJson from "../calendar-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json",
+    resourcesJson,
+);
 interface UserSelectProps {
     readonly value: string | null;
     readonly onChange: (value: string | null) => void;

@@ -7,6 +7,7 @@
     "createButton": "Add Slot",
     "editButton": "Edit",
     "deleteButton": "Delete",
+    "viewAssignmentsButton": "View Assignments",
     "tableHeaderDay": "Day",
     "tableHeaderStart": "Start Time",
     "tableHeaderEnd": "End Time",
@@ -17,14 +18,58 @@
     "deleteCancelButton": "Cancel",
     "editorCreateTitle": "Add Slots",
     "editorEditTitle": "Edit Slot",
+    "editorDaysLabel": "Days",
     "editorDayLabel": "Weekday",
     "editorDayPlaceholder": "Select a day",
     "editorStartTimeLabel": "Start Time",
     "editorEndTimeLabel": "End Time",
+    "editorSlotDurationLabel": "Slot Duration",
+    "editorDurationPlaceholder": "Select duration",
+    "editorSlotCountPreview": "This will create {count} slots total",
     "editorCancelButton": "Cancel",
     "editorCreateButton": "Create",
     "editorSaveButton": "Save",
     "editorDayRequired": "Day is required",
     "editorStartTimeRequired": "Start time is required",
-    "editorEndTimeRequired": "End time is required"
+    "editorEndTimeRequired": "End time is required",
+    "weekdayLabels": {
+        "Sunday": "Sunday",
+        "Monday": "Monday",
+        "Tuesday": "Tuesday",
+        "Wednesday": "Wednesday",
+        "Thursday": "Thursday",
+        "Friday": "Friday",
+        "Saturday": "Saturday"
+    },
+    "weekdayShortLabels": {
+        "Sunday": "Sun",
+        "Monday": "Mon",
+        "Tuesday": "Tue",
+        "Wednesday": "Wed",
+        "Thursday": "Thu",
+        "Friday": "Fri",
+        "Saturday": "Sat"
+    },
+    "durationLabels": {
+        "30": "30 minutes",
+        "60": "1 hour",
+        "90": "1.5 hours",
+        "120": "2 hours",
+        "150": "2.5 hours",
+        "180": "3 hours"
+    },
+    "validation": {
+        "daysRequired": "Please select at least one day",
+        "durationRequired": "Duration is required",
+        "endTimeAfterStart": "End time must be after start time",
+        "durationTooShort": "Time range is too short for this duration",
+        "durationNotDivisible": "Time range must be evenly divisible by duration",
+        "weekdayRequired": "Day is required"
+    },
+    "notifications": {
+        "slotsCreatedSuccess": "{count} slot(s) created successfully",
+        "slotsCreatedPartial": "Only {created} of {total} slots were created",
+        "slotUpdateSuccess": "Slot updated successfully",
+        "slotUpdateError": "Failed to update slot"
+    }
 }
