@@ -2,8 +2,15 @@ import { Modal, Button, Group, Text, Stack, Divider, Badge } from "@mantine/core
 import { useState, useEffect } from "react";
 import { resourceDataRepository } from "@/modules/schedule/src/data/resource-data-repository";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
-import resources from "../calendar-page.resources.json";
+import { getWeekdayLabel } from "@/common/weekdays";
+import resourcesJson from "../calendar-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json",
+    resourcesJson,
+);
 interface EventBlock {
     weekday?: string;
     startTime: string;
@@ -15,6 +22,7 @@ interface EventBlock {
     slotId?: string;
     resourceId?: string;
     expectedStudents?: number | null;
+    assignmentIds?: string[];
 }
 
 interface EventDetailsModalProps {
@@ -28,6 +36,7 @@ export function EventDetailsModal({
     onClose,
     eventBlock,
 }: EventDetailsModalProps) {
+    useLocaleStore((state) => state.language);
     const [resource, setResource] = useState<ResourceResponse | null>(null);
     const [loadingResource, setLoadingResource] = useState(false);
 
@@ -54,7 +63,9 @@ export function EventDetailsModal({
         return null;
     }
 
-    const weekdayName = eventBlock.weekday || resources.eventDetailsModal.unknown.day;
+    const weekdayName = eventBlock.weekday
+        ? getWeekdayLabel(eventBlock.weekday)
+        : resources.eventDetailsModal.unknown.day;
     const timeRange = `${eventBlock.startTime} - ${eventBlock.endTime}`;
 
     return (
@@ -97,6 +108,14 @@ export function EventDetailsModal({
                     <Text>
                         {timeRange}
                     </Text>
+                    {eventBlock.assignmentIds && eventBlock.assignmentIds.length > 1 && (
+                        <Text size="sm" c="dimmed">
+                            {resources.eventDetailsModal.consecutiveSlots.replace(
+                                '{count}',
+                                String(eventBlock.assignmentIds.length)
+                            )}
+                        </Text>
+                    )}
                 </div>
 
                 {eventBlock.expectedStudents !== null && eventBlock.expectedStudents !== undefined && (

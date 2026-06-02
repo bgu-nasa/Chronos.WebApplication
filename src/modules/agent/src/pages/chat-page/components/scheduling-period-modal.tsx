@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { Modal, Select, Button, Group, Loader, Text, Stack } from "@mantine/core";
+import { translatedResources } from "@/infra/i18n";
 import { schedulingPeriodRepository } from "@/modules/agent/src/data/external";
 import type { SchedulingPeriod } from "@/modules/agent/src/data/external";
+import resourcesJson from "./scheduling-period-modal.resources.json";
+
+const resources = translatedResources(
+    "src/modules/agent/src/pages/chat-page/components/scheduling-period-modal.resources.json",
+    resourcesJson,
+);
 
 interface SchedulingPeriodModalProps {
     readonly opened: boolean;
@@ -39,7 +46,7 @@ export function SchedulingPeriodModal({
             .then(setPeriods)
             .catch((err) => {
                 $app.logger.error("[SchedulingPeriodModal] Error fetching periods", err);
-                $app.notifications.showError("Failed to load scheduling periods");
+                $app.notifications.showError(resources.loadPeriodsError);
             })
             .finally(() => setIsFetching(false));
     }, [opened]);
@@ -70,7 +77,7 @@ export function SchedulingPeriodModal({
                 </Stack>
             ) : periods.length === 0 ? (
                 <Text c="dimmed" ta="center" py="lg">
-                    No scheduling periods available.
+                    {resources.noPeriodsAvailable}
                 </Text>
             ) : (
                 <Select

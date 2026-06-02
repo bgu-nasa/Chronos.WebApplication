@@ -1,0 +1,17 @@
+{
+    "notifications": {
+        "creating": "מחלקת יצירה...",
+        "updating": "מחלקת עדכון...",
+        "deleting": "מחק את המחלקה...",
+        "restoring": "מחלקת שיקום...",
+        "createSuccess": "המחלקה שנוצרה בהצלחה",
+        "updateSuccess": "המחלקה עודכנה בהצלחה",
+        "deleteSuccess": "המחלקה נמחקה בהצלחה",
+        "restoreSuccess": "המחלקה שוקמה בהצלחה",
+        "createError": "נכשל ביצירת מחלקה",
+        "updateError": "נכשל לעדכן את המחלקה",
+        "deleteError": "נכשל במחיקת המחלקה",
+        "restoreError": "נכשל בשיקום המחלקה",
+        "fetchError": "נכשל באיסוף מחלקות"
+    }
+}

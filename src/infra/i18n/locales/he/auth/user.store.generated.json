@@ -1,0 +1,17 @@
+{
+    "notifications": {
+        "creating": "יוצר משתמש...",
+        "updating": "מעדכן משתמש...",
+        "updatingProfile": "מעדכן פרופיל...",
+        "deleting": "מוחק משתמש...",
+        "createSuccess": "המשתמש נוצר בהצלחה",
+        "updateSuccess": "המשתמש עודכן בהצלחה",
+        "updateProfileSuccess": "הפרופיל עודכן בהצלחה",
+        "deleteSuccess": "המשתמש נמחק בהצלחה",
+        "createError": "נכשל ביצירת משתמש",
+        "updateError": "נכשל לעדכן את המשתמש",
+        "updateProfileError": "נכשל לעדכן פרופיל",
+        "deleteError": "נכשל למחוק משתמש",
+        "fetchError": "נכשל בשליפת משתמשים"
+    }
+}

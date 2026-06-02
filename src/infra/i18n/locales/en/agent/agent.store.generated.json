@@ -1,0 +1,10 @@
+{
+    "notifications": {
+        "createSessionError": "Failed to start conversation",
+        "sendMessageError": "Failed to send message",
+        "requestSubmitError": "Failed to generate proposal",
+        "approveSuccess": "Constraints saved successfully",
+        "approveError": "Failed to approve proposal",
+        "requestRevisionError": "Failed to request revision"
+    }
+}

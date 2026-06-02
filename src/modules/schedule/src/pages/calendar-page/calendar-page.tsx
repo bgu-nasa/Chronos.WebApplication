@@ -1,10 +1,18 @@
 import { useState, useEffect, useMemo } from "react";
 import { Box, Flex, Paper, Group } from "@mantine/core";
 import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources("src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json", resourcesJson);
 
+import { getEnglishWeekdayName } from "@/common/weekdays";
 import { WeekView } from "@/common/components/calendar";
+import { mergeConsecutiveEventBlocks } from "@/common/components/calendar/week-view/merge-consecutive-event-blocks";
 import { useUsers } from "@/modules/auth/src/hooks";
 import { useUserConstraints, useSchedulingPeriods } from "@/modules/schedule/src/hooks";
 import { serializeForbiddenTimeRange, parseForbiddenTimeRange, type ForbiddenTimeRangeEntry } from "@/modules/schedule/src/pages/constraints-page/utils";
@@ -44,6 +52,8 @@ export function CalendarPage() {
     slotId?: string;
     resourceId?: string;
     expectedStudents?: number | null;
+    assignmentIds?: string[];
+    slotIds?: string[];
   }
 
   interface ConstraintVisualization {
@@ -269,7 +279,7 @@ export function CalendarPage() {
         });
       });
 
-    return userEventBlocks;
+    return mergeConsecutiveEventBlocks(userEventBlocks);
   }, [assignments, activities, slots, subjects, isAdmin, selectedUserId, currentUserId, selectedPeriodId]);
 
   const handleTimeRangeSelect = (selection: { date: Date; startTime: string; endTime: string }) => {
@@ -288,7 +298,7 @@ export function CalendarPage() {
 
     try {
       // Get weekday name from the date (in user's local timezone)
-      const weekdayName = timeRangeSelection.date.toLocaleDateString('en-US', { weekday: 'long' });
+      const weekdayName = getEnglishWeekdayName(timeRangeSelection.date);
 
       // Create the constraint entry (times are in user's local timezone)
       const entry: ForbiddenTimeRangeEntry = {
@@ -317,7 +327,7 @@ export function CalendarPage() {
 
       // Show success notification
       $app.notifications.showSuccess(
-        resources.notifications.constraintCreated.title,
+        notificationResources.successTitle,
         resources.notifications.constraintCreated.message
       );
 
@@ -327,7 +337,7 @@ export function CalendarPage() {
     } catch (error) {
       $app.logger.error("[CalendarPage] Error creating constraint:", error);
       $app.notifications.showError(
-        resources.notifications.constraintCreateFailed.title,
+        notificationResources.errorTitle,
         error instanceof Error ? error.message : resources.notifications.constraintCreateFailed.message
       );
     }
