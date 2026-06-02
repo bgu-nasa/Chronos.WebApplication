@@ -20,6 +20,7 @@
             "capacity": "Capacity:",
             "expectedStudents": "Expected Students"
         },
+        "consecutiveSlots": "Spans {count} consecutive slots",
         "unknown": {
             "day": "Unknown Day",
             "subject": "Unknown Subject",
