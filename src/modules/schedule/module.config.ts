@@ -60,23 +60,17 @@ export const moduleConfig: ModuleConfig = {
     navigationItems: [
         {
             label: "Schedule",
-            labelKey: "schedule",
-            navigationModule: "schedule",
             location: "dashboard",
             icon: React.createElement(ScheduleIcon),
             children: [
                 {
                     label: "Calendar",
-                    labelKey: "calendar",
-                    navigationModule: "schedule",
                     href: "/schedule/calendar",
                     location: "dashboard",
                     icon: React.createElement(CalendarIcon),
                 },
                 {
                     label: "Semesters",
-                    labelKey: "semesters",
-                    navigationModule: "schedule",
                     href: "/schedule/scheduling-periods",
                     location: "dashboard",
                     icon: React.createElement(CoursesIcon),
@@ -87,16 +81,12 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "Constraints",
-                    labelKey: "constraints",
-                    navigationModule: "schedule",
                     href: "/schedule/constraints",
                     location: "dashboard",
                     icon: React.createElement(ConstraintsIcon),
                 },
                 {
                     label: "Manage Assignments",
-                    labelKey: "manageAssignments",
-                    navigationModule: "schedule",
                     href: "/schedule/assignments",
                     location: "dashboard",
                     icon: React.createElement(SchedulingPeriodsIcon),
@@ -107,8 +97,6 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "My Assignments",
-                    labelKey: "myAssignments",
-                    navigationModule: "schedule",
                     href: "/schedule/my-assignments",
                     location: "dashboard",
                     icon: React.createElement(SchedulingPeriodsIcon),
@@ -119,8 +107,6 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "My Appeals",
-                    labelKey: "myAppeals",
-                    navigationModule: "schedule",
                     href: "/schedule/my-appeals",
                     location: "dashboard",
                     icon: React.createElement(AppealsIcon),
@@ -131,8 +117,6 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "Appeals",
-                    labelKey: "appeals",
-                    navigationModule: "schedule",
                     href: "/schedule/appeals",
                     location: "dashboard",
                     icon: React.createElement(AppealsIcon),

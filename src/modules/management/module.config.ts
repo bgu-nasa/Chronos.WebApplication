@@ -36,15 +36,11 @@ export const moduleConfig: ModuleConfig = {
     navigationItems: [
         {
             label: "Management",
-            labelKey: "management",
-            navigationModule: "management",
             location: "dashboard",
             icon: React.createElement(ManagementIcon),
             children: [
                 {
                     label: "Departments",
-                    labelKey: "departments",
-                    navigationModule: "management",
                     href: "/management/departments",
                     location: "dashboard",
                     requiredRoles: [
@@ -56,8 +52,6 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "Access Control",
-                    labelKey: "accessControl",
-                    navigationModule: "management",
                     href: "/management/roles",
                     location: "dashboard",
                     requiredRoles: [
@@ -69,8 +63,6 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "Organization Settings",
-                    labelKey: "organizationSettings",
-                    navigationModule: "management",
                     href: "/management/organization-settings",
                     location: "dashboard",
                     requiredRoles: ["Administrator"],

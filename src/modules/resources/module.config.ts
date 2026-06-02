@@ -30,15 +30,11 @@ export const moduleConfig: ModuleConfig = {
     navigationItems: [
         {
             label: "Resources",
-            labelKey: "resources",
-            navigationModule: "resources",
             location: "dashboard",
             icon: React.createElement(ResourcesIcon),
             children: [
                 {
                     label: "Courses",
-                    labelKey: "courses",
-                    navigationModule: "resources",
                     href: "/resources/subjects",
                     location: "dashboard",
                     requiredRoles: ["Administrator", "Viewer", "ResourceManager"],
@@ -46,8 +42,6 @@ export const moduleConfig: ModuleConfig = {
                 },
                 {
                     label: "Rooms",
-                    labelKey: "rooms",
-                    navigationModule: "resources",
                     href: "/resources/manage",
                     location: "dashboard",
                     requiredRoles: ["Administrator", "Viewer", "ResourceManager"],
