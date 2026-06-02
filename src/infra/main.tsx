@@ -1,5 +1,5 @@
 /** @author aaron-iz */
-import { StrictMode, useEffect } from "react";
+import { StrictMode, useEffect, useLayoutEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router";
 import { MantineProvider } from "@mantine/core";
@@ -12,7 +12,7 @@ import "@mantine/core/styles.css";
 import "primereact/resources/primereact.min.css";
 import "./theme/primereact-overrides.css";
 
-initializeI18n("en");
+initializeI18n(useLocaleStore.getState().language);
 
 const ThemedApp = () => {
     const colorScheme = useThemeStore((state) => state.colorScheme);
@@ -45,8 +45,10 @@ const ThemedApp = () => {
         document.documentElement.setAttribute("dir", direction);
     }, [language, direction]);
 
-    useEffect(() => {
-        void i18n.changeLanguage(language);
+    useLayoutEffect(() => {
+        if (i18n.language !== language) {
+            void i18n.changeLanguage(language);
+        }
     }, [language]);
     
     return (

@@ -1,0 +1,7 @@
+{
+    "ariaLabel": "Notifications",
+    "menuLabel": "Notifications",
+    "emptyState": "No notifications yet",
+    "dismiss": "Dismiss",
+    "clearHistory": "Clear history"
+}
