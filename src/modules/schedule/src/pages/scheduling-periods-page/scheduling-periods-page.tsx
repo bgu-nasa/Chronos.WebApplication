@@ -21,7 +21,12 @@ import type { SlotResponse } from "@/modules/schedule/src/data";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.module.css";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources("src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json", resourcesJson);
 
@@ -145,12 +150,12 @@ export function SchedulingPeriodsPage() {
                     setSelectedPeriod(null);
                     setShowSlots(false);
                     $app.notifications.showSuccess(
-                        sharedNotifications.successTitle,
+                        notificationResources.successTitle,
                         resources.notifications.semesterDeleteSuccess,
                     );
                 } else {
                     $app.notifications.showError(
-                        sharedNotifications.errorTitle,
+                        notificationResources.errorTitle,
                         resources.notifications.semesterDeleteError,
                     );
                 }
@@ -219,12 +224,12 @@ export function SchedulingPeriodsPage() {
                 if (success) {
                     setSelectedSlot(null);
                     $app.notifications.showSuccess(
-                        sharedNotifications.successTitle,
+                        notificationResources.successTitle,
                         resources.notifications.slotDeleteSuccess,
                     );
                 } else {
                     $app.notifications.showError(
-                        sharedNotifications.errorTitle,
+                        notificationResources.errorTitle,
                         resources.notifications.slotDeleteError,
                     );
                 }

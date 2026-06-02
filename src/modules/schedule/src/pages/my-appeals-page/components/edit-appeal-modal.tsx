@@ -4,7 +4,12 @@ import { appealDataRepository } from "@/modules/schedule/src/data/appeal-data-re
 import type { AppealResponse } from "@/modules/schedule/src/data/appeal.types";
 import resourcesJson from "../my-appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/my-appeals-page/my-appeals-page.resources.json",
@@ -49,7 +54,7 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
                 description: description.trim(),
             });
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.editSuccess,
             );
             onUpdated();
@@ -57,7 +62,7 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
         } catch (error) {
             $app.logger.error("Failed to update appeal:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.editError,
             );
         } finally {

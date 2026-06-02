@@ -12,7 +12,12 @@ import { AssignmentsDataTable } from "@/modules/schedule/src/pages/assignments-p
 import { CreateAppealModal } from "./components/create-appeal-modal";
 import resourcesJson from "./my-assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/my-assignments-page/my-assignments-page.resources.json",
@@ -104,7 +109,7 @@ export function MyAssignmentsPage() {
         } catch (err) {
             $app.logger.error("Failed to fetch assignments:", err);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.fetchError,
             );
             setAssignments([]);
@@ -190,7 +195,7 @@ export function MyAssignmentsPage() {
                     assignmentId={selectedAssignment?.id ?? null}
                     onCreated={() => {
                         $app.notifications.showSuccess(
-                            sharedNotifications.successTitle,
+                            notificationResources.successTitle,
                             resources.notifications.appealSuccess,
                         );
                     }}

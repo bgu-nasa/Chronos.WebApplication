@@ -16,7 +16,12 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
@@ -97,12 +102,12 @@ export function AssignmentPanel({ isOpen, slot, onClose }: Readonly<AssignmentPa
                 if (success) {
                     setSelectedAssignment(null);
                     $app.notifications.showSuccess(
-                        sharedNotifications.successTitle,
+                        notificationResources.successTitle,
                         resources.notifications.assignmentDeleteSuccess,
                     );
                 } else {
                     $app.notifications.showError(
-                        sharedNotifications.errorTitle,
+                        notificationResources.errorTitle,
                         resources.notifications.assignmentDeleteError,
                     );
                 }

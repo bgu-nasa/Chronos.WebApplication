@@ -7,7 +7,12 @@ import { convertSlotLocalToUtc, convertSlotUtcToLocal } from "@/modules/schedule
 import { TimeSpinner } from "@/common/components/time-spinner";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json",
@@ -200,12 +205,12 @@ export function SlotEditor({ schedulingPeriodId }: Readonly<SlotEditorProps>) {
 
         if (createdCount === slotsToCreate.length) {
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.slotsCreatedSuccess.replace("{count}", String(createdCount)),
             );
         } else {
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.slotsCreatedPartial
                     .replace("{created}", String(createdCount))
                     .replace("{total}", String(slotsToCreate.length)),
@@ -233,7 +238,7 @@ export function SlotEditor({ schedulingPeriodId }: Readonly<SlotEditorProps>) {
 
         if (success) {
             $app.notifications.showSuccess(
-                sharedNotifications.successTitle,
+                notificationResources.successTitle,
                 resources.notifications.slotUpdateSuccess,
             );
             close();
@@ -241,7 +246,7 @@ export function SlotEditor({ schedulingPeriodId }: Readonly<SlotEditorProps>) {
         }
 
         $app.notifications.showError(
-            sharedNotifications.errorTitle,
+            notificationResources.errorTitle,
             resources.notifications.slotUpdateError,
         );
     };

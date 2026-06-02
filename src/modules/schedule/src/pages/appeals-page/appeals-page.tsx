@@ -13,7 +13,12 @@ import { AppealsDataTable } from "./components/appeals-data-table";
 import { ViewAppealModal } from "./components/view-appeal-modal";
 import resourcesJson from "./appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/appeals-page/appeals-page.resources.json",
@@ -65,7 +70,7 @@ export function AppealsPage() {
         } catch (err) {
             $app.logger.error("Failed to fetch appeals:", err);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.fetchError,
             );
             setAppeals([]);
@@ -106,7 +111,7 @@ export function AppealsPage() {
                 if (cancelled) return;
                 $app.logger.error("Failed to fetch appeals:", err);
                 $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.fetchError,
             );
                 setAppeals([]);
@@ -135,13 +140,13 @@ export function AppealsPage() {
                     await appealDataRepository.deleteAppeal(selectedAppeal.id);
                     setSelectedAppeal(null);
                     $app.notifications.showSuccess(
-                        sharedNotifications.successTitle,
+                        notificationResources.successTitle,
                         resources.dismissSuccess,
                     );
                     fetchAppeals();
                 } catch {
                     $app.notifications.showError(
-                        sharedNotifications.errorTitle,
+                        notificationResources.errorTitle,
                         resources.dismissError,
                     );
                 }

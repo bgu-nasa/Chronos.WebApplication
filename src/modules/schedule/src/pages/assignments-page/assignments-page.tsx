@@ -13,7 +13,12 @@ import { AssignmentsDataTable } from "./components/assignments-data-table";
 import { AddAssignmentModal } from "./components/add-assignment-modal";
 import resourcesJson from "./assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
@@ -143,7 +148,7 @@ export function AssignmentsPage() {
         } catch (err) {
             $app.logger.error("Failed to fetch assignments:", err);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.fetchError,
             );
             setAssignments([]);
@@ -189,7 +194,7 @@ export function AssignmentsPage() {
                     await assignmentDataRepository.deleteAssignment(selectedAssignment.id);
                     setSelectedAssignment(null);
                     $app.notifications.showSuccess(
-                        sharedNotifications.successTitle,
+                        notificationResources.successTitle,
                         resources.notifications.deleteSuccess,
                     );
                     if (selectedPeriodId) {
@@ -197,7 +202,7 @@ export function AssignmentsPage() {
                     }
                 } catch {
                     $app.notifications.showError(
-                        sharedNotifications.errorTitle,
+                        notificationResources.errorTitle,
                         resources.notifications.deleteError,
                     );
                 }

@@ -9,7 +9,12 @@ import { useResourceTypes } from "@/modules/resources/src/hooks/use-resource-typ
 
 import resourcesJson from "../constraints-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",
@@ -272,7 +277,7 @@ export function ActivityConstraintEditor({
         } catch (error) {
             $app.logger.error("[ActivityConstraintEditor] Error submitting constraint:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
             );
         }

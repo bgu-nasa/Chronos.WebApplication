@@ -14,7 +14,12 @@ import { MyAppealsDataTable } from "./components/my-appeals-data-table";
 import { EditAppealModal } from "./components/edit-appeal-modal";
 import resourcesJson from "./my-appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/my-appeals-page/my-appeals-page.resources.json",
@@ -76,7 +81,7 @@ export function MyAppealsPage() {
         } catch (err) {
             $app.logger.error("Failed to fetch appeals:", err);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.fetchError,
             );
             setAppeals([]);
@@ -105,7 +110,7 @@ export function MyAppealsPage() {
                 if (cancelled) return;
                 $app.logger.error("Failed to fetch appeals:", err);
                 $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.fetchError,
             );
                 setAppeals([]);
@@ -129,13 +134,13 @@ export function MyAppealsPage() {
                     await appealDataRepository.deleteAppeal(selectedAppeal.id);
                     setSelectedAppeal(null);
                     $app.notifications.showSuccess(
-                        sharedNotifications.successTitle,
+                        notificationResources.successTitle,
                         resources.deleteSuccess,
                     );
                     fetchAppeals();
                 } catch {
                     $app.notifications.showError(
-                        sharedNotifications.errorTitle,
+                        notificationResources.errorTitle,
                         resources.deleteError,
                     );
                 }

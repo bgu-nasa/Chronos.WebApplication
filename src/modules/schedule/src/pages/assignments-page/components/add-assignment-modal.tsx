@@ -9,7 +9,12 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resourcesJson from "../assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
@@ -137,7 +142,7 @@ export function AddAssignmentModal({
                     weekNum: weekNum as number,
                 });
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.updateSuccess,
                 );
             } else {
@@ -148,7 +153,7 @@ export function AddAssignmentModal({
                     weekNum: weekNum as number,
                 });
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.createSuccess,
                 );
             }
@@ -157,7 +162,7 @@ export function AddAssignmentModal({
         } catch (error) {
             $app.logger.error("Failed to save assignment:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 isEditMode ? resources.notifications.updateError : resources.notifications.createError,
             );
         } finally {
