@@ -1,6 +1,12 @@
 import { Button, Group } from "@mantine/core";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
+    resourcesJson,
+);
 interface SchedulingPeriodActionsProps {
     selectedPeriod: any | null;
     isExpired: boolean;
@@ -22,6 +28,8 @@ export function SchedulingPeriodActions({
     onRunBatchAssignmentClick,
     isBatchAssignmentLoading = false,
 }: SchedulingPeriodActionsProps) {
+    useLocaleStore((state) => state.language);
+
     return (
         <Group mb="md">
             <Button onClick={onCreateClick}>
@@ -46,7 +54,7 @@ export function SchedulingPeriodActions({
                 onClick={onViewSlotsClick}
                 disabled={!selectedPeriod}
             >
-                View Slots
+                {resources.viewSlotsButton}
             </Button>
             <Button
                 variant="filled"

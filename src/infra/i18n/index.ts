@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { useLocaleStore } from "@/infra/theme/state";
 
 type Language = "en" | "he";
 
@@ -33,7 +34,13 @@ export function getTranslationNamespace(resourceKey: string) {
         return `${moduleMatch[1]}.${filename}`;
     }
 
-    return filename ?? normalized;
+    // Standalone *.resources.json (infra/theme, common, etc.) — matches
+    // locales/<lang>/<name>/<name>.generated.json → namespace "<name>.<name>"
+    if (filename) {
+        return `${filename}.${filename}`;
+    }
+
+    return normalized;
 }
 
 function namespaceFromGeneratedPath(
@@ -111,6 +118,12 @@ export function getTranslationKey(resourceKey: string, key: string) {
     return `${getTranslationNamespace(resourceKey)}:${key}`;
 }
 
+/** BCP 47 locale tag for `Intl` / `Date` formatting from app language. */
+export function getIntlLocale(language?: Language): string {
+    const lng = language ?? useLocaleStore.getState().language;
+    return lng === "he" ? "he-IL" : "en-US";
+}
+
 function createTranslatedValue(
     namespace: string,
     value: unknown,
@@ -118,7 +131,10 @@ function createTranslatedValue(
 ): unknown {
     if (typeof value === "string") {
         const keyPath = pathSegments.join(".");
-        return i18n.t(`${namespace}:${keyPath}`, { defaultValue: value });
+        return i18n.t(`${namespace}:${keyPath}`, {
+            defaultValue: value,
+            lng: useLocaleStore.getState().language,
+        });
     }
 
     if (Array.isArray(value)) {

@@ -21,14 +21,28 @@ import type { SlotResponse } from "@/modules/schedule/src/data";
 import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json";
 import styles from "@/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.module.css";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+import slotResourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources("src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json", resourcesJson);
+
+const slotResources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json",
+    slotResourcesJson,
+);
 
 export interface SchedulingPeriodDataWithExpired extends SchedulingPeriodData {
     isExpired: boolean;
 }
 
 export function SchedulingPeriodsPage() {
+    useLocaleStore((state) => state.language);
     const [selectedPeriod, setSelectedPeriod] = useState<SchedulingPeriodDataWithExpired | null>(null);
     const [showSlots, setShowSlots] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState<SlotResponse | null>(null);
@@ -143,9 +157,15 @@ export function SchedulingPeriodsPage() {
                 if (success) {
                     setSelectedPeriod(null);
                     setShowSlots(false);
-                    $app.notifications.showSuccess("Success", "Semester deleted successfully");
+                    $app.notifications.showSuccess(
+                        notificationResources.successTitle,
+                        resources.notifications.semesterDeleteSuccess,
+                    );
                 } else {
-                    $app.notifications.showError("Error", "Failed to delete semester");
+                    $app.notifications.showError(
+                        notificationResources.errorTitle,
+                        resources.notifications.semesterDeleteError,
+                    );
                 }
             },
         });
@@ -205,15 +225,21 @@ export function SchedulingPeriodsPage() {
         if (!selectedSlot) return;
 
         openConfirmation({
-            title: "Delete Slot",
-            message: "Are you sure you want to delete this slot?",
+            title: slotResources.deleteConfirmTitle,
+            message: slotResources.deleteConfirmMessage,
             onConfirm: async () => {
                 const success = await deleteSlot(selectedSlot.id);
                 if (success) {
                     setSelectedSlot(null);
-                    $app.notifications.showSuccess("Success", "Slot deleted successfully");
+                    $app.notifications.showSuccess(
+                        notificationResources.successTitle,
+                        resources.notifications.slotDeleteSuccess,
+                    );
                 } else {
-                    $app.notifications.showError("Error", "Failed to delete slot");
+                    $app.notifications.showError(
+                        notificationResources.errorTitle,
+                        resources.notifications.slotDeleteError,
+                    );
                 }
             },
         });
@@ -265,13 +291,14 @@ export function SchedulingPeriodsPage() {
                             <Paper p="md" withBorder>
                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
                                     <Title order={3}>
-                                        Slots - {selectedPeriod.name}
+                                        {resources.slotsPanelTitle.replace("{name}", selectedPeriod.name)}
                                     </Title>
                                     <Button
                                         variant="subtle"
                                         size="sm"
                                         onClick={() => setShowSlots(false)}
                                         style={{ padding: "4px 8px" }}
+                                        aria-label={resources.slotsPanelCloseAriaLabel}
                                     >
                                         ✕
                                     </Button>
@@ -279,7 +306,7 @@ export function SchedulingPeriodsPage() {
 
                                 {selectedPeriod.isExpired ? (
                                     <Text c="dimmed" ta="center" py="xl">
-                                        This period has expired. Slots cannot be edited.
+                                        {resources.slotsPanelExpiredMessage}
                                     </Text>
                                 ) : (
                                     <SlotActions

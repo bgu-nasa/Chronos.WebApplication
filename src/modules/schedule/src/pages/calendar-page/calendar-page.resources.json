@@ -1,11 +1,9 @@
 {
     "notifications": {
         "constraintCreated": {
-            "title": "Constraint Created",
             "message": "Unavailable time range has been set successfully"
         },
         "constraintCreateFailed": {
-            "title": "Failed to Create Constraint",
             "message": "An unexpected error occurred"
         }
     },
@@ -20,6 +18,7 @@
             "capacity": "Capacity:",
             "expectedStudents": "Expected Students"
         },
+        "consecutiveSlots": "Spans {count} consecutive slots",
         "unknown": {
             "day": "Unknown Day",
             "subject": "Unknown Subject",

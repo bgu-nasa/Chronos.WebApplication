@@ -8,9 +8,16 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
+import { getWeekdayLabel } from "@/common/weekdays";
 import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
-import resources from "../appeals-page.resources.json";
+import { useLocaleStore } from "@/infra/theme/state";
+import resourcesJson from "../appeals-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/appeals-page/appeals-page.resources.json",
+    resourcesJson,
+);
 interface AppealRow {
     id: string;
     title: string;
@@ -43,6 +50,7 @@ export function AppealsDataTable({
     onSelectionChange,
     isLoading = false,
 }: AppealsDataTableProps) {
+    const language = useLocaleStore((state) => state.language);
     const assignmentMap = useMemo(
         () => new Map(assignments.map((a) => [a.id, a])),
         [assignments]
@@ -72,7 +80,7 @@ export function AppealsDataTable({
                 const fromTime = slot.fromTime.split(":").slice(0, 2).join(":");
                 const toTime = slot.toTime.split(":").slice(0, 2).join(":");
                 const local = convertSlotUtcToLocal(slot.weekday, fromTime, toTime)[0];
-                day = local.weekday;
+                day = getWeekdayLabel(local.weekday);
                 time = `${local.fromTime} - ${local.toTime}`;
             }
 
@@ -87,7 +95,7 @@ export function AppealsDataTable({
                 raw: appeal,
             };
         });
-    }, [appeals, assignmentMap, slotMap, activityMap, resourceMap]);
+    }, [appeals, assignmentMap, slotMap, activityMap, resourceMap, language]);
 
     const selectedRow = useMemo(() => {
         if (!selectedAppeal) return null;

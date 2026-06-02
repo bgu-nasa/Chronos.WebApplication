@@ -12,12 +12,25 @@ import {
     useResources,
     useActivities,
 } from "@/modules/schedule/src/hooks";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+import assignmentEditorResourcesJson from "./assignment-editor.resources.json";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/components/assignment-editor.resources.json",
+    assignmentEditorResourcesJson,
+);
 
 export function AssignmentEditor() {
     const { isOpen, mode, assignment, slotId, schedulingPeriodId, close } = useAssignmentEditorStore();
     const { createAssignment, isLoading: isCreating, clearError: clearCreateError } = useCreateAssignment();
     const { updateAssignment, isLoading: isUpdating, clearError: clearUpdateError } = useUpdateAssignment();
-    const { resources, isLoading: isLoadingResources } = useResources();
+    const { resources: roomResources, isLoading: isLoadingResources } = useResources();
     const { activities, isLoading: isLoadingActivities } = useActivities(schedulingPeriodId ?? undefined);
 
     const [resourceId, setResourceId] = useState<string | null>(null);
@@ -25,15 +38,13 @@ export function AssignmentEditor() {
     const [weekNum, setWeekNum] = useState<number | string>('');
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    // Transform resources to Select options - show Location / Identifier, value is ID
     const resourceOptions = useMemo(() => {
-        return resources.map((resource) => ({
+        return roomResources.map((resource) => ({
             value: resource.id,
             label: `${resource.location} / ${resource.identifier}`,
         }));
-    }, [resources]);
+    }, [roomResources]);
 
-    // Transform activities to Select options - show enriched display, value is ID
     const activityOptions = useMemo(() => {
         return activities.map((activity) => ({
             value: activity.id,
@@ -41,7 +52,6 @@ export function AssignmentEditor() {
         }));
     }, [activities]);
 
-    // Reset form when modal opens/closes or assignment changes
     useEffect(() => {
         if (isOpen) {
             clearCreateError();
@@ -58,18 +68,18 @@ export function AssignmentEditor() {
                 setWeekNum('');
             }
         }
-    }, [isOpen, mode, assignment]);
+    }, [isOpen, mode, assignment, clearCreateError, clearUpdateError]);
 
     const validate = () => {
         const newErrors: Record<string, string> = {};
         if (!resourceId) {
-            newErrors.resourceId = "Resource is required";
+            newErrors.resourceId = resources.validation.resourceRequired;
         }
         if (!activityId) {
-            newErrors.activityId = "Activity is required";
+            newErrors.activityId = resources.validation.activityRequired;
         }
         if (weekNum === '' || weekNum === null || weekNum === undefined) {
-            newErrors.weekNum = "Week number is required";
+            newErrors.weekNum = resources.validation.weekNumRequired;
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -91,9 +101,15 @@ export function AssignmentEditor() {
             });
             success = result !== null;
             if (success) {
-                $app.notifications.showSuccess("Success", "Assignment created successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resources.notifications.createSuccess,
+                );
             } else {
-                $app.notifications.showError("Error", "Failed to create assignment");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resources.notifications.createError,
+                );
             }
         } else if (mode === "edit" && assignment && resourceId && activityId) {
             success = await updateAssignment(assignment.id, {
@@ -103,9 +119,15 @@ export function AssignmentEditor() {
                 weekNum: weekNum as number,
             });
             if (success) {
-                $app.notifications.showSuccess("Success", "Assignment updated successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resources.notifications.updateSuccess,
+                );
             } else {
-                $app.notifications.showError("Error", "Failed to update assignment");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resources.notifications.updateError,
+                );
             }
         }
 
@@ -125,21 +147,21 @@ export function AssignmentEditor() {
     };
 
     const isLoading = isCreating || isUpdating;
-    const title = mode === "create" ? "Add Assignment" : "Edit Assignment";
-    const submitButtonLabel = mode === "create" ? "Create" : "Save";
+    const title = mode === "create" ? resources.titleCreate : resources.titleEdit;
+    const submitButtonLabel = mode === "create" ? resources.submitCreate : resources.submitSave;
 
     return (
         <Modal opened={isOpen} onClose={handleClose} title={title} centered size="md">
             <form onSubmit={handleSubmit}>
                 <Stack gap="md">
                     <Select
-                        label="Resource (Location)"
+                        label={resources.labels.resource}
                         placeholder={
                             isLoadingResources
-                                ? "Loading resources..."
+                                ? resources.placeholders.loadingResources
                                 : resourceOptions.length === 0
-                                    ? "There are no resources yet"
-                                    : "Select a resource"
+                                    ? resources.placeholders.noResources
+                                    : resources.placeholders.selectResource
                         }
                         data={resourceOptions}
                         value={resourceId}
@@ -158,13 +180,13 @@ export function AssignmentEditor() {
                     />
 
                     <Select
-                        label="Activity"
+                        label={resources.labels.activity}
                         placeholder={
                             isLoadingActivities
-                                ? "Loading activities..."
+                                ? resources.placeholders.loadingActivities
                                 : activityOptions.length === 0
-                                    ? "There are no activities yet"
-                                    : "Select an activity"
+                                    ? resources.placeholders.noActivities
+                                    : resources.placeholders.selectActivity
                         }
                         data={activityOptions}
                         value={activityId}
@@ -183,8 +205,8 @@ export function AssignmentEditor() {
                     />
 
                     <NumberInput
-                        label="Week Number"
-                        placeholder="Enter week number"
+                        label={resources.labels.weekNumber}
+                        placeholder={resources.placeholders.weekNumber}
                         value={weekNum}
                         onChange={(value) => {
                             setWeekNum(value);
@@ -206,7 +228,7 @@ export function AssignmentEditor() {
                             onClick={handleClose}
                             disabled={isLoading}
                         >
-                            Cancel
+                            {resources.cancel}
                         </Button>
                         <Button type="submit" loading={isLoading}>
                             {submitButtonLabel}

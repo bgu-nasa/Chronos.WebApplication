@@ -79,6 +79,19 @@ function cloneJson(value) {
     return structuredClone(value);
 }
 
+/** Intl.DateTimeFormat option literals — must not be translated. */
+const INTL_LITERAL_VALUES = new Set([
+    "short",
+    "long",
+    "narrow",
+    "numeric",
+    "2-digit",
+]);
+
+function shouldPreserveLiteralString(value) {
+    return typeof value === "string" && INTL_LITERAL_VALUES.has(value);
+}
+
 /** Matches `{{name}}` (i18next) and `{name}` (runtime .replace) placeholders. */
 const PLACEHOLDER_PATTERN = /\{\{([^{}]+)\}\}|\{([^{}\s]+)\}/g;
 
@@ -283,26 +296,44 @@ async function processResourceFile(resourceFilePath) {
         return;
     }
 
-    const texts = stringLeaves.map((leaf) => leaf.value);
-    const maskedTexts = maskTextsForTranslation(texts);
-    const translatedMaskedTexts = await translateToHebrew(
-        maskedTexts.map((entry) => entry.masked),
-    );
-
     const enJson = cloneJson(sourceJson);
     const heJson = cloneJson(sourceJson);
 
+    const leavesToTranslate = [];
+    const translateIndices = [];
+
     for (let index = 0; index < stringLeaves.length; index += 1) {
-        const pathTokens = stringLeaves[index].pathTokens;
-        setByPath(enJson, pathTokens, texts[index]);
-        setByPath(
-            heJson,
-            pathTokens,
-            unmaskPlaceholders(
-                translatedMaskedTexts[index],
-                maskedTexts[index].placeholders,
-            ),
+        const leaf = stringLeaves[index];
+
+        if (shouldPreserveLiteralString(leaf.value)) {
+            setByPath(enJson, leaf.pathTokens, leaf.value);
+            setByPath(heJson, leaf.pathTokens, leaf.value);
+            continue;
+        }
+
+        translateIndices.push(index);
+        leavesToTranslate.push(leaf);
+    }
+
+    if (leavesToTranslate.length > 0) {
+        const texts = leavesToTranslate.map((leaf) => leaf.value);
+        const maskedTexts = maskTextsForTranslation(texts);
+        const translatedMaskedTexts = await translateToHebrew(
+            maskedTexts.map((entry) => entry.masked),
         );
+
+        for (let index = 0; index < leavesToTranslate.length; index += 1) {
+            const pathTokens = leavesToTranslate[index].pathTokens;
+            setByPath(enJson, pathTokens, texts[index]);
+            setByPath(
+                heJson,
+                pathTokens,
+                unmaskPlaceholders(
+                    translatedMaskedTexts[index],
+                    maskedTexts[index].placeholders,
+                ),
+            );
+        }
     }
 
     await Promise.all([

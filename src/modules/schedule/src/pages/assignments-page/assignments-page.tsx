@@ -11,7 +11,19 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { UserResponse } from "@/modules/schedule/src/data/activity.types";
 import { AssignmentsDataTable } from "./components/assignments-data-table";
 import { AddAssignmentModal } from "./components/add-assignment-modal";
-import resources from "./assignments-page.resources.json";
+import resourcesJson from "./assignments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
+    resourcesJson,
+);
 import styles from "./assignments-page.module.css";
 
 export function AssignmentsPage() {
@@ -135,7 +147,10 @@ export function AssignmentsPage() {
             setAssignments(data);
         } catch (err) {
             $app.logger.error("Failed to fetch assignments:", err);
-            $app.notifications.showError("Error", "Failed to fetch assignments");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.fetchError,
+            );
             setAssignments([]);
         } finally {
             setIsLoadingAssignments(false);
@@ -178,12 +193,18 @@ export function AssignmentsPage() {
                 try {
                     await assignmentDataRepository.deleteAssignment(selectedAssignment.id);
                     setSelectedAssignment(null);
-                    $app.notifications.showSuccess("Success", "Assignment deleted successfully");
+                    $app.notifications.showSuccess(
+                        notificationResources.successTitle,
+                        resources.notifications.deleteSuccess,
+                    );
                     if (selectedPeriodId) {
                         fetchAssignments(selectedPeriodId, filterUserId, filterActivityId, filterResourceId);
                     }
                 } catch {
-                    $app.notifications.showError("Error", "Failed to delete assignment");
+                    $app.notifications.showError(
+                        notificationResources.errorTitle,
+                        resources.notifications.deleteError,
+                    );
                 }
             },
         });
