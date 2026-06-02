@@ -11,14 +11,19 @@ import type {
     UserUpdateRequest,
 } from "@/modules/auth/src/data/user.types";
 import type { ApiError } from "@/infra/service/ajax/types";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import resourcesJson from "./user.store.resources.json";
+
+const resources = translatedResources(
+    "src/modules/auth/src/state/user.store.resources.json",
+    resourcesJson,
+);
 
 interface UserStore {
-    // State
     users: UserResponse[];
     isLoading: boolean;
     error: string | null;
-
-    // Actions
     fetchUsers: () => Promise<void>;
     createUser: (request: CreateUserRequest) => Promise<UserResponse | null>;
     updateUser: (
@@ -27,19 +32,15 @@ interface UserStore {
     ) => Promise<boolean>;
     updateMyProfile: (request: UserUpdateRequest) => Promise<boolean>;
     deleteUser: (userId: string) => Promise<boolean>;
-
-    // Utility actions
     setError: (error: string | null) => void;
     clearError: () => void;
 }
 
 export const useUserStore = create<UserStore>((set, get) => ({
-    // Initial state
     users: [],
     isLoading: false,
     error: null,
 
-    // Fetch all users
     fetchUsers: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -47,130 +48,141 @@ export const useUserStore = create<UserStore>((set, get) => ({
             set({ users: data, isLoading: false });
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to fetch users";
+            const errorMessage =
+                apiError.message || resources.notifications.fetchError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error fetching users:", err);
         }
     },
 
-    // Create a user and refetch
     createUser: async (request: CreateUserRequest) => {
         set({ isLoading: true, error: null });
-        const loadingNotification =
-            $app.notifications.showLoading("Creating user...");
+        const loadingNotification = $app.notifications.showLoading(
+            resources.notifications.creating,
+        );
         try {
             const newUser = await userDataRepository.createUser(request);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchUsers();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("User created successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.createSuccess,
+            );
             return newUser;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to create user";
+            const errorMessage =
+                apiError.message || resources.notifications.createError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error creating user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to create user",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.createError,
             );
             return null;
         }
     },
 
-    // Update a user and refetch
     updateUser: async (userId: string, request: UserUpdateRequest) => {
         set({ isLoading: true, error: null });
-        const loadingNotification =
-            $app.notifications.showLoading("Updating user...");
+        const loadingNotification = $app.notifications.showLoading(
+            resources.notifications.updating,
+        );
         try {
             await userDataRepository.updateUser(userId, request);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchUsers();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("User updated successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.updateSuccess,
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to update user";
+            const errorMessage =
+                apiError.message || resources.notifications.updateError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error updating user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to update user",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.updateError,
             );
             return false;
         }
     },
 
-    // Update the authenticated user's own profile
     updateMyProfile: async (request: UserUpdateRequest) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Updating profile...",
+            resources.notifications.updatingProfile,
         );
         try {
             await userDataRepository.updateMyProfile(request);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchUsers();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Profile updated successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.updateProfileSuccess,
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to update profile";
+            const errorMessage =
+                apiError.message || resources.notifications.updateProfileError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error updating profile:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to update profile",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.updateProfileError,
             );
             return false;
         }
     },
 
-    // Delete a user and refetch
     deleteUser: async (userId: string) => {
         set({ isLoading: true, error: null });
-        const loadingNotification =
-            $app.notifications.showLoading("Deleting user...");
+        const loadingNotification = $app.notifications.showLoading(
+            resources.notifications.deleting,
+        );
         try {
             await userDataRepository.deleteUser(userId);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchUsers();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("User deleted successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.deleteSuccess,
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
-            const errorMessage = apiError.message || "Failed to delete user";
+            const errorMessage =
+                apiError.message || resources.notifications.deleteError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error deleting user:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to delete user",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.deleteError,
             );
             return false;
         }
     },
 
-    // Utility actions
     setError: (error: string | null) => set({ error }),
     clearError: () => set({ error: null }),
 }));

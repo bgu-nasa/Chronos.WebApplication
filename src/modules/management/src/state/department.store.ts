@@ -10,14 +10,19 @@ import type {
     DepartmentRequest,
 } from "@/modules/management/src/data/department.types";
 import type { ApiError } from "@/infra/service/ajax/types";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import resourcesJson from "./department.store.resources.json";
+
+const resources = translatedResources(
+    "src/modules/management/src/state/department.store.resources.json",
+    resourcesJson,
+);
 
 interface DepartmentStore {
-    // State
     departments: DepartmentResponse[];
     isLoading: boolean;
     error: string | null;
-
-    // Actions
     fetchDepartments: () => Promise<void>;
     createDepartment: (
         request: DepartmentRequest,
@@ -28,19 +33,15 @@ interface DepartmentStore {
     ) => Promise<boolean>;
     deleteDepartment: (departmentId: string) => Promise<boolean>;
     restoreDepartment: (departmentId: string) => Promise<boolean>;
-
-    // Utility actions
     setError: (error: string | null) => void;
     clearError: () => void;
 }
 
 export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
-    // Initial state
     departments: [],
     isLoading: false,
     error: null,
 
-    // Fetch all departments
     fetchDepartments: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -49,52 +50,52 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to fetch departments";
+                apiError.message || resources.notifications.fetchError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error fetching departments:", err);
         }
     },
 
-    // Create a department and refetch
     createDepartment: async (request: DepartmentRequest) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Creating department...",
+            resources.notifications.creating,
         );
         try {
             const newDepartment =
                 await departmentDataRepository.createDepartment(request);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchDepartments();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department created successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.createSuccess,
+            );
             return newDepartment;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to create department";
+                apiError.message || resources.notifications.createError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error creating department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to create department",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.createError,
             );
             return null;
         }
     },
 
-    // Update a department and refetch
     updateDepartment: async (
         departmentId: string,
         request: DepartmentRequest,
     ) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Updating department...",
+            resources.notifications.updating,
         );
         try {
             await departmentDataRepository.updateDepartment(
@@ -102,91 +103,94 @@ export const useDepartmentStore = create<DepartmentStore>((set, get) => ({
                 request,
             );
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchDepartments();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department updated successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.updateSuccess,
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to update department";
+                apiError.message || resources.notifications.updateError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error updating department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to update department",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.updateError,
             );
             return false;
         }
     },
 
-    // Delete a department and refetch
     deleteDepartment: async (departmentId: string) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Deleting department...",
+            resources.notifications.deleting,
         );
         try {
             await departmentDataRepository.deleteDepartment(departmentId);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchDepartments();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department deleted successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.deleteSuccess,
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to delete department";
+                apiError.message || resources.notifications.deleteError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error deleting department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to delete department",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.deleteError,
             );
             return false;
         }
     },
 
-    // Restore a department and refetch
     restoreDepartment: async (departmentId: string) => {
         set({ isLoading: true, error: null });
         const loadingNotification = $app.notifications.showLoading(
-            "Restoring department...",
+            resources.notifications.restoring,
         );
         try {
             await departmentDataRepository.restoreDepartment(departmentId);
             set({ isLoading: false });
-
-            // Refetch to update the list
             await get().fetchDepartments();
-
             $app.notifications.remove(loadingNotification);
-            $app.notifications.showSuccess("Department restored successfully");
+            $app.notifications.showSuccess(
+                sharedNotifications.successTitle,
+                resources.notifications.restoreSuccess,
+            );
             return true;
         } catch (err) {
             const apiError = err as ApiError;
             const errorMessage =
-                apiError.message || "Failed to restore department";
+                apiError.message || resources.notifications.restoreError;
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error restoring department:", err);
             $app.notifications.remove(loadingNotification);
             $app.notifications.showError(
-                "Failed to restore department",
-                apiError.details ? String(apiError.details) : undefined,
+                sharedNotifications.errorTitle,
+                apiError.details
+                    ? String(apiError.details)
+                    : resources.notifications.restoreError,
             );
             return false;
         }
     },
 
-    // Utility actions
     setError: (error: string | null) => set({ error }),
     clearError: () => set({ error: null }),
 }));

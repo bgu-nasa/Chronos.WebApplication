@@ -11,8 +11,13 @@ import { RoleSelect } from "@/modules/management/src/pages/roles-page/components
 import { useCreateRoleAssignment } from "@/modules/management/src/hooks/use-roles";
 import type { RoleType } from "@/modules/management/src/data/role.types";
 import { $app } from "@/infra/service";
-import resources from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/management/src/pages/roles-page/roles-page.resources.json",
+    resourcesJson,
+);
 interface RoleAssignmentDrawerProps {
     opened: boolean;
     onClose: () => void;

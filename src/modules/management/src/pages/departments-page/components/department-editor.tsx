@@ -10,8 +10,13 @@ import {
     useCreateDepartment,
     useUpdateDepartment,
 } from "@/modules/management/src/hooks/use-departments";
-import resources from "@/modules/management/src/pages/departments-page/departments-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/departments-page/departments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/management/src/pages/departments-page/departments-page.resources.json",
+    resourcesJson,
+);
 export function DepartmentEditor() {
     const { isOpen, mode, department, close } = useDepartmentEditorStore();
     const { createDepartment, isLoading: isCreating } = useCreateDepartment();

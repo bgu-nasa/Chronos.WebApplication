@@ -1,0 +1,11 @@
+{
+    "notifications": {
+        "creating": "Creating role assignment...",
+        "removing": "Removing role assignment...",
+        "createSuccess": "Role assignment created successfully",
+        "removeSuccess": "Role assignment removed successfully",
+        "createError": "Failed to create role assignment",
+        "removeError": "Failed to remove role assignment",
+        "fetchError": "Failed to fetch role assignments"
+    }
+}

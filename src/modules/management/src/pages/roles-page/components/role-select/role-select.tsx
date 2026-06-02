@@ -5,8 +5,13 @@
 
 import { Select } from "@mantine/core";
 import type { RoleType } from "@/modules/management/src/data/role.types";
-import resources from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/management/src/pages/roles-page/roles-page.resources.json",
+    resourcesJson,
+);
 interface RoleSelectProps {
     value?: RoleType | null;
     onChange?: (role: RoleType | null) => void;
