@@ -8,9 +8,16 @@ import type { CalendarEvent } from "@/common/types";
 import { EventItem } from './event-item';
 import { ConstraintItem } from './constraint-item';
 import { EventBlockItem } from './event-block-item';
+import { getEnglishWeekdayName, weekdayNamesMatch } from './calendar-weekday';
 import { getIsoWeekNumber } from './iso-week';
+import { translatedResources } from "@/infra/i18n";
 import styles from './day-column.module.css';
-import resources from './day-column.resources.json';
+import resourcesJson from './day-column.resources.json';
+
+const resources = translatedResources(
+    "src/common/components/calendar/week-view/day-column.resources.json",
+    resourcesJson,
+);
 
 interface TimeRangeSelection {
   startTime: number; // minutes from dayStartHour
@@ -41,6 +48,7 @@ interface DayColumnProps {
   eventBlocks?: EventBlock[];
   periodFromDate?: string;
   periodToDate?: string;
+  periodWeekIndex?: number | null;
   hourHeight?: number;
   dayStartHour?: number;
   hoursPerDay?: number;
@@ -55,6 +63,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   eventBlocks = [],
   periodFromDate,
   periodToDate,
+  periodWeekIndex = null,
   hourHeight = 60,
   dayStartHour = 8,
   hoursPerDay = 24,
@@ -266,7 +275,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
   const selectionHeight = selection ? Math.abs(selection.endTime - selection.startTime) / 60 * hourHeight : null;
 
   // Get weekday name for this column
-  const weekdayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+  const weekdayName = getEnglishWeekdayName(date);
   const weekNum = getIsoWeekNumber(date);
   const isInsideSelectedPeriod = useMemo(() => {
     if (!periodFromDate || !periodToDate) {
@@ -291,7 +300,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     }
 
     return constraints.filter(c => {
-      if (c.weekday !== weekdayName) {
+      if (!weekdayNamesMatch(c.weekday, weekdayName)) {
         return false;
       }
 
@@ -310,7 +319,7 @@ export const DayColumn: React.FC<DayColumnProps> = ({
     }
 
     return eventBlocks.filter(eb => {
-      if (eb.weekday !== weekdayName) {
+      if (!weekdayNamesMatch(eb.weekday, weekdayName)) {
         return false;
       }
 
@@ -318,9 +327,13 @@ export const DayColumn: React.FC<DayColumnProps> = ({
         return true;
       }
 
+      if (periodWeekIndex != null) {
+        return eb.weekNum === periodWeekIndex;
+      }
+
       return eb.weekNum === weekNum;
     });
-  }, [eventBlocks, weekdayName, weekNum, isInsideSelectedPeriod]);
+  }, [eventBlocks, weekdayName, weekNum, periodWeekIndex, isInsideSelectedPeriod]);
 
   return (
     <Box
@@ -363,9 +376,9 @@ export const DayColumn: React.FC<DayColumnProps> = ({
         />
       ))}
 
-      {dailyEventBlocks.map((eventBlock, index) => (
+      {dailyEventBlocks.map((eventBlock) => (
         <EventBlockItem
-          key={`event-block-${index}-${eventBlock.startTime}-${eventBlock.endTime}`}
+          key={`event-block-${eventBlock.activityId ?? 'event'}-${eventBlock.weekNum ?? 'w'}-${eventBlock.startTime}-${eventBlock.endTime}`}
           startTime={eventBlock.startTime}
           endTime={eventBlock.endTime}
           hourHeight={hourHeight}

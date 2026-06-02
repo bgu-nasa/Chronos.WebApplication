@@ -26,7 +26,13 @@ import {
 } from "@/common";
 import { DeletedOrganizationAlert } from "./deleted-organization-alert";
 import { useNavbarStore } from "./navbar.store";
-import resources from "./navbar-collapse.resources.json";
+import navbarCollapseResourcesJson from "./navbar-collapse.resources.json";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources(
+    "src/infra/theme/layouts/dashboard-layout/navbar-collapse.resources.json",
+    navbarCollapseResourcesJson,
+);
 import { filterNavigationByRoles } from "./filter-navigation-by-roles";
 
 function renderNavigationItems(
@@ -40,13 +46,14 @@ function renderNavigationItems(
     return items.map((item) => {
         const hasChildren = item.children && item.children.length > 0;
         const itemKey = item.href || item.label;
+        const reactKey = item.href ?? itemKey;
         const isOpen = openItems[itemKey] ?? false;
 
         // For collapsed state with children, show popover on hover
         if (collapsed && hasChildren) {
             return (
                 <HoverCard
-                    key={item.href}
+                    key={reactKey}
                     position="right"
                     withArrow
                     shadow="md"
@@ -69,6 +76,7 @@ function renderNavigationItems(
                             {/* Show parent as first item if it has an href */}
                             {item.href && (
                                 <NavLink
+                                    key={item.href}
                                     label={item.label}
                                     leftSection={item.icon}
                                     active={currentPath === item.href}
@@ -95,7 +103,7 @@ function renderNavigationItems(
         if (collapsed) {
             return (
                 <Tooltip
-                    key={item.href}
+                    key={reactKey}
                     label={item.label}
                     position="right"
                     withArrow
@@ -116,7 +124,7 @@ function renderNavigationItems(
         // For expanded state, render normally with children
         return (
             <NavLink
-                key={item.href}
+                key={reactKey}
                 label={item.label}
                 leftSection={item.icon}
                 active={currentPath === item.href}

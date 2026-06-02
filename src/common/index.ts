@@ -21,6 +21,20 @@ export type {
     UseConfirmationReturn,
 } from "./hooks/use-confirmation";
 
+// Weekdays (English values for API; translated labels for UI)
+export {
+    Weekday,
+    WeekdayOrder,
+    ENGLISH_WEEKDAY_ORDER,
+    getWeekdayLabel,
+    getWeekdayShortLabel,
+    getEnglishWeekdayName,
+    getWeekdayLabelFromDate,
+    getWeekdaySelectOptions,
+    weekdayNamesMatch,
+    formatPreferredWeekdaysDisplay,
+} from "./weekdays";
+
 // Icons
 export { 
     ChevronLeftIcon, 

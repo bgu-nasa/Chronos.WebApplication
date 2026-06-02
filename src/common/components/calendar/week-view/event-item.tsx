@@ -4,6 +4,9 @@ import { Box, Text, Popover, Stack, Group } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useNavigate } from 'react-router';
 import type { CalendarEvent } from "@/common/types";
+import { getWeekdayLabelFromDate } from "@/common/weekdays";
+import { getIntlLocale } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
 import styles from './event-item.module.css';
 
@@ -22,8 +25,19 @@ export const EventItem: React.FC<EventItemProps> = ({
   left = 0,
   width = 100
 }) => {
+  const language = useLocaleStore((state) => state.language);
   const [opened, { open, close }] = useDisclosure(false);
   const navigate = useNavigate();
+
+  const dateLabel = useMemo(() => {
+    const locale = getIntlLocale(language);
+    const weekday = getWeekdayLabelFromDate(event.start, "long");
+    const rest = event.start.toLocaleDateString(locale, {
+      month: "long",
+      day: "numeric",
+    });
+    return `${weekday}, ${rest}`;
+  }, [event.start, language]);
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -74,7 +88,7 @@ export const EventItem: React.FC<EventItemProps> = ({
             <Box w={12} h={12} bg={event.color ? `${event.color}.6` : 'blue.6'} style={{ borderRadius: '50%' }} />
           </Group>
           <Text size="xs" c="dimmed">
-            {event.start.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+            {dateLabel}
           </Text>
           <Text size="xs" fw={500}>
             {timeString}

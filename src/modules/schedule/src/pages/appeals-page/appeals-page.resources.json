@@ -16,5 +16,8 @@
     "dismissConfirmButton": "Dismiss",
     "dismissCancelButton": "Cancel",
     "dismissSuccess": "Appeal dismissed successfully",
-    "dismissError": "Failed to dismiss appeal"
+    "dismissError": "Failed to dismiss appeal",
+    "notifications": {
+        "fetchError": "Failed to fetch appeals"
+    }
 }

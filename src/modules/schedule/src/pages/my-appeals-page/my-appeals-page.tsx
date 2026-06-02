@@ -12,7 +12,19 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import { MyAppealsDataTable } from "./components/my-appeals-data-table";
 import { EditAppealModal } from "./components/edit-appeal-modal";
-import resources from "./my-appeals-page.resources.json";
+import resourcesJson from "./my-appeals-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/my-appeals-page/my-appeals-page.resources.json",
+    resourcesJson,
+);
 import styles from "./my-appeals-page.module.css";
 
 async function loadUserAppeals(userId: string) {
@@ -68,7 +80,10 @@ export function MyAppealsPage() {
             setSlots(data.slots);
         } catch (err) {
             $app.logger.error("Failed to fetch appeals:", err);
-            $app.notifications.showError("Error", "Failed to fetch appeals");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.fetchError,
+            );
             setAppeals([]);
         } finally {
             setIsLoading(false);
@@ -94,7 +109,10 @@ export function MyAppealsPage() {
             } catch (err) {
                 if (cancelled) return;
                 $app.logger.error("Failed to fetch appeals:", err);
-                $app.notifications.showError("Error", "Failed to fetch appeals");
+                $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.fetchError,
+            );
                 setAppeals([]);
             } finally {
                 if (!cancelled) setIsLoading(false);
@@ -115,10 +133,16 @@ export function MyAppealsPage() {
                 try {
                     await appealDataRepository.deleteAppeal(selectedAppeal.id);
                     setSelectedAppeal(null);
-                    $app.notifications.showSuccess("Success", resources.deleteSuccess);
+                    $app.notifications.showSuccess(
+                        notificationResources.successTitle,
+                        resources.deleteSuccess,
+                    );
                     fetchAppeals();
                 } catch {
-                    $app.notifications.showError("Error", resources.deleteError);
+                    $app.notifications.showError(
+                        notificationResources.errorTitle,
+                        resources.deleteError,
+                    );
                 }
             },
         });

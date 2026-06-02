@@ -7,7 +7,19 @@ import {
 import { useActivities, useSubjects } from "@/modules/resources/src/hooks";
 import { useResourceTypes } from "@/modules/resources/src/hooks/use-resource-types";
 
-import resources from "../constraints-page.resources.json";
+import resourcesJson from "../constraints-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json",
+    resourcesJson,
+);
 import {
     parseRequiredCapacity, parseCommaSeparated, serializeRequiredCapacity,
     serializeCommaSeparated, type RequiredCapacityFormData
@@ -265,7 +277,7 @@ export function ActivityConstraintEditor({
         } catch (error) {
             $app.logger.error("[ActivityConstraintEditor] Error submitting constraint:", error);
             $app.notifications.showError(
-                resources.notifications.activityConstraints.failedToSaveConstraint,
+                notificationResources.errorTitle,
                 error instanceof Error ? error.message : resources.notifications.activityConstraints.unexpectedError
             );
         }

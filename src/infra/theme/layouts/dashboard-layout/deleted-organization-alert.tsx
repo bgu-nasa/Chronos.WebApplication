@@ -2,7 +2,13 @@
 import { Alert } from "@mantine/core";
 import { AlertTriangleIcon } from "@/common/icons";
 import { $app } from "@/infra/service";
-import resources from "./deleted-organization-alert.resources.json";
+import deletedOrganizationAlertResourcesJson from "./deleted-organization-alert.resources.json";
+import { translatedResources } from "@/infra/i18n";
+
+const resources = translatedResources(
+    "src/infra/theme/layouts/dashboard-layout/deleted-organization-alert.resources.json",
+    deletedOrganizationAlertResourcesJson,
+);
 
 /**
  * Alert component that displays a warning when the organization is marked for deletion

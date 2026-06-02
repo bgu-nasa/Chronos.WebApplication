@@ -1,7 +1,13 @@
 import { Button, Group } from "@mantine/core";
 import type { SlotResponse } from "@/modules/schedule/src/data";
-import resources from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import resourcesJson from "@/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/slot.resources.json",
+    resourcesJson,
+);
 interface SlotActionsProps {
     selectedSlot: SlotResponse | null;
     onCreateClick: () => void;
@@ -17,6 +23,8 @@ export function SlotActions({
     onDeleteClick,
     onViewAssignmentsClick,
 }: SlotActionsProps) {
+    useLocaleStore((state) => state.language);
+
     return (
         <Group mb="md">
             <Button onClick={onCreateClick}>
@@ -42,7 +50,7 @@ export function SlotActions({
                     disabled={!selectedSlot}
                     onClick={onViewAssignmentsClick}
                 >
-                    View Assignments
+                    {resources.viewAssignmentsButton}
                 </Button>
             )}
         </Group>

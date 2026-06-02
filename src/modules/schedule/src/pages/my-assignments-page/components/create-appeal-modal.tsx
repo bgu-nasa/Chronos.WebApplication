@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { Modal, TextInput, Textarea, Button, Group, Stack } from "@mantine/core";
 import { appealDataRepository } from "@/modules/schedule/src/data/appeal-data-repository";
+import resourcesJson from "../my-assignments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/my-assignments-page/my-assignments-page.resources.json",
+    resourcesJson,
+);
 
 interface CreateAppealModalProps {
     opened: boolean;
@@ -47,12 +60,18 @@ export function CreateAppealModal({
                 title: title.trim(),
                 description: description.trim(),
             });
-            $app.notifications.showSuccess("Success", "Appeal created successfully");
+            $app.notifications.showSuccess(
+                notificationResources.successTitle,
+                resources.notifications.appealCreateSuccess,
+            );
             onCreated();
             onClose();
         } catch (error) {
             $app.logger.error("Failed to create appeal:", error);
-            $app.notifications.showError("Error", "Failed to create appeal");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.appealCreateError,
+            );
         } finally {
             setIsSubmitting(false);
         }

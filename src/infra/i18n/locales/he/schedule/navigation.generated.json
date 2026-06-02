@@ -1,0 +1,12 @@
+{
+    "labels": {
+        "schedule": "לוח זמנים",
+        "calendar": "לוח שנה",
+        "semesters": "סמסטרים",
+        "constraints": "מגבלות",
+        "manageAssignments": "ניהול משימות",
+        "myAssignments": "המשימות שלי",
+        "myAppeals": "הערעורים שלי",
+        "appeals": "ערעורים"
+    }
+}
