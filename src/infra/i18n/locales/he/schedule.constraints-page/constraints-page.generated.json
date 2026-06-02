@@ -14,6 +14,9 @@
     "activityConstraintsTab": "מגבלות פעילות",
     "createConstraintButton": "יצירת אילוץ",
     "createPreferenceButton": "יצירת העדפה",
+    "createWithAIButton": "ליצור עם בינה מלאכותית",
+    "spModalTitle": "תקופת תזמון נבחרת",
+    "spModalConfirm": "התחל שיחה",
     "createButton": "יצור",
     "updateButton": "עדכון",
     "editButton": "עריכה",
@@ -199,10 +202,10 @@
     "notifications": {
         "userConstraints": {
             "deleted": "נמחק",
-            "deletedMessage": "ה-{type} נמחק בהצלחה",
+            "deletedMessage": "{type} נמחקה בהצלחה",
             "updated": "עודכן",
             "created": "נוצר",
-            "updatedMessage": "ה-{type} עודכן בהצלחה",
+            "updatedMessage": "{type} עודכן בהצלחה",
             "createdMessage": "ה-{type} נוצר בהצלחה",
             "failedToDelete": "נכשל למחוק",
             "failedToSave": "נכשל בהצלה",

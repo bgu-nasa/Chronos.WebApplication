@@ -79,6 +79,59 @@ function cloneJson(value) {
     return structuredClone(value);
 }
 
+/** Matches `{{name}}` (i18next) and `{name}` (runtime .replace) placeholders. */
+const PLACEHOLDER_PATTERN = /\{\{([^{}]+)\}\}|\{([^{}\s]+)\}/g;
+
+const PLACEHOLDER_TOKEN_PREFIX = "__CHRNS_PH_";
+const PLACEHOLDER_TOKEN_SUFFIX = "__";
+
+/**
+ * Replaces interpolation placeholders with opaque tokens before Azure translation.
+ * @param {string} text
+ * @returns {{ masked: string, placeholders: string[] }}
+ */
+function maskPlaceholders(text) {
+    const placeholders = [];
+
+    const masked = text.replace(PLACEHOLDER_PATTERN, (match) => {
+        const index = placeholders.length;
+        placeholders.push(match);
+        return `${PLACEHOLDER_TOKEN_PREFIX}${index}${PLACEHOLDER_TOKEN_SUFFIX}`;
+    });
+
+    return { masked, placeholders };
+}
+
+/**
+ * Restores original placeholders after translation.
+ * @param {string} text
+ * @param {string[]} placeholders
+ * @returns {string}
+ */
+function unmaskPlaceholders(text, placeholders) {
+    return text.replace(
+        new RegExp(
+            `${PLACEHOLDER_TOKEN_PREFIX}(\\d+)${PLACEHOLDER_TOKEN_SUFFIX}`,
+            "g",
+        ),
+        (_match, indexText) => {
+            const placeholder = placeholders[Number(indexText)];
+
+            if (placeholder === undefined) {
+                throw new Error(
+                    `Translation output referenced unknown placeholder index ${indexText}: ${text}`,
+                );
+            }
+
+            return placeholder;
+        },
+    );
+}
+
+function maskTextsForTranslation(texts) {
+    return texts.map((text) => maskPlaceholders(text));
+}
+
 function setByPath(target, pathTokens, value) {
     let cursor = target;
 
@@ -231,7 +284,10 @@ async function processResourceFile(resourceFilePath) {
     }
 
     const texts = stringLeaves.map((leaf) => leaf.value);
-    const translatedTexts = await translateToHebrew(texts);
+    const maskedTexts = maskTextsForTranslation(texts);
+    const translatedMaskedTexts = await translateToHebrew(
+        maskedTexts.map((entry) => entry.masked),
+    );
 
     const enJson = cloneJson(sourceJson);
     const heJson = cloneJson(sourceJson);
@@ -239,7 +295,14 @@ async function processResourceFile(resourceFilePath) {
     for (let index = 0; index < stringLeaves.length; index += 1) {
         const pathTokens = stringLeaves[index].pathTokens;
         setByPath(enJson, pathTokens, texts[index]);
-        setByPath(heJson, pathTokens, translatedTexts[index]);
+        setByPath(
+            heJson,
+            pathTokens,
+            unmaskPlaceholders(
+                translatedMaskedTexts[index],
+                maskedTexts[index].placeholders,
+            ),
+        );
     }
 
     await Promise.all([
@@ -265,10 +328,22 @@ async function run() {
     console.log(`Generated translation files for ${resourceFiles.length} resources files.`);
 }
 
-try {
-    await run();
-} catch (error) {
-    console.error("Failed to generate translations.");
-    console.error(error instanceof Error ? error.message : error);
-    process.exitCode = 1;
+function isExecutedDirectly() {
+    const entry = process.argv[1];
+
+    if (!entry) {
+        return false;
+    }
+
+    return path.resolve(entry) === path.resolve(__filename);
+}
+
+if (isExecutedDirectly()) {
+    try {
+        await run();
+    } catch (error) {
+        console.error("Failed to generate translations.");
+        console.error(error instanceof Error ? error.message : error);
+        process.exitCode = 1;
+    }
 }

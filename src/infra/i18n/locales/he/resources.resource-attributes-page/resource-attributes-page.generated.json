@@ -17,5 +17,15 @@
     "deleteConfirmTitle": "מאפיין מחיקת חדר",
     "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את התכונה \"{title}\"? פעולה זו אינה ניתנת לביטול.",
     "deleteConfirmButton": "מחק",
-    "deleteCancelButton": "ביטול"
+    "deleteCancelButton": "ביטול",
+    "notifications": {
+        "resourceAttributeCreateSuccess": "מאפיין המשאב נוצר בהצלחה",
+        "resourceAttributeCreateFailed": "נכשל ביצירת מאפיין משאב. בדוק את הקונסולה לפרטים.",
+        "resourceAttributeCreateErrorWithDetails": "שגיאה ביצירת מאפיין משאב: {{details}}",
+        "missingResourceAttributeEditContext": "חסר הקשר למאפיין המשאב לעריכה.",
+        "resourceAttributeUpdateSuccess": "מאפיין המשאב עודכן בהצלחה",
+        "resourceAttributeUpdateFailed": "נכשל לעדכן את מאפיין המשאב. בדוק את הקונסולה לפרטים.",
+        "resourceAttributeUpdateErrorWithDetails": "מאפיין עדכון משאב בטעות: {{details}}",
+        "unknownError": "שגיאה לא ידועה"
+    }
 }

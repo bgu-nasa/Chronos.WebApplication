@@ -17,10 +17,8 @@
     "unknownText": "לא ידוע",
     "unknownDepartment": "מחלקה לא ידועה",
     "notifications": {
-        "departmentRequired": {
-            "title": "מחלקה נדרשת",
-            "message": "אנא בחרו מחלקה לחיפוש קורסים"
-        }
+        "departmentRequired": "אנא בחרו מחלקה לחיפוש קורסים",
+        "loadSchedulingPeriodsFailed": "נכשל בטעינת תקופות תזמון"
     },
     "logger": {
         "loadedSchedulingPeriods": "תקופות תזמון עמוסות",

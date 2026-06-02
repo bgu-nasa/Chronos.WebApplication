@@ -26,5 +26,11 @@
     "editorSaveButton": "שמור",
     "editorDayRequired": "יום נדרשת",
     "editorStartTimeRequired": "נדרש זמן התחלה",
-    "editorEndTimeRequired": "נדרש זמן סיום"
+    "editorEndTimeRequired": "נדרש זמן סיום",
+    "notifications": {
+        "slotsCreatedSuccess": "{count} חריצים שנוצרו בהצלחה",
+        "slotsCreatedPartial": "רק {created} מהמקומות {total} נוצרו",
+        "slotUpdateSuccess": "החריץ עודכן בהצלחה",
+        "slotUpdateError": "נכשל לעדכן את החריץ"
+    }
 }

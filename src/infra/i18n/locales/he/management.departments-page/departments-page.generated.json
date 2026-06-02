@@ -18,7 +18,7 @@
     "editorNameRequired": "שם המחלקה נדרש",
     "emptyStateMessage": "עדיין אין מחלקות. התחילו בהקמת המחלקה הראשונה שלכם!",
     "deleteConfirmTitle": "מחיקת המחלקה",
-    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את המחלקה \"{name}\"? פעולה זו תמחק את המחלקה בצורה רכה וניתן לבטל אותה מאוחר יותר.",
+    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את \"{name}\" המחלקה? פעולה זו תמחק את המחלקה בצורה רכה וניתן לבטל אותה מאוחר יותר.",
     "deleteConfirmButton": "מחק",
     "deleteCancelButton": "ביטול"
 }

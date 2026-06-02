@@ -10,5 +10,8 @@
     "verifiedColumn": "Verified",
     "verified": "Verified",
     "unverified": "Unverified",
-    "underDevelopmentTooltip": "This feature is still under development"
+    "underDevelopmentTooltip": "This feature is still under development",
+    "deleteConfirmTitle": "Delete {firstName} {lastName}?",
+    "deleteConfirmMessage": "This action cannot be undone. The user will be permanently removed from the organization.",
+    "deleteConfirmButton": "Delete User"
 }

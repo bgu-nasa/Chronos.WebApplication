@@ -1,0 +1,17 @@
+{
+    "notifications": {
+        "creating": "Creating department...",
+        "updating": "Updating department...",
+        "deleting": "Deleting department...",
+        "restoring": "Restoring department...",
+        "createSuccess": "Department created successfully",
+        "updateSuccess": "Department updated successfully",
+        "deleteSuccess": "Department deleted successfully",
+        "restoreSuccess": "Department restored successfully",
+        "createError": "Failed to create department",
+        "updateError": "Failed to update department",
+        "deleteError": "Failed to delete department",
+        "restoreError": "Failed to restore department",
+        "fetchError": "Failed to fetch departments"
+    }
+}

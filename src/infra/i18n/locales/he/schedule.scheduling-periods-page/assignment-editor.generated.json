@@ -1,0 +1,32 @@
+{
+    "titleCreate": "הוספת הקצאה",
+    "titleEdit": "משימת עריכה",
+    "submitCreate": "יצור",
+    "submitSave": "שמור",
+    "cancel": "ביטול",
+    "labels": {
+        "resource": "משאב (מיקום)",
+        "activity": "פעילות",
+        "weekNumber": "מספר שבוע"
+    },
+    "placeholders": {
+        "loadingResources": "טוענת משאבים...",
+        "noResources": "עדיין אין משאבים",
+        "selectResource": "בחר משאב",
+        "loadingActivities": "טוענים פעילויות...",
+        "noActivities": "עדיין אין פעילויות",
+        "selectActivity": "בחר פעילות",
+        "weekNumber": "הכנס את מספר השבוע"
+    },
+    "validation": {
+        "resourceRequired": "נדרש משאב",
+        "activityRequired": "נדרשת פעילות",
+        "weekNumRequired": "נדרש מספר שבוע"
+    },
+    "notifications": {
+        "createSuccess": "הקצאה נוצרה בהצלחה",
+        "createError": "נכשל ביצירת הקצאה",
+        "updateSuccess": "המשימה עודכנה בהצלחה",
+        "updateError": "נכשל לעדכן את ההקצאה"
+    }
+}

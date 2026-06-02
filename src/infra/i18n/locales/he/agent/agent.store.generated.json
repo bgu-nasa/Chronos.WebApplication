@@ -1,0 +1,10 @@
+{
+    "notifications": {
+        "createSessionError": "לא הצלחתי להתחיל שיחה",
+        "sendMessageError": "נכשל בשליחת הודעה",
+        "requestSubmitError": "נכשל ביצירת הצעה",
+        "approveSuccess": "אילוצים נשמרו בהצלחה",
+        "approveError": "נכשל באישור ההצעה",
+        "requestRevisionError": "נכשל בבקשה לעדכון"
+    }
+}

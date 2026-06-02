@@ -29,6 +29,18 @@
     "batchAssignmentConfirmTitle": "הקצאת אצווה להריץ",
     "batchAssignmentConfirmMessage": "זה ימחק את כל המשימות הנוכחיות בסמסטר הזה, ואז יריץ תזמון אצווה ליצירת משימות חדשות. זה לא ניתן לביטול. להמשיך?",
     "batchAssignmentConfirmButton": "רץ באץ'",
-    "batchAssignmentSuccess": "הקצאת האצווה הוגשה בהצלחה. המשימות ייוצרו בקרוב.",
-    "batchAssignmentFailed": "נכשלתי בהגשת הקצאת אצווה."
+    "batchAssignmentSuccess": "תיאום האצווה הועבר בתור. תקבל התראה כשהוא יסתיים.",
+    "batchAssignmentFailed": "נכשלתי בהגשת הקצאת אצווה.",
+    "notifications": {
+        "semesterDeleteSuccess": "הסמסטר נמחק בהצלחה",
+        "semesterDeleteError": "נכשלתי למחוק סמסטר",
+        "slotDeleteSuccess": "חריץ נמחק בהצלחה",
+        "slotDeleteError": "נכשל למחוק את המקום",
+        "semesterCreateSuccess": "הסמסטר נוצר בהצלחה",
+        "semesterCreateError": "נכשל ביצירת סמסטר",
+        "semesterUpdateSuccess": "הסמסטר עודכן בהצלחה",
+        "semesterUpdateError": "נכשלתי בעדכון הסמסטר",
+        "assignmentDeleteSuccess": "ההקצאה נמחקה בהצלחה",
+        "assignmentDeleteError": "נכשל למחוק את ההקצאה"
+    }
 }

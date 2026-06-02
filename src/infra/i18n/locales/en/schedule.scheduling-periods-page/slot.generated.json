@@ -26,5 +26,11 @@
     "editorSaveButton": "Save",
     "editorDayRequired": "Day is required",
     "editorStartTimeRequired": "Start time is required",
-    "editorEndTimeRequired": "End time is required"
+    "editorEndTimeRequired": "End time is required",
+    "notifications": {
+        "slotsCreatedSuccess": "{count} slot(s) created successfully",
+        "slotsCreatedPartial": "Only {created} of {total} slots were created",
+        "slotUpdateSuccess": "Slot updated successfully",
+        "slotUpdateError": "Failed to update slot"
+    }
 }

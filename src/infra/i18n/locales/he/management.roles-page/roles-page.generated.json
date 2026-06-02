@@ -23,5 +23,7 @@
     "editorScopeLabel": "היקף",
     "editorScopeOrg": "ארגון",
     "editorScopeDept": "מחלקה: {departmentName}",
-    "editorScopeIdLabel": "מזהה היקף"
+    "editorScopeIdLabel": "מזהה היקף",
+    "scopeOrgLabel": "ארגון",
+    "scopeDeptLabel": "מחלקה: {departmentName}"
 }

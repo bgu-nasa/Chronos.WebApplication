@@ -1,0 +1,17 @@
+{
+    "title": "עוזר",
+    "inputPlaceholder": "הקליד את ההודעה שלך...",
+    "sendButton": "שלח",
+    "generateProposalButton": "יצירת הצעה",
+    "proposalTitle": "מגבלות מוצעות",
+    "hardConstraintsLabel": "מגבלות קשות",
+    "softPreferencesLabel": "העדפות רכות",
+    "approveButton": "אישור",
+    "makeChangesButton": "לבצע שינויים",
+    "emptyStateMessage": "התחל שיחה כדי ליצור מגבלות עם בינה מלאכותית.",
+    "exitModalTitle": "לעזוב שיחה?",
+    "exitModalBody": "המפגש הזה יימחק. בפעם הבאה תצטרך להתחיל שיחה חדשה.",
+    "exitLeaveButton": "עזוב",
+    "exitStayButton": "תישאר",
+    "backToConstraintsButton": "חזרה למגבלות"
+}

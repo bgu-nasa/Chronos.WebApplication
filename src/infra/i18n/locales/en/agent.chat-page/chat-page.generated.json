@@ -1,0 +1,17 @@
+{
+    "title": "Assistant",
+    "inputPlaceholder": "Type your message...",
+    "sendButton": "Send",
+    "generateProposalButton": "Generate Proposal",
+    "proposalTitle": "Proposed Constraints",
+    "hardConstraintsLabel": "Hard Constraints",
+    "softPreferencesLabel": "Soft Preferences",
+    "approveButton": "Approve",
+    "makeChangesButton": "Make Changes",
+    "emptyStateMessage": "Start a conversation to create constraints with AI.",
+    "exitModalTitle": "Leave conversation?",
+    "exitModalBody": "This session will be deleted. You'll need to start a new conversation next time.",
+    "exitLeaveButton": "Leave",
+    "exitStayButton": "Stay",
+    "backToConstraintsButton": "Back to Constraints"
+}

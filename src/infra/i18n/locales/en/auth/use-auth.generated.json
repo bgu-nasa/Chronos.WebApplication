@@ -1,0 +1,7 @@
+{
+    "notifications": {
+        "updating": "Updating password...",
+        "updateSuccess": "Password updated successfully",
+        "updateError": "Failed to update password"
+    }
+}

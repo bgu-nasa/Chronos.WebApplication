@@ -1,0 +1,25 @@
+{
+    "title": "הערעורים שלי",
+    "emptyStateTitle": "עדיין אין ערעורים",
+    "emptyStateMessage": "לא הגשת ערעורים. אתה יכול ליצור אחד מדף המשימות שלי.",
+    "titleColumn": "כותרת",
+    "descriptionColumn": "תיאור",
+    "dayColumn": "יום",
+    "timeColumn": "זמן",
+    "activityColumn": "פעילות",
+    "resourceColumn": "משאב",
+    "editButton": "עריכה",
+    "deleteButton": "מחק",
+    "editModalTitle": "ערעור עריכה",
+    "editSuccess": "הערעור עודכן בהצלחה",
+    "editError": "לא עדכנו את הערעור",
+    "deleteConfirmTitle": "מחק ערעור",
+    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את הערעור הזה? פעולה זו אינה ניתנת לביטול.",
+    "deleteConfirmButton": "מחק",
+    "deleteCancelButton": "ביטול",
+    "deleteSuccess": "הערעור נמחק בהצלחה",
+    "deleteError": "נכשל במחוק ערעור",
+    "notifications": {
+        "fetchError": "נכשל בקבלת ערעורים"
+    }
+}

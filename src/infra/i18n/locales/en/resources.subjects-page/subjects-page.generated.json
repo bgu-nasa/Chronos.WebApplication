@@ -17,10 +17,8 @@
     "unknownText": "Unknown",
     "unknownDepartment": "Unknown Department",
     "notifications": {
-        "departmentRequired": {
-            "title": "Department Required",
-            "message": "Please select a department to search for courses"
-        }
+        "departmentRequired": "Please select a department to search for courses",
+        "loadSchedulingPeriodsFailed": "Failed to load scheduling periods"
     },
     "logger": {
         "loadedSchedulingPeriods": "Loaded scheduling periods",
