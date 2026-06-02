@@ -14,6 +14,23 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNotificationStore } from "./notification.store";
 import styles from "./notification-list.module.css";
 
+export function getNotificationColor(type: string): string | undefined {
+    switch (type) {
+        case "success":
+            return "green";
+        case "error":
+            return "red";
+        case "warning":
+            return "yellow";
+        case "loading":
+            return "blue";
+        case "info":
+            return "blue";
+        default:
+            return undefined;
+    }
+}
+
 export function NotificationList() {
     const notifications = useNotificationStore((state) => state.notifications);
 
@@ -39,30 +56,16 @@ export function NotificationList() {
         }
     };
 
-    const getColor = (type: string) => {
-        switch (type) {
-            case "success":
-                return "green";
-            case "error":
-                return "red";
-            case "warning":
-                return "yellow";
-            case "loading":
-                return "blue";
-            case "info":
-                return "blue";
-            default:
-                return undefined;
-        }
-    };
-
     return (
         <div className={styles.container}>
             {notifications.map((notification) => (
                 <Notification
                     key={notification.id}
                     icon={notification.icon || getIcon(notification.type)}
-                    color={notification.color || getColor(notification.type)}
+                    color={
+                        notification.color ||
+                        getNotificationColor(notification.type)
+                    }
                     title={notification.title}
                     onClose={() =>
                         useNotificationStore
