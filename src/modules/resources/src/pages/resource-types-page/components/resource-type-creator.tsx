@@ -1,7 +1,12 @@
 import { Modal, TextInput, Button, Stack } from "@mantine/core";
 import { useState } from "react";
-import resources from "../resource-types-page.resources.json";
+import resourcesJson from "../resource-types-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json",
+    resourcesJson,
+);
 interface ResourceTypeCreatorProps {
     opened: boolean;
     onClose: () => void;

@@ -29,5 +29,23 @@
     "editorCapacityPlaceholder": "Number of seats",
     "editorCancelButton": "Cancel",
     "editorSaveButton": "Save",
-    "editorCreateButton": "Create"
+    "editorCreateButton": "Create",
+    "notifications": {
+        "organizationContextMissing": "Organization context missing. Please refresh and try again.",
+        "resourceCreateSuccess": "Resource created successfully",
+        "resourceCreateFailed": "Failed to create resource. Check console for details.",
+        "resourceCreateErrorWithDetails": "Error creating resource: {{details}}",
+        "missingResourceEditContext": "Missing resource context for edit.",
+        "resourceUpdateSuccess": "Resource updated successfully",
+        "resourceUpdateFailed": "Failed to update resource. Check console for details.",
+        "resourceUpdateErrorWithDetails": "Error updating resource: {{details}}",
+        "selectAttributeToAssign": "Please select an attribute to assign",
+        "attributeAssignSuccess": "Attribute assigned successfully",
+        "attributeAssignFailed": "Failed to assign attribute",
+        "attributeAssignErrorWithDetails": "Error assigning attribute: {{details}}",
+        "assignmentRemoveSuccess": "Assignment removed successfully",
+        "assignmentRemoveFailed": "Failed to remove assignment",
+        "assignmentRemoveErrorWithDetails": "Error removing assignment: {{details}}",
+        "unknownError": "Unknown error"
+    }
 }

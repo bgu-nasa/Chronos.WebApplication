@@ -2,6 +2,15 @@ import { Modal, TextInput, Button, Stack, NumberInput, Select } from "@mantine/c
 import { useState, useEffect } from "react";
 import { userRepository } from "@/modules/resources/src/data";
 import { TimeSpinner } from "@/common/components/time-spinner";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import resourcesJson from "../activities-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/resources/src/pages/activities-page/activities-page.resources.json",
+    resourcesJson,
+);
+
 
 interface ActivityEditorProps {
     readonly opened: boolean;
@@ -67,7 +76,10 @@ export function ActivityEditor({
             $app.logger.info("[ActivityEditor] Fetched users", { count: userList.length });
         } catch (error) {
             $app.logger.error("[ActivityEditor] Error fetching users:", error);
-            $app.notifications.showError("Error", "Failed to load users");
+            $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.notifications.loadUsersFailed,
+            );
         } finally {
             setIsLoadingUsers(false);
         }
@@ -89,7 +101,10 @@ export function ActivityEditor({
         }
 
         if (duration <= 0) {
-            $app.notifications.showWarning("Validation", "Duration must be greater than 0");
+            $app.notifications.showWarning(
+                sharedNotifications.validationTitle,
+                resources.notifications.durationMustBePositive,
+            );
             return;
         }
 

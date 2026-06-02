@@ -1,6 +1,15 @@
 import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import resourcesJson from "../subjects-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/resources/src/pages/subjects-page/subjects-page.resources.json",
+    resourcesJson,
+);
+
 
 interface SubjectEditorProps {
     opened: boolean;
@@ -50,7 +59,10 @@ export function SubjectEditor({
             $app.logger.info("[SubjectEditor] Fetched scheduling periods", { count: options.length });
         } catch (error) {
             $app.logger.error("[SubjectEditor] Error fetching scheduling periods:", error);
-            $app.notifications.showError("Error", "Failed to load scheduling periods");
+            $app.notifications.showError(
+                sharedNotifications.errorTitle,
+                resources.notifications.loadSchedulingPeriodsFailed,
+            );
         } finally {
             setIsLoadingPeriods(false);
         }

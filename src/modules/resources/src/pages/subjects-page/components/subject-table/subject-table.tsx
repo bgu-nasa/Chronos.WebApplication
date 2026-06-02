@@ -3,8 +3,13 @@ import type { DataTableSelectionSingleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Text, Stack } from "@mantine/core";
 import type { SubjectData } from "./types";
-import resources from "../../subjects-page.resources.json";
+import resourcesJson from "../../subjects-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/subjects-page/subjects-page.resources.json",
+    resourcesJson,
+);
 interface SubjectTableProps {
     subjects: SubjectData[];
     selectedSubject: SubjectData | null;

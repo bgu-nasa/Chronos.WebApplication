@@ -1,7 +1,12 @@
 import { Modal, TextInput, Textarea, Button, Stack } from "@mantine/core";
 import { useState, useEffect } from "react";
-import resources from "../resource-attributes-page.resources.json";
+import resourcesJson from "../resource-attributes-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/resource-attributes-page/resource-attributes-page.resources.json",
+    resourcesJson,
+);
 interface ResourceAttributeEditorProps {
     opened: boolean;
     onClose: () => void;

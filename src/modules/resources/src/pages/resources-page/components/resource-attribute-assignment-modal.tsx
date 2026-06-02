@@ -7,6 +7,15 @@ import {
     useDeleteResourceAttributeAssignment,
 } from "@/modules/resources/src/hooks";
 import type { CreateResourceAttributeAssignmentRequest } from "@/modules/resources/src/data";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
+import resourcesJson from "../resources-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/resources/src/pages/resources-page/resources-page.resources.json",
+    resourcesJson,
+);
+
 
 interface ResourceAttributeAssignmentModalProps {
     opened: boolean;
@@ -46,7 +55,10 @@ export function ResourceAttributeAssignmentModal({
 
     const handleAssign = async () => {
         if (!selectedAttributeId || !resourceId) {
-            $app.notifications.showWarning("Warning", "Please select an attribute to assign");
+            $app.notifications.showWarning(
+                sharedNotifications.warningTitle,
+                resources.notifications.selectAttributeToAssign,
+            );
             return;
         }
 
@@ -63,11 +75,17 @@ export function ResourceAttributeAssignmentModal({
             const result = await createAssignment(request);
             if (result) {
                 setSelectedAttributeId(null);
-                $app.notifications.showSuccess("Success", "Attribute assigned successfully");
+                $app.notifications.showSuccess(
+                    sharedNotifications.successTitle,
+                    resources.notifications.attributeAssignSuccess,
+                );
                 // Refresh assignments
                 fetchAssignmentsByResourceId(resourceId);
             } else {
-                $app.notifications.showError("Error", "Failed to assign attribute");
+                $app.notifications.showError(
+                    sharedNotifications.errorTitle,
+                    resources.notifications.attributeAssignFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourceAttributeAssignmentModal] Error assigning attribute:", error);
@@ -89,11 +107,17 @@ export function ResourceAttributeAssignmentModal({
         try {
             const success = await deleteAssignment(resourceId, attributeId);
             if (success) {
-                $app.notifications.showSuccess("Success", "Assignment removed successfully");
+                $app.notifications.showSuccess(
+                    sharedNotifications.successTitle,
+                    resources.notifications.assignmentRemoveSuccess,
+                );
                 // Refresh assignments
                 fetchAssignmentsByResourceId(resourceId);
             } else {
-                $app.notifications.showError("Error", "Failed to remove assignment");
+                $app.notifications.showError(
+                    sharedNotifications.errorTitle,
+                    resources.notifications.assignmentRemoveFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourceAttributeAssignmentModal] Error removing assignment:", error);

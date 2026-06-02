@@ -1,8 +1,14 @@
 import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
-import resources from "./subject-creator.resources.json";
+import resourcesJson from "./subject-creator.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/subjects-page/components/subject-creator.resources.json",
+    resourcesJson,
+);
 interface SubjectCreatorProps {
     opened: boolean;
     onClose: () => void;
@@ -42,8 +48,8 @@ export function SubjectCreator({
         } catch (error) {
             $app.logger.error(resources.logger.errorFetchingSchedulingPeriods, error);
             $app.notifications.showError(
-                resources.notifications.loadSchedulingPeriodsError.title,
-                resources.notifications.loadSchedulingPeriodsError.message
+                sharedNotifications.errorTitle,
+                resources.notifications.loadSchedulingPeriodsFailed
             );
         } finally {
             setIsLoadingPeriods(false);

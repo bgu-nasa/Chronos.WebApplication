@@ -8,10 +8,7 @@
     "schedulingPeriodPlaceholder": "Select scheduling period",
     "submitButton": "Create Course",
     "notifications": {
-        "loadSchedulingPeriodsError": {
-            "title": "Error",
-            "message": "Failed to load scheduling periods"
-        }
+        "loadSchedulingPeriodsFailed": "Failed to load scheduling periods"
     },
     "logger": {
         "fetchedSchedulingPeriods": "Fetched scheduling periods",

@@ -19,6 +19,7 @@ import resourcesJson from "./subjects-page.resources.json";
 import styles from "./subjects-page.module.css";
 import { schedulingPeriodRepository, departmentRepository } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
+import { sharedNotifications } from "@/infra/i18n/shared-notifications";
 
 const resources = translatedResources("src/modules/resources/src/pages/subjects-page/subjects-page.resources.json", resourcesJson);
 
@@ -69,8 +70,8 @@ export function SubjectsPage() {
         if (!filters.departmentId) {
             $app.logger.warn(resources.logger.departmentIdRequired);
             $app.notifications.showWarning(
-                resources.notifications.departmentRequired.title,
-                resources.notifications.departmentRequired.message
+                sharedNotifications.warningTitle,
+                resources.notifications.departmentRequired
             );
             return;
         }
