@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
 import resourcesJson from "./subject-creator.resources.json";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources(
     "src/modules/resources/src/pages/subjects-page/components/subject-creator.resources.json",
@@ -48,7 +53,7 @@ export function SubjectCreator({
         } catch (error) {
             $app.logger.error(resources.logger.errorFetchingSchedulingPeriods, error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.loadSchedulingPeriodsFailed
             );
         } finally {

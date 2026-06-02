@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import { userRepository } from "@/modules/resources/src/data";
 import { TimeSpinner } from "@/common/components/time-spinner";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "../activities-page.resources.json";
 
 const resources = translatedResources(
@@ -58,7 +63,7 @@ export function ActivityCreator({
         } catch (error) {
             $app.logger.error("[ActivityCreator] Error fetching users:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.loadUsersFailed,
             );
         } finally {
@@ -83,7 +88,7 @@ export function ActivityCreator({
 
         if (duration <= 0) {
             $app.notifications.showWarning(
-                sharedNotifications.validationTitle,
+                notificationResources.validationTitle,
                 resources.notifications.durationMustBePositive,
             );
             return;

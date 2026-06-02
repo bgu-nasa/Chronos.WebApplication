@@ -8,7 +8,12 @@ import {
 } from "@/modules/resources/src/hooks";
 import type { CreateResourceAttributeAssignmentRequest } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "../resources-page.resources.json";
 
 const resources = translatedResources(
@@ -56,7 +61,7 @@ export function ResourceAttributeAssignmentModal({
     const handleAssign = async () => {
         if (!selectedAttributeId || !resourceId) {
             $app.notifications.showWarning(
-                sharedNotifications.warningTitle,
+                notificationResources.warningTitle,
                 resources.notifications.selectAttributeToAssign,
             );
             return;
@@ -76,14 +81,14 @@ export function ResourceAttributeAssignmentModal({
             if (result) {
                 setSelectedAttributeId(null);
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.attributeAssignSuccess,
                 );
                 // Refresh assignments
                 fetchAssignmentsByResourceId(resourceId);
             } else {
                 $app.notifications.showError(
-                    sharedNotifications.errorTitle,
+                    notificationResources.errorTitle,
                     resources.notifications.attributeAssignFailed,
                 );
             }
@@ -108,14 +113,14 @@ export function ResourceAttributeAssignmentModal({
             const success = await deleteAssignment(resourceId, attributeId);
             if (success) {
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.assignmentRemoveSuccess,
                 );
                 // Refresh assignments
                 fetchAssignmentsByResourceId(resourceId);
             } else {
                 $app.notifications.showError(
-                    sharedNotifications.errorTitle,
+                    notificationResources.errorTitle,
                     resources.notifications.assignmentRemoveFailed,
                 );
             }

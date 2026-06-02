@@ -18,7 +18,12 @@ import resourcesJson from "./activities-page.resources.json";
 import styles from "./activities-page.module.css";
 import { userRepository } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources("src/modules/resources/src/pages/activities-page/activities-page.resources.json", resourcesJson);
 
@@ -99,7 +104,7 @@ export function ActivitiesPage() {
     const handleCreateClick = () => {
         if (!subjectId || !departmentId) {
             $app.notifications.showWarning(
-                sharedNotifications.warningTitle,
+                notificationResources.warningTitle,
                 resources.notifications.missingSubjectOrDepartmentContext,
             );
             return;
@@ -118,7 +123,7 @@ export function ActivitiesPage() {
         if (!subjectId || !departmentId) {
             $app.logger.error("[ActivitiesPage] Missing subjectId or departmentId");
             $app.notifications.showWarning(
-                sharedNotifications.warningTitle,
+                notificationResources.warningTitle,
                 resources.notifications.missingSubjectOrDepartmentContext,
             );
             return;
@@ -130,7 +135,7 @@ export function ActivitiesPage() {
         if (!org?.id) {
             $app.logger.error("[ActivitiesPage] No organization context available");
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.organizationContextMissing,
             );
             return;
@@ -154,7 +159,7 @@ export function ActivitiesPage() {
             if (result) {
                 setCreateModalOpened(false);
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.activityCreateSuccess,
                 );
                 fetchActivities();
@@ -162,7 +167,7 @@ export function ActivitiesPage() {
                 $app.logger.error("[ActivitiesPage] Create activity returned null");
                 setCreateModalOpened(false);
                 $app.notifications.showError(
-                    sharedNotifications.errorTitle,
+                    notificationResources.errorTitle,
                     resources.notifications.activityCreateFailed,
                 );
             }
@@ -171,7 +176,7 @@ export function ActivitiesPage() {
             setCreateModalOpened(false);
             const errorMessage = error instanceof Error ? error.message : resources.notifications.unknownError;
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.activityCreateErrorWithDetails.replace("{{details}}", errorMessage),
             );
         }
@@ -195,7 +200,7 @@ export function ActivitiesPage() {
         if (!selectedActivity || !subjectId || !departmentId) {
             $app.logger.error("[ActivitiesPage] Missing selectedActivity, subjectId, or departmentId");
             $app.notifications.showWarning(
-                sharedNotifications.warningTitle,
+                notificationResources.warningTitle,
                 resources.notifications.missingEditContext,
             );
             return;
@@ -207,7 +212,7 @@ export function ActivitiesPage() {
         if (!org?.id) {
             $app.logger.error("[ActivitiesPage] No organization context available");
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.organizationContextMissing,
             );
             return;
@@ -232,7 +237,7 @@ export function ActivitiesPage() {
                 setEditModalOpened(false);
                 setSelectedActivity(null);
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.activityUpdateSuccess,
                 );
                 fetchActivities();
@@ -240,7 +245,7 @@ export function ActivitiesPage() {
                 $app.logger.error("[ActivitiesPage] Update activity returned false");
                 setEditModalOpened(false);
                 $app.notifications.showError(
-                    sharedNotifications.errorTitle,
+                    notificationResources.errorTitle,
                     resources.notifications.activityUpdateFailed,
                 );
             }
@@ -249,7 +254,7 @@ export function ActivitiesPage() {
             setEditModalOpened(false);
             const errorMessage = error instanceof Error ? error.message : resources.notifications.unknownError;
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.activityUpdateErrorWithDetails.replace("{{details}}", errorMessage),
             );
         }

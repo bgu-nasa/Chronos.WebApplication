@@ -2,7 +2,12 @@ import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 import resourcesJson from "../subjects-page.resources.json";
 
 const resources = translatedResources(
@@ -60,7 +65,7 @@ export function SubjectEditor({
         } catch (error) {
             $app.logger.error("[SubjectEditor] Error fetching scheduling periods:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.loadSchedulingPeriodsFailed,
             );
         } finally {

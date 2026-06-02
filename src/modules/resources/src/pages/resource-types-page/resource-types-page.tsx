@@ -7,7 +7,12 @@ import { useResourceTypes, useCreateResourceType, useUpdateResourceType, useDele
 import resourcesJson from "./resource-types-page.resources.json";
 import styles from "./resource-types-page.module.css";
 import { translatedResources } from "@/infra/i18n";
-import { sharedNotifications } from "@/infra/service/notification";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources("src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json", resourcesJson);
 
@@ -48,7 +53,7 @@ export function ResourceTypesPage() {
         if (!org?.id) {
             $app.logger.error("[ResourceTypesPage] No organization context available");
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.organizationContextMissing,
             );
             return;
@@ -68,20 +73,20 @@ export function ResourceTypesPage() {
             if (result) {
                 setCreateModalOpened(false);
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.resourceTypeCreateSuccess,
                 );
             } else {
                 $app.logger.error("[ResourceTypesPage] Create resource type returned null");
                 $app.notifications.showError(
-                    sharedNotifications.errorTitle,
+                    notificationResources.errorTitle,
                     resources.notifications.resourceTypeCreateFailed,
                 );
             }
         } catch (error) {
             $app.logger.error("[ResourceTypesPage] Error creating resource type:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.resourceTypeCreateErrorWithDetails.replace(
                     "{{details}}",
                     error instanceof Error ? error.message : resources.notifications.unknownError,
@@ -103,7 +108,7 @@ export function ResourceTypesPage() {
         if (!selectedResourceType) {
             $app.logger.error("[ResourceTypesPage] Missing selectedResourceType");
             $app.notifications.showWarning(
-                sharedNotifications.warningTitle,
+                notificationResources.warningTitle,
                 resources.notifications.missingResourceTypeEditContext,
             );
             return;
@@ -123,20 +128,20 @@ export function ResourceTypesPage() {
                 setEditModalOpened(false);
                 setSelectedResourceType(null);
                 $app.notifications.showSuccess(
-                    sharedNotifications.successTitle,
+                    notificationResources.successTitle,
                     resources.notifications.resourceTypeUpdateSuccess,
                 );
             } else {
                 $app.logger.error("[ResourceTypesPage] Update resource type returned false");
                 $app.notifications.showError(
-                    sharedNotifications.errorTitle,
+                    notificationResources.errorTitle,
                     resources.notifications.resourceTypeUpdateFailed,
                 );
             }
         } catch (error) {
             $app.logger.error("[ResourceTypesPage] Error updating resource type:", error);
             $app.notifications.showError(
-                sharedNotifications.errorTitle,
+                notificationResources.errorTitle,
                 resources.notifications.resourceTypeUpdateErrorWithDetails.replace(
                     "{{details}}",
                     error instanceof Error ? error.message : resources.notifications.unknownError,

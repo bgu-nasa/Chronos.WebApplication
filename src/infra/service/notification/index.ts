@@ -2,7 +2,6 @@
  * Notification service exports
  */
 
-export { sharedNotifications } from "./shared-notifications";
 export { notificationService } from "./notification.service";
 export { NotificationProvider } from "./notification-provider";
 export { useNotificationStore } from "./notification.store";
