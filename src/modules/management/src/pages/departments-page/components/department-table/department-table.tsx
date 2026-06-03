@@ -3,8 +3,13 @@ import type { DataTableSelectionSingleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Badge, Text, Stack, useMantineTheme } from "@mantine/core";
 import type { DepartmentData } from "@/modules/management/src/pages/departments-page/components/department-table/types";
-import resources from "@/modules/management/src/pages/departments-page/departments-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/departments-page/departments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/management/src/pages/departments-page/departments-page.resources.json",
+    resourcesJson,
+);
 interface DepartmentTableProps {
     departments: DepartmentData[];
     selectedDepartment: DepartmentData | null;

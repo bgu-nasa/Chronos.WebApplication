@@ -4,8 +4,13 @@ import { Column } from "primereact/column";
 import { Group, Pill, Stack, Text } from "@mantine/core";
 import { $app } from "@/infra/service";
 import type { RoleTableRow } from "@/modules/management/src/pages/roles-page/components/role-table/types";
-import resources from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/management/src/pages/roles-page/roles-page.resources.json",
+    resourcesJson,
+);
 interface RoleTableProps {
     rows: RoleTableRow[];
     selectedRow: RoleTableRow | null;
@@ -32,10 +37,17 @@ export function RoleTable({
                 (d) => d.id === rowData.scopeId
             );
             const departmentName = department?.name || rowData.scopeId;
-            return <Text size="sm">Dept: {departmentName}</Text>;
+            return (
+                <Text size="sm">
+                    {resources.scopeDeptLabel.replace(
+                        "{departmentName}",
+                        departmentName,
+                    )}
+                </Text>
+            );
         }
 
-        return <Text size="sm">Organization</Text>;
+        return <Text size="sm">{resources.scopeOrgLabel}</Text>;
     };
 
     const rolesTemplate = (rowData: RoleTableRow) => {

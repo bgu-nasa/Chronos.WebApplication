@@ -3,8 +3,13 @@ import type { DataTableSelectionSingleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Avatar, Badge } from "@mantine/core";
 import type { UserData } from "./types";
-import resources from "@/modules/auth/src/pages/users/users-page.resources.json";
+import resourcesJson from "@/modules/auth/src/pages/users/users-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/auth/src/pages/users/users-page.resources.json",
+    resourcesJson,
+);
 interface UserTableProps {
     users: UserData[];
     selectedUser: UserData | null;

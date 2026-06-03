@@ -1,6 +1,11 @@
 import { Button } from "@mantine/core";
-import resources from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import resourcesJson from "@/modules/management/src/pages/roles-page/roles-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/management/src/pages/roles-page/roles-page.resources.json",
+    resourcesJson,
+);
 interface RoleActionsProps {
     onCreateClick: () => void;
 }

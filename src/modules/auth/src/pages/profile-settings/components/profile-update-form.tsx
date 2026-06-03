@@ -14,8 +14,19 @@ import {
     validateFirstName,
     validateLastName,
 } from "@/modules/auth/src/common/validation.service";
-import resources from "./profile-update-form.resources.json";
+import resourcesJson from "./profile-update-form.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+
+const resources = translatedResources(
+    "src/modules/auth/src/pages/profile-settings/components/profile-update-form.resources.json",
+    resourcesJson,
+);
 interface ProfileFormValues {
     firstName: string;
     lastName: string;
@@ -119,14 +130,14 @@ export function ProfileUpdateForm() {
             <form onSubmit={handleSubmit}>
                 <Stack gap="md">
                     {successMessage && (
-                        <Alert color="green" title={resources.successTitle}>
+                        <Alert color="green" title={notificationResources.successTitle}>
                             {successMessage}
                         </Alert>
                     )}
 
                     <TextInput
                         label={resources.form.firstName}
-                        placeholder="John"
+                        placeholder={resources.form.firstNamePlaceholder}
                         required
                         value={formValues.firstName}
                         onChange={(e) =>
@@ -147,7 +158,7 @@ export function ProfileUpdateForm() {
 
                     <TextInput
                         label={resources.form.lastName}
-                        placeholder="Doe"
+                        placeholder={resources.form.lastNamePlaceholder}
                         required
                         value={formValues.lastName}
                         onChange={(e) =>
