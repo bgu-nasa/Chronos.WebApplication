@@ -4,7 +4,7 @@
     "userEmailColumn": "אימייל משתמש",
     "scopeColumn": "היקף",
     "rolesColumn": "תפקידים",
-    "emptyStateMessage": "עדיין לא קיבלנו תפקידים. התחילו על ידי יצירת הקצאת התפקיד הראשונה שלכם!",
+    "emptyStateMessage": "אין עדיין הקצאות תפקיד. התחילו ביצירת הקצאה ראשונה.",
     "drawerTitle": "יצירת הקצאת תפקידים",
     "userLabel": "משתמש",
     "userPlaceholder": "בחר משתמש",
@@ -23,5 +23,7 @@
     "editorScopeLabel": "היקף",
     "editorScopeOrg": "ארגון",
     "editorScopeDept": "מחלקה: {departmentName}",
-    "editorScopeIdLabel": "מזהה היקף"
+    "editorScopeIdLabel": "מזהה היקף",
+    "scopeOrgLabel": "ארגון",
+    "scopeDeptLabel": "מחלקה: {departmentName}"
 }

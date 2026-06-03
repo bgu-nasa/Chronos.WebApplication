@@ -1,9 +1,10 @@
 {
-    "successTitle": "Success",
     "successMessage": "Profile updated successfully!",
     "form": {
         "firstName": "First Name",
+        "firstNamePlaceholder": "John",
         "lastName": "Last Name",
+        "lastNamePlaceholder": "Doe",
         "avatarUrl": "Avatar URL"
     },
     "buttons": {

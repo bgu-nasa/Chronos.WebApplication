@@ -1,12 +1,13 @@
 {
-    "successTitle": "הצלחה",
     "successMessage": "הפרופיל עודכן בהצלחה!",
     "form": {
         "firstName": "שם פרטי",
+        "firstNamePlaceholder": "John",
         "lastName": "שם משפחה",
+        "lastNamePlaceholder": "דו",
         "avatarUrl": "כתובת URL של אווטאר"
     },
     "buttons": {
-        "save": "שינויים בשמירה"
+        "save": "שמירת שינויים"
     }
 }

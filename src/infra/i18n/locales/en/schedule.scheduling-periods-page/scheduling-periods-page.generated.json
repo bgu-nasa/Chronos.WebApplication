@@ -25,10 +25,31 @@
     "deleteConfirmButton": "Delete",
     "deleteCancelButton": "Cancel",
     "emptyStateMessage": "No semesters found. Click \"Create\" to add one.",
+    "viewSlotsButton": "View Slots",
+    "slotsPanelTitle": "Slots - {name}",
+    "slotsPanelCloseAriaLabel": "Close slots panel",
+    "slotsPanelExpiredMessage": "This period has expired. Slots cannot be edited.",
+    "assignmentsPanelTitle": "Assignments",
+    "assignmentsPanelCloseButton": "Close",
+    "assignmentsPanelSlotHeader": "{weekday} • {fromTime} - {toTime}",
+    "assignmentDeleteConfirmTitle": "Delete Assignment",
+    "assignmentDeleteConfirmMessage": "Are you sure you want to delete this assignment?",
     "runBatchAssignmentButton": "Run Batch Assignment",
     "batchAssignmentConfirmTitle": "Run Batch Assignment",
     "batchAssignmentConfirmMessage": "This will delete all current assignments in this semester, then run batch scheduling to create new assignments. This cannot be undone. Continue?",
     "batchAssignmentConfirmButton": "Run Batch",
-    "batchAssignmentSuccess": "Batch assignment has been submitted successfully. Assignments will be created shortly.",
-    "batchAssignmentFailed": "Failed to submit batch assignment."
+    "batchAssignmentSuccess": "Batch scheduling has been queued. You will get a notification when it finishes.",
+    "batchAssignmentFailed": "Failed to submit batch assignment.",
+    "notifications": {
+        "semesterDeleteSuccess": "Semester deleted successfully",
+        "semesterDeleteError": "Failed to delete semester",
+        "slotDeleteSuccess": "Slot deleted successfully",
+        "slotDeleteError": "Failed to delete slot",
+        "semesterCreateSuccess": "Semester created successfully",
+        "semesterCreateError": "Failed to create semester",
+        "semesterUpdateSuccess": "Semester updated successfully",
+        "semesterUpdateError": "Failed to update semester",
+        "assignmentDeleteSuccess": "Assignment deleted successfully",
+        "assignmentDeleteError": "Failed to delete assignment"
+    }
 }

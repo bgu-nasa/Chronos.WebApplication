@@ -14,8 +14,11 @@
     "confirmPasswordPlaceholder": "הזן מחדש את הסיסמה שלך",
     "orgInfoTitle": "פרטי הארגון",
     "orgNameLabel": "שם הארגון",
-    "orgNamePlaceholder": "תאגיד אקמי",
-    "planLabel": "תוכנית סלקט",
+    "orgNamePlaceholder": "שם המוסד האקדמי",
+    "planLabel": "תוכנית",
     "planPlaceholder": "בחר תוכנית",
-    "registerButton": "יצירת ארגון"
+    "registerButton": "יצירת ארגון",
+    "inviteCodeLabel": "קוד הזמנה",
+    "inviteCodePlaceholder": "הזן את קוד ההזמנה שלך",
+    "planRequired": "אנא בחרו תוכנית"
 }

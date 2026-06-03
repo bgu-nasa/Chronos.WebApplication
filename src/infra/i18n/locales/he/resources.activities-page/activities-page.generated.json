@@ -10,7 +10,21 @@
     "durationColumn": "משך",
     "emptyStateMessage": "עדיין אין קבוצות לקורס הזה.",
     "deleteConfirmTitle": "מחיקת קבוצה",
-    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את הקבוצה הזו?",
+    "deleteConfirmMessage": "האם למחוק את הקבוצה?",
     "deleteConfirmButton": "מחק",
-    "deleteCancelButton": "ביטול"
+    "deleteCancelButton": "ביטול",
+    "notifications": {
+        "missingSubjectOrDepartmentContext": "הקשר חסר של נושא או מחלקה",
+        "organizationContextMissing": "ההקשר הארגוני חסר. אנא רענן ונסה שוב.",
+        "activityCreateSuccess": "פעילות שנוצרה בהצלחה",
+        "activityCreateFailed": "נכשל ביצירת פעילות. אנא בדקו את הקונסולה לפרטים.",
+        "activityCreateErrorWithDetails": "פעילות יצירת שגיאה: {{details}}",
+        "missingEditContext": "חסר הקשר נדרש לעריכה",
+        "activityUpdateSuccess": "הפעילות עודכנה בהצלחה",
+        "activityUpdateFailed": "נכשל לעדכן פעילות. אנא בדקו את הקונסולה לפרטים.",
+        "activityUpdateErrorWithDetails": "פעילות עדכון שגיאות: {{details}}",
+        "loadUsersFailed": "נכשל בטעינת המשתמשים",
+        "durationMustBePositive": "משך חייב להיות גדול מ-0",
+        "unknownError": "שגיאה לא ידועה"
+    }
 }

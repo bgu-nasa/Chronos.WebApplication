@@ -2,13 +2,13 @@
     "modalTitle": "יצירת קורס",
     "codeLabel": "קוד הקורס",
     "codePlaceholder": "לדוגמה, CS101",
-    "nameLabel": "שם המסלול",
+    "nameLabel": "שם הקורס",
     "namePlaceholder": "לדוגמה, מערכות הפעלה",
-    "schedulingPeriodLabel": "תקופת תזמון",
-    "schedulingPeriodPlaceholder": "תקופת תזמון נבחרת",
+    "schedulingPeriodLabel": "סמסטר",
+    "schedulingPeriodPlaceholder": "בחר סמסטר",
     "submitButton": "יצירת קורס",
     "notifications": {
-        "loadSchedulingPeriodsFailed": "נכשל בטעינת תקופות תזמון"
+        "loadSchedulingPeriodsFailed": "טעינת הסמסטרים נכשלה"
     },
     "logger": {
         "fetchedSchedulingPeriods": "תקופות תזמון שנשלחו",

@@ -1,0 +1,20 @@
+{
+    "labels": {
+        "Sunday": "יום ראשון",
+        "Monday": "יום שני",
+        "Tuesday": "יום שלישי",
+        "Wednesday": "יום רביעי",
+        "Thursday": "יום חמישי",
+        "Friday": "יום שישי",
+        "Saturday": "שבת"
+    },
+    "shortLabels": {
+        "Sunday": "א'",
+        "Monday": "ב'",
+        "Tuesday": "ג'",
+        "Wednesday": "ד'",
+        "Thursday": "ה'",
+        "Friday": "ו'",
+        "Saturday": "ש'"
+    }
+}

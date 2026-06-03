@@ -1,0 +1,20 @@
+{
+    "title": "המשימות שלי",
+    "schedulingPeriodLabel": "תקופת תזמון",
+    "schedulingPeriodPlaceholder": "בחר תקופת תזמון",
+    "emptyStateMessage": "לא נמצאו משימות.",
+    "noPeriodsMessage": "לא נמצאו תקופות תזמון.",
+    "resourceColumn": "משאב",
+    "activityColumn": "פעילות",
+    "userColumn": "משתמש",
+    "dayColumn": "יום",
+    "timeColumn": "זמן",
+    "resourceFilterLabel": "משאב",
+    "resourceFilterPlaceholder": "כל המשאבים",
+    "notifications": {
+        "fetchError": "נכשל בשליפת משימות",
+        "appealSuccess": "הערעור הוגש",
+        "appealCreateSuccess": "הערעור נוצר בהצלחה",
+        "appealCreateError": "לא הצליח ליצור ערעור"
+    }
+}

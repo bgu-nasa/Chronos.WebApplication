@@ -12,5 +12,19 @@
     "deleteConfirmTitle": "Delete Group",
     "deleteConfirmMessage": "Are you sure you want to delete this group?",
     "deleteConfirmButton": "Delete",
-    "deleteCancelButton": "Cancel"
+    "deleteCancelButton": "Cancel",
+    "notifications": {
+        "missingSubjectOrDepartmentContext": "Missing subject or department context",
+        "organizationContextMissing": "Organization context missing. Please refresh and try again.",
+        "activityCreateSuccess": "Activity created successfully",
+        "activityCreateFailed": "Failed to create activity. Please check the console for details.",
+        "activityCreateErrorWithDetails": "Error creating activity: {{details}}",
+        "missingEditContext": "Missing required context for edit",
+        "activityUpdateSuccess": "Activity updated successfully",
+        "activityUpdateFailed": "Failed to update activity. Please check the console for details.",
+        "activityUpdateErrorWithDetails": "Error updating activity: {{details}}",
+        "loadUsersFailed": "Failed to load users",
+        "durationMustBePositive": "Duration must be greater than 0",
+        "unknownError": "Unknown error"
+    }
 }

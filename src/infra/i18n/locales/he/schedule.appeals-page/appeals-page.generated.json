@@ -1,0 +1,23 @@
+{
+    "title": "ערעורים",
+    "emptyStateMessage": "לא נמצאו ערעורים.",
+    "titleColumn": "כותרת",
+    "descriptionColumn": "תיאור",
+    "dayColumn": "יום",
+    "timeColumn": "זמן",
+    "activityColumn": "פעילות",
+    "resourceColumn": "משאב",
+    "viewButton": "תצפית",
+    "viewModalTitle": "פרטי ערעור",
+    "assignmentDetailsLabel": "מידע על ההקצאה",
+    "dismissButton": "דחה",
+    "dismissConfirmTitle": "הערעור על דחיית הערעור",
+    "dismissConfirmMessage": "אתה בטוח שאתה רוצה לדחות את הערעור הזה? פעולה זו אינה ניתנת לביטול.",
+    "dismissConfirmButton": "דחה",
+    "dismissCancelButton": "ביטול",
+    "dismissSuccess": "הערעור נדחה בהצלחה",
+    "dismissError": "נכשל לדחות את הערעור",
+    "notifications": {
+        "fetchError": "נכשל בקבלת ערעורים"
+    }
+}

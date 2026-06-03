@@ -10,14 +10,25 @@
     "deleteConfirmButton": "מחק",
     "deleteCancelButton": "ביטול",
     "searchDepartmentLabel": "המחלקה",
-    "searchDepartmentPlaceholder": "מחלקה נבחרת",
+    "searchDepartmentPlaceholder": "בחר מחלקה",
     "searchButton": "חיפוש",
-    "clearFiltersButton": "פילטרים נקיים",
+    "clearFiltersButton": "ניקוי מסננים",
     "editorCreateTitle": "יצירת סוג חדר",
-    "editorEditTitle": "סוג חדר עריכה",
+    "editorEditTitle": "עריכת סוג חדר",
     "editorTypeLabel": "סוג",
     "editorTypePlaceholder": "לדוגמה: מעבדה, כיתה, אולם",
     "editorCancelButton": "ביטול",
     "editorSaveButton": "שמור",
-    "editorCreateButton": "יצור"
+    "editorCreateButton": "יצור",
+    "notifications": {
+        "organizationContextMissing": "ההקשר הארגוני חסר. אנא רענן ונסה שוב.",
+        "resourceTypeCreateSuccess": "סוג המשאב נוצר בהצלחה",
+        "resourceTypeCreateFailed": "נכשלתי ביצירת סוג משאב. בדוק את הקונסולה לפרטים.",
+        "resourceTypeCreateErrorWithDetails": "סוג משאב ביצירת שגיאה: {{details}}",
+        "missingResourceTypeEditContext": "חסר הקשר לסוג משאב לעריכה.",
+        "resourceTypeUpdateSuccess": "סוג המשאב עודכן בהצלחה",
+        "resourceTypeUpdateFailed": "נכשל לעדכן את סוג המשאב. בדוק את הקונסולה לפרטים.",
+        "resourceTypeUpdateErrorWithDetails": "סוג משאב בעדכון שגיאות: {{details}}",
+        "unknownError": "שגיאה לא ידועה"
+    }
 }

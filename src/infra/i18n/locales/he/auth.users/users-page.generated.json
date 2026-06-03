@@ -10,5 +10,8 @@
     "verifiedColumn": "מאומת",
     "verified": "מאומת",
     "unverified": "לא מאומת",
-    "underDevelopmentTooltip": "תכונה זו עדיין בפיתוח"
+    "underDevelopmentTooltip": "תכונה זו עדיין בפיתוח",
+    "deleteConfirmTitle": "למחוק {firstName} {lastName}?",
+    "deleteConfirmMessage": "פעולה זו אינה ניתנת לביטול. המשתמש יוסר לצמיתות מהארגון.",
+    "deleteConfirmButton": "מחק משתמש"
 }

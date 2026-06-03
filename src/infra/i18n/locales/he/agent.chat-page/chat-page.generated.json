@@ -1,17 +1,17 @@
 {
     "title": "עוזר",
-    "inputPlaceholder": "הקלד את ההודעה שלך...",
+    "inputPlaceholder": "הקליד את ההודעה שלך...",
     "sendButton": "שלח",
-    "generateProposalButton": "צור הצעה",
-    "proposalTitle": "אילוצים מוצעים",
-    "hardConstraintsLabel": "אילוצים קשיחים",
+    "generateProposalButton": "יצירת הצעה",
+    "proposalTitle": "מגבלות מוצעות",
+    "hardConstraintsLabel": "מגבלות קשות",
     "softPreferencesLabel": "העדפות רכות",
-    "approveButton": "אשר",
-    "makeChangesButton": "בצע שינויים",
-    "emptyStateMessage": "התחל שיחה כדי ליצור אילוצים עם AI.",
-    "exitModalTitle": "לעזוב את השיחה?",
-    "exitModalBody": "הפגישה הזו תימחק. בפעם הבאה תצטרך להתחיל שיחה חדשה.",
+    "approveButton": "אישור",
+    "makeChangesButton": "לבצע שינויים",
+    "emptyStateMessage": "התחל שיחה כדי ליצור מגבלות עם בינה מלאכותית.",
+    "exitModalTitle": "לעזוב שיחה?",
+    "exitModalBody": "המפגש הזה יימחק. בפעם הבאה תצטרך להתחיל שיחה חדשה.",
     "exitLeaveButton": "עזוב",
-    "exitStayButton": "הישאר",
-    "backToConstraintsButton": "חזרה לאילוצים"
+    "exitStayButton": "תישאר",
+    "backToConstraintsButton": "חזרה למגבלות"
 }

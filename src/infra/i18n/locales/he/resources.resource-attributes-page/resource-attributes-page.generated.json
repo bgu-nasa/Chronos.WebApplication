@@ -6,16 +6,26 @@
     "titleColumn": "כותרת",
     "descriptionColumn": "תיאור",
     "emptyStateMessage": "עדיין אין מאפייני חדר. התחילו ביצירת התכונה הראשונה שלכם!",
-    "editorCreateTitle": "מאפיין יצירת חדר",
-    "editorEditTitle": "מאפיין חדר עריכה",
+    "editorCreateTitle": "יצירת מאפיין חדר",
+    "editorEditTitle": "עריכת מאפיין חדר",
     "editorTitleLabel": "כותרת",
-    "editorTitlePlaceholder": "הכנס את כותרת התכונה",
+    "editorTitlePlaceholder": "הזינו כותרת",
     "editorDescriptionLabel": "תיאור",
     "editorDescriptionPlaceholder": "הזן תיאור מאפיין (אופציונלי)",
     "editorCreateButton": "יצור",
     "editorSaveButton": "שמור",
-    "deleteConfirmTitle": "מאפיין מחיקת חדר",
-    "deleteConfirmMessage": "אתה בטוח שאתה רוצה למחוק את התכונה \"{title}\"? פעולה זו אינה ניתנת לביטול.",
+    "deleteConfirmTitle": "מחיקת מאפיין",
+    "deleteConfirmMessage": "האם למחוק את המאפיין \"{title}\"? לא ניתן לבטל.",
     "deleteConfirmButton": "מחק",
-    "deleteCancelButton": "ביטול"
+    "deleteCancelButton": "ביטול",
+    "notifications": {
+        "resourceAttributeCreateSuccess": "מאפיין המשאב נוצר בהצלחה",
+        "resourceAttributeCreateFailed": "נכשל ביצירת מאפיין משאב. בדוק את הקונסולה לפרטים.",
+        "resourceAttributeCreateErrorWithDetails": "שגיאה ביצירת מאפיין משאב: {{details}}",
+        "missingResourceAttributeEditContext": "חסר הקשר למאפיין המשאב לעריכה.",
+        "resourceAttributeUpdateSuccess": "מאפיין המשאב עודכן בהצלחה",
+        "resourceAttributeUpdateFailed": "נכשל לעדכן את מאפיין המשאב. בדוק את הקונסולה לפרטים.",
+        "resourceAttributeUpdateErrorWithDetails": "מאפיין עדכון משאב בטעות: {{details}}",
+        "unknownError": "שגיאה לא ידועה"
+    }
 }
