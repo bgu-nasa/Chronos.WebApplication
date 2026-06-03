@@ -47,6 +47,14 @@ export class SchedulingPeriodDataRepository {
         return response;
     }
 
+    async getUnfinishedSchedulingPeriods(): Promise<SchedulingPeriodResponse[]> {
+        const response = await $app.ajax.get<SchedulingPeriodResponse[]>(
+            "/api/schedule/scheduling/periods/unfinished",
+            { headers: this.getHeaders() }
+        );
+        return response;
+    }
+
 
 
     /**
