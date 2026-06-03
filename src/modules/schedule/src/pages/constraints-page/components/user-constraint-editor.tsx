@@ -5,7 +5,7 @@ import { ActionIcon, Button, Group, Modal, MultiSelect, Select, Stack, Text, Tex
 import { TimeInput } from "@mantine/dates";
 
 import { useUsers } from "@/modules/auth/src/hooks";
-import { useSchedulingPeriods } from "@/modules/schedule/src/hooks";
+import { useUnfinishedSchedulingPeriods } from "@/modules/schedule/src/hooks";
 
 import resourcesJson from "../constraints-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
@@ -183,7 +183,7 @@ export function UserConstraintEditor({
 }: UserConstraintEditorProps) {
     useLocaleStore((state) => state.language);
     const { users, fetchUsers } = useUsers();
-    const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
+    const { unfinishedSchedulingPeriods: schedulingPeriods, fetchUnfinishedSchedulingPeriods: fetchSchedulingPeriods } = useUnfinishedSchedulingPeriods();
 
     const [timeRangeEntries, setTimeRangeEntries] = useState<Array<ForbiddenTimeRangeEntry & { id: string }>>([]);
     const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);

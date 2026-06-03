@@ -14,11 +14,13 @@ import type {
 interface SchedulingPeriodStore {
     // State
     schedulingPeriods: SchedulingPeriodResponse[];
+    unfinishedSchedulingPeriods: SchedulingPeriodResponse[];
     isLoading: boolean;
     error: string | null;
 
     // Actions
     fetchSchedulingPeriods: () => Promise<void>;
+    fetchUnfinishedSchedulingPeriods: () => Promise<void>;
     createSchedulingPeriod: (
         request: CreateSchedulingPeriodRequest
     ) => Promise<SchedulingPeriodResponse | null>;
@@ -36,6 +38,7 @@ interface SchedulingPeriodStore {
 export const useSchedulingPeriodStore = create<SchedulingPeriodStore>((set, get) => ({
     // Initial state
     schedulingPeriods: [],
+    unfinishedSchedulingPeriods: [],
     isLoading: false,
     error: null,
 
@@ -57,6 +60,27 @@ export const useSchedulingPeriodStore = create<SchedulingPeriodStore>((set, get)
             }
             set({ error: errorMessage, isLoading: false });
             $app.logger.error("Error fetching scheduling periods:", err);
+        }
+    },
+
+    // Fetch only unfinished scheduling periods (toDate > now)
+    fetchUnfinishedSchedulingPeriods: async () => {
+        set({ isLoading: true, error: null });
+        try {
+            const data = await schedulingPeriodDataRepository.getUnfinishedSchedulingPeriods();
+            set({ unfinishedSchedulingPeriods: data, isLoading: false });
+        } catch (err) {
+            let errorMessage = "Failed to fetch unfinished scheduling periods";
+            if (err && typeof err === "object" && "status" in err && "message" in err) {
+                const apiError = err as { status: number; message: string };
+                errorMessage = apiError.status
+                    ? `Error ${apiError.status}: ${apiError.message}`
+                    : apiError.message;
+            } else if (err instanceof Error) {
+                errorMessage = err.message;
+            }
+            set({ error: errorMessage, isLoading: false });
+            $app.logger.error("Error fetching unfinished scheduling periods:", err);
         }
     },
 

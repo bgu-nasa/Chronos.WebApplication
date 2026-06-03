@@ -27,6 +27,25 @@ export function useSchedulingPeriods() {
 
 
 /**
+ * Hook for accessing only unfinished scheduling periods (toDate > now)
+ */
+export function useUnfinishedSchedulingPeriods() {
+    const unfinishedSchedulingPeriods = useSchedulingPeriodStore((state) => state.unfinishedSchedulingPeriods);
+    const isLoading = useSchedulingPeriodStore((state) => state.isLoading);
+    const error = useSchedulingPeriodStore((state) => state.error);
+    const fetchUnfinishedSchedulingPeriods = useSchedulingPeriodStore(
+        (state) => state.fetchUnfinishedSchedulingPeriods
+    );
+
+    return {
+        unfinishedSchedulingPeriods,
+        isLoading,
+        error,
+        fetchUnfinishedSchedulingPeriods,
+    };
+}
+
+/**
  * Hook for creating a scheduling period
  */
 export function useCreateSchedulingPeriod() {
