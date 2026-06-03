@@ -18,6 +18,12 @@ import resourcesJson from "./activities-page.resources.json";
 import styles from "./activities-page.module.css";
 import { userRepository } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resources = translatedResources("src/modules/resources/src/pages/activities-page/activities-page.resources.json", resourcesJson);
 
@@ -97,7 +103,10 @@ export function ActivitiesPage() {
 
     const handleCreateClick = () => {
         if (!subjectId || !departmentId) {
-            $app.notifications.showWarning("Warning", "Missing subject or department context");
+            $app.notifications.showWarning(
+                notificationResources.warningTitle,
+                resources.notifications.missingSubjectOrDepartmentContext,
+            );
             return;
         }
         setCreateModalOpened(true);
@@ -113,7 +122,10 @@ export function ActivitiesPage() {
         
         if (!subjectId || !departmentId) {
             $app.logger.error("[ActivitiesPage] Missing subjectId or departmentId");
-            $app.notifications.showWarning("Warning", "Missing subject or department context");
+            $app.notifications.showWarning(
+                notificationResources.warningTitle,
+                resources.notifications.missingSubjectOrDepartmentContext,
+            );
             return;
         }
 
@@ -122,7 +134,10 @@ export function ActivitiesPage() {
 
         if (!org?.id) {
             $app.logger.error("[ActivitiesPage] No organization context available");
-            $app.notifications.showError("Error", "Organization context missing. Please refresh and try again.");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.organizationContextMissing,
+            );
             return;
         }
 
@@ -143,18 +158,27 @@ export function ActivitiesPage() {
             
             if (result) {
                 setCreateModalOpened(false);
-                $app.notifications.showSuccess("Success", "Activity created successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resources.notifications.activityCreateSuccess,
+                );
                 fetchActivities();
             } else {
                 $app.logger.error("[ActivitiesPage] Create activity returned null");
                 setCreateModalOpened(false);
-                $app.notifications.showError("Error", "Failed to create activity. Please check the console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resources.notifications.activityCreateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ActivitiesPage] Error creating activity:", error);
             setCreateModalOpened(false);
-            const errorMessage = error instanceof Error ? error.message : "Unknown error";
-            $app.notifications.showError("Error", `Error creating activity: ${errorMessage}`);
+            const errorMessage = error instanceof Error ? error.message : resources.notifications.unknownError;
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.activityCreateErrorWithDetails.replace("{{details}}", errorMessage),
+            );
         }
     };
 
@@ -175,7 +199,10 @@ export function ActivitiesPage() {
         
         if (!selectedActivity || !subjectId || !departmentId) {
             $app.logger.error("[ActivitiesPage] Missing selectedActivity, subjectId, or departmentId");
-            $app.notifications.showWarning("Warning", "Missing required context for edit");
+            $app.notifications.showWarning(
+                notificationResources.warningTitle,
+                resources.notifications.missingEditContext,
+            );
             return;
         }
 
@@ -184,7 +211,10 @@ export function ActivitiesPage() {
 
         if (!org?.id) {
             $app.logger.error("[ActivitiesPage] No organization context available");
-            $app.notifications.showError("Error", "Organization context missing. Please refresh and try again.");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.organizationContextMissing,
+            );
             return;
         }
 
@@ -206,18 +236,27 @@ export function ActivitiesPage() {
             if (success) {
                 setEditModalOpened(false);
                 setSelectedActivity(null);
-                $app.notifications.showSuccess("Success", "Activity updated successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resources.notifications.activityUpdateSuccess,
+                );
                 fetchActivities();
             } else {
                 $app.logger.error("[ActivitiesPage] Update activity returned false");
                 setEditModalOpened(false);
-                $app.notifications.showError("Error", "Failed to update activity. Please check the console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resources.notifications.activityUpdateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ActivitiesPage] Error updating activity:", error);
             setEditModalOpened(false);
-            const errorMessage = error instanceof Error ? error.message : "Unknown error";
-            $app.notifications.showError("Error", `Error updating activity: ${errorMessage}`);
+            const errorMessage = error instanceof Error ? error.message : resources.notifications.unknownError;
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.activityUpdateErrorWithDetails.replace("{{details}}", errorMessage),
+            );
         }
     };
 

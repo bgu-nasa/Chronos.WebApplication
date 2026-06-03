@@ -2,6 +2,20 @@ import { Modal, TextInput, Button, Stack, NumberInput, Select } from "@mantine/c
 import { useState, useEffect } from "react";
 import { userRepository } from "@/modules/resources/src/data";
 import { TimeSpinner } from "@/common/components/time-spinner";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+import resourcesJson from "../activities-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/resources/src/pages/activities-page/activities-page.resources.json",
+    resourcesJson,
+);
+
 
 interface ActivityCreatorProps {
     opened: boolean;
@@ -48,7 +62,10 @@ export function ActivityCreator({
             $app.logger.info("[ActivityCreator] Fetched users", { count: userList.length });
         } catch (error) {
             $app.logger.error("[ActivityCreator] Error fetching users:", error);
-            $app.notifications.showError("Error", "Failed to load users");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.loadUsersFailed,
+            );
         } finally {
             setIsLoadingUsers(false);
         }
@@ -70,7 +87,10 @@ export function ActivityCreator({
         }
 
         if (duration <= 0) {
-            $app.notifications.showWarning("Validation", "Duration must be greater than 0");
+            $app.notifications.showWarning(
+                notificationResources.validationTitle,
+                resources.notifications.durationMustBePositive,
+            );
             return;
         }
 

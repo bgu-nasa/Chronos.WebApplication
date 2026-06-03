@@ -5,8 +5,11 @@
     },
     "form": {
         "email": "Email",
+        "emailPlaceholder": "user@example.com",
         "firstName": "First Name",
+        "firstNamePlaceholder": "John",
         "lastName": "Last Name",
+        "lastNamePlaceholder": "Doe",
         "avatarUrl": "Avatar Image URL"
     },
     "buttons": {

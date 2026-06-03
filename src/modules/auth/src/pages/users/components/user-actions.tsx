@@ -4,8 +4,13 @@ import { useDeleteUser } from "@/modules/auth/src/hooks/use-users";
 import { useConfirmation } from "@/common/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/common/components/confirmation-dialog";
 import type { UserData } from "@/modules/auth/src/pages/users/components/user-table/types";
-import resources from "@/modules/auth/src/pages/users/users-page.resources.json";
+import resourcesJson from "@/modules/auth/src/pages/users/users-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/auth/src/pages/users/users-page.resources.json",
+    resourcesJson,
+);
 interface UserActionsProps {
     selectedUser: UserData | null;
 }
@@ -41,9 +46,10 @@ export function UserActions({ selectedUser }: UserActionsProps) {
     const handleDeleteClick = () => {
         if (selectedUser) {
             openConfirmation({
-                title: `Delete ${selectedUser.firstName} ${selectedUser.lastName}?`,
-                message:
-                    "This action cannot be undone. The user will be permanently removed from the organization.",
+                title: resources.deleteConfirmTitle
+                    .replace("{firstName}", selectedUser.firstName)
+                    .replace("{lastName}", selectedUser.lastName),
+                message: resources.deleteConfirmMessage,
                 onConfirm: async () => {
                     await deleteUser(selectedUser.id);
                 },
@@ -70,7 +76,7 @@ export function UserActions({ selectedUser }: UserActionsProps) {
                 onConfirm={handleConfirm}
                 title={confirmationState.title}
                 message={confirmationState.message}
-                confirmText="Delete User"
+                confirmText={resources.deleteConfirmButton}
                 loading={isLoading}
             />
         </>

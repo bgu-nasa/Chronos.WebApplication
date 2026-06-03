@@ -21,8 +21,13 @@ import {
     validateLastName,
 } from "@/modules/auth/src/common/validation.service";
 import { CopiableInput } from "@/common/components/copiable-input";
-import resources from "./user-editor.resources.json";
+import resourcesJson from "./user-editor.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/auth/src/pages/users/components/user-editor/user-editor.resources.json",
+    resourcesJson,
+);
 interface UserFormValues {
     email: string;
     firstName: string;
@@ -160,7 +165,7 @@ export function UserEditor() {
                     <Stack gap="md">
                         <TextInput
                             label={resources.form.email}
-                            placeholder="user@example.com"
+                            placeholder={resources.form.emailPlaceholder}
                             required
                             disabled={mode === "edit"}
                             value={formValues.email}
@@ -178,7 +183,7 @@ export function UserEditor() {
 
                         <TextInput
                             label={resources.form.firstName}
-                            placeholder="John"
+                            placeholder={resources.form.firstNamePlaceholder}
                             required
                             value={formValues.firstName}
                             onChange={(e) =>
@@ -198,7 +203,7 @@ export function UserEditor() {
 
                         <TextInput
                             label={resources.form.lastName}
-                            placeholder="Doe"
+                            placeholder={resources.form.lastNamePlaceholder}
                             required
                             value={formValues.lastName}
                             onChange={(e) =>

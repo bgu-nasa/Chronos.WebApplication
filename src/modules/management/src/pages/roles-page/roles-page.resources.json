@@ -23,5 +23,7 @@
     "editorScopeLabel": "Scope",
     "editorScopeOrg": "Organization",
     "editorScopeDept": "Department: {departmentName}",
-    "editorScopeIdLabel": "Scope ID"
+    "editorScopeIdLabel": "Scope ID",
+    "scopeOrgLabel": "Organization",
+    "scopeDeptLabel": "Dept: {departmentName}"
 }

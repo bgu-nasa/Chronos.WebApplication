@@ -1,0 +1,17 @@
+{
+    "notifications": {
+        "creating": "Creating user...",
+        "updating": "Updating user...",
+        "updatingProfile": "Updating profile...",
+        "deleting": "Deleting user...",
+        "createSuccess": "User created successfully",
+        "updateSuccess": "User updated successfully",
+        "updateProfileSuccess": "Profile updated successfully",
+        "deleteSuccess": "User deleted successfully",
+        "createError": "Failed to create user",
+        "updateError": "Failed to update user",
+        "updateProfileError": "Failed to update profile",
+        "deleteError": "Failed to delete user",
+        "fetchError": "Failed to fetch users"
+    }
+}

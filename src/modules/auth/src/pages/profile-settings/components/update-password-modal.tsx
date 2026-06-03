@@ -12,8 +12,19 @@ import {
     validatePassword,
     validatePasswordMatch,
 } from "@/modules/auth/src/common/validation.service";
-import resources from "./update-password-modal.resources.json";
+import resourcesJson from "./update-password-modal.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
+
+const resources = translatedResources(
+    "src/modules/auth/src/pages/profile-settings/components/update-password-modal.resources.json",
+    resourcesJson,
+);
 interface UpdatePasswordModalProps {
     opened: boolean;
     onClose: () => void;
@@ -48,7 +59,7 @@ export function UpdatePasswordModal({
     // Compute errors reactively based on current field values and touched state
     const oldPasswordError = useMemo(() => {
         return touched.oldPassword && !formValues.oldPassword
-            ? "Old password is required"
+            ? resources.validation.oldPasswordRequired
             : undefined;
     }, [formValues.oldPassword, touched.oldPassword]);
 
@@ -153,7 +164,7 @@ export function UpdatePasswordModal({
             <form onSubmit={handleSubmit}>
                 <Stack gap="md">
                     {successMessage && (
-                        <Alert color="green" title={resources.successTitle}>
+                        <Alert color="green" title={notificationResources.successTitle}>
                             {successMessage}
                         </Alert>
                     )}

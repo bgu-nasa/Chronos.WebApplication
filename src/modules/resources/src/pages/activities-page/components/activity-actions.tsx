@@ -1,6 +1,11 @@
 import { Button, Group } from "@mantine/core";
-import resources from "../activities-page.resources.json";
+import resourcesJson from "../activities-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/activities-page/activities-page.resources.json",
+    resourcesJson,
+);
 interface ActivityActionsProps {
     selectedActivity: any | null;
     onCreateClick: () => void;

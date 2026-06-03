@@ -1,5 +1,15 @@
 {
     "title": "Courses Management",
+    "filters": {
+        "departmentLabel": "Department",
+        "departmentPlaceholder": "Select department",
+        "codeLabel": "Course Code",
+        "codePlaceholder": "e.g. CS101",
+        "nameLabel": "Course Name",
+        "namePlaceholder": "e.g. Operating Systems",
+        "clearButton": "Clear Filters",
+        "noDepartmentsFound": "No departments found"
+    },
     "createButton": "Create",
     "editButton": "Edit",
     "deleteButton": "Delete",

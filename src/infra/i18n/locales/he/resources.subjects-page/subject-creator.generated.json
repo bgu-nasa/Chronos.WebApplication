@@ -8,10 +8,7 @@
     "schedulingPeriodPlaceholder": "בחר סמסטר",
     "submitButton": "יצירת קורס",
     "notifications": {
-        "loadSchedulingPeriodsError": {
-            "title": "שגיאה",
-            "message": "טעינת הסמסטרים נכשלה"
-        }
+        "loadSchedulingPeriodsFailed": "טעינת הסמסטרים נכשלה"
     },
     "logger": {
         "fetchedSchedulingPeriods": "תקופות תזמון שנשלחו",

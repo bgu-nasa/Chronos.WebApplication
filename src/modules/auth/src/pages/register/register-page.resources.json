@@ -17,5 +17,8 @@
     "orgNamePlaceholder": "Acme Corporation",
     "planLabel": "Select Plan",
     "planPlaceholder": "Choose a plan",
-    "registerButton": "Create Organization"
+    "registerButton": "Create Organization",
+    "inviteCodeLabel": "Invite Code",
+    "inviteCodePlaceholder": "Enter your invite code",
+    "planRequired": "Please select a plan"
 }
