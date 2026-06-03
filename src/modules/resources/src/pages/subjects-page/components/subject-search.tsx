@@ -1,6 +1,14 @@
 import { Button, TextInput, Group, Paper } from "@mantine/core";
 import { DepartmentSelect } from "@/common/components/department-select";
+import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 import { useState, useEffect } from "react";
+import subjectsPageResourcesJson from "../subjects-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/resources/src/pages/subjects-page/subjects-page.resources.json",
+    subjectsPageResourcesJson,
+);
 
 export interface SubjectSearchFilters {
     departmentId: string;
@@ -14,6 +22,7 @@ interface SubjectSearchProps {
 }
 
 export function SubjectSearch({ onSearch, onClear }: SubjectSearchProps) {
+    useLocaleStore((state) => state.language);
     const [departmentId, setDepartmentId] = useState<string>("");
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
@@ -40,26 +49,27 @@ export function SubjectSearch({ onSearch, onClear }: SubjectSearchProps) {
                     <DepartmentSelect
                         value={departmentId}
                         onChange={(value) => setDepartmentId(value || "")}
-                        label="Department"
-                        placeholder="Select department"
+                        label={resources.filters.departmentLabel}
+                        placeholder={resources.filters.departmentPlaceholder}
+                        nothingFoundMessage={resources.filters.noDepartmentsFound}
                     />
                 </div>
                 <TextInput
-                    label="Course Code"
-                    placeholder="e.g. CS101"
+                    label={resources.filters.codeLabel}
+                    placeholder={resources.filters.codePlaceholder}
                     value={code}
                     onChange={(e) => setCode(e.currentTarget.value)}
                     style={{ flex: 1 }}
                 />
                 <TextInput
-                    label="Course Name"
-                    placeholder="e.g. Operating Systems"
+                    label={resources.filters.nameLabel}
+                    placeholder={resources.filters.namePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.currentTarget.value)}
                     style={{ flex: 1 }}
                 />
                 <Button variant="outline" onClick={handleClear}>
-                    Clear Filters
+                    {resources.filters.clearButton}
                 </Button>
             </Group>
         </Paper>

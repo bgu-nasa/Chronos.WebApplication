@@ -24,6 +24,13 @@ import resourceTypesJsonJson from "../resource-types-page/resource-types-page.re
 import resourceAttributesJsonJson from "../resource-attributes-page/resource-attributes-page.resources.json";
 import styles from "./resources-page.module.css";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
+import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
+
+const notificationResources = translatedResources(
+    "src/infra/service/notification/notification.resources.json",
+    notificationResourcesJson,
+);
 
 const resourcesJson = translatedResources("src/modules/resources/src/pages/resources-page/resources-page.resources.json", resourcesJsonJson);
 const resourceTypesJson = translatedResources("src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json", resourceTypesJsonJson);
@@ -32,6 +39,7 @@ const resourceAttributesJson = translatedResources("src/modules/resources/src/pa
 const resources = resourcesJson;
 
 export function ResourcesPage() {
+    useLocaleStore((state) => state.language);
     const [activeTab, setActiveTab] = useState<string | null>("resources");
     
     // Resources state
@@ -102,7 +110,10 @@ export function ResourcesPage() {
 
         if (!org?.id) {
             $app.logger.error("[ResourcesPage] No organization context available");
-            $app.notifications.showError("Error", "Organization context missing. Please refresh and try again.");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.organizationContextMissing,
+            );
             return;
         }
 
@@ -122,14 +133,26 @@ export function ResourcesPage() {
 
             if (result) {
                 setResourceCreateModalOpened(false);
-                $app.notifications.showSuccess("Success", "Resource created successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resourcesJson.notifications.resourceCreateSuccess,
+                );
             } else {
                 $app.logger.error("[ResourcesPage] Create resource returned null");
-                $app.notifications.showError("Error", "Failed to create resource. Check console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resourcesJson.notifications.resourceCreateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourcesPage] Error creating resource:", error);
-            $app.notifications.showError("Error", `Error creating resource: ${error instanceof Error ? error.message : "Unknown error"}`);
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resourcesJson.notifications.resourceCreateErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resourcesJson.notifications.unknownError,
+                ),
+            );
         }
     };
 
@@ -150,7 +173,10 @@ export function ResourcesPage() {
 
         if (!selectedResource) {
             $app.logger.error("[ResourcesPage] Missing selectedResource");
-            $app.notifications.showWarning("Warning", "Missing resource context for edit.");
+            $app.notifications.showWarning(
+                notificationResources.warningTitle,
+                resourcesJson.notifications.missingResourceEditContext,
+            );
             return;
         }
 
@@ -170,14 +196,26 @@ export function ResourcesPage() {
             if (success) {
                 setResourceEditModalOpened(false);
                 setSelectedResource(null);
-                $app.notifications.showSuccess("Success", "Resource updated successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resourcesJson.notifications.resourceUpdateSuccess,
+                );
             } else {
                 $app.logger.error("[ResourcesPage] Update resource returned false");
-                $app.notifications.showError("Error", "Failed to update resource. Check console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resourcesJson.notifications.resourceUpdateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourcesPage] Error updating resource:", error);
-            $app.notifications.showError("Error", `Error updating resource: ${error instanceof Error ? error.message : "Unknown error"}`);
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resourcesJson.notifications.resourceUpdateErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resourcesJson.notifications.unknownError,
+                ),
+            );
         }
     };
 
@@ -221,7 +259,10 @@ export function ResourcesPage() {
 
         if (!org?.id) {
             $app.logger.error("[ResourcesPage] No organization context available");
-            $app.notifications.showError("Error", "Organization context missing. Please refresh and try again.");
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resources.notifications.organizationContextMissing,
+            );
             return;
         }
 
@@ -238,14 +279,26 @@ export function ResourcesPage() {
 
             if (result) {
                 setResourceTypeCreateModalOpened(false);
-                $app.notifications.showSuccess("Success", "Resource type created successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resourceTypesJson.notifications.resourceTypeCreateSuccess,
+                );
             } else {
                 $app.logger.error("[ResourcesPage] Create resource type returned null");
-                $app.notifications.showError("Error", "Failed to create resource type. Check console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resourceTypesJson.notifications.resourceTypeCreateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourcesPage] Error creating resource type:", error);
-            $app.notifications.showError("Error", `Error creating resource type: ${error instanceof Error ? error.message : "Unknown error"}`);
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resourceTypesJson.notifications.resourceTypeCreateErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resourceTypesJson.notifications.unknownError,
+                ),
+            );
         }
     };
 
@@ -261,7 +314,10 @@ export function ResourcesPage() {
 
         if (!selectedResourceType) {
             $app.logger.error("[ResourcesPage] Missing selectedResourceType");
-            $app.notifications.showWarning("Warning", "Missing resource type context for edit.");
+            $app.notifications.showWarning(
+                notificationResources.warningTitle,
+                resourceTypesJson.notifications.missingResourceTypeEditContext,
+            );
             return;
         }
 
@@ -278,14 +334,26 @@ export function ResourcesPage() {
             if (success) {
                 setResourceTypeEditModalOpened(false);
                 setSelectedResourceType(null);
-                $app.notifications.showSuccess("Success", "Resource type updated successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resourceTypesJson.notifications.resourceTypeUpdateSuccess,
+                );
             } else {
                 $app.logger.error("[ResourcesPage] Update resource type returned false");
-                $app.notifications.showError("Error", "Failed to update resource type. Check console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resourceTypesJson.notifications.resourceTypeUpdateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourcesPage] Error updating resource type:", error);
-            $app.notifications.showError("Error", `Error updating resource type: ${error instanceof Error ? error.message : "Unknown error"}`);
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resourceTypesJson.notifications.resourceTypeUpdateErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resourceTypesJson.notifications.unknownError,
+                ),
+            );
         }
     };
 
@@ -334,14 +402,26 @@ export function ResourcesPage() {
 
             if (result) {
                 setResourceAttributeCreateModalOpened(false);
-                $app.notifications.showSuccess("Success", "Resource attribute created successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resourceAttributesJson.notifications.resourceAttributeCreateSuccess,
+                );
             } else {
                 $app.logger.error("[ResourcesPage] Create resource attribute returned null");
-                $app.notifications.showError("Error", "Failed to create resource attribute. Check console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resourceAttributesJson.notifications.resourceAttributeCreateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourcesPage] Error creating resource attribute:", error);
-            $app.notifications.showError("Error", `Error creating resource attribute: ${error instanceof Error ? error.message : "Unknown error"}`);
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resourceAttributesJson.notifications.resourceAttributeCreateErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resourceAttributesJson.notifications.unknownError,
+                ),
+            );
         }
     };
 
@@ -357,7 +437,10 @@ export function ResourcesPage() {
 
         if (!selectedResourceAttribute) {
             $app.logger.error("[ResourcesPage] Missing selectedResourceAttribute");
-            $app.notifications.showWarning("Warning", "Missing resource attribute context for edit.");
+            $app.notifications.showWarning(
+                notificationResources.warningTitle,
+                resourceAttributesJson.notifications.missingResourceAttributeEditContext,
+            );
             return;
         }
 
@@ -375,14 +458,26 @@ export function ResourcesPage() {
             if (success) {
                 setResourceAttributeEditModalOpened(false);
                 setSelectedResourceAttribute(null);
-                $app.notifications.showSuccess("Success", "Resource attribute updated successfully");
+                $app.notifications.showSuccess(
+                    notificationResources.successTitle,
+                    resourceAttributesJson.notifications.resourceAttributeUpdateSuccess,
+                );
             } else {
                 $app.logger.error("[ResourcesPage] Update resource attribute returned false");
-                $app.notifications.showError("Error", "Failed to update resource attribute. Check console for details.");
+                $app.notifications.showError(
+                    notificationResources.errorTitle,
+                    resourceAttributesJson.notifications.resourceAttributeUpdateFailed,
+                );
             }
         } catch (error) {
             $app.logger.error("[ResourcesPage] Error updating resource attribute:", error);
-            $app.notifications.showError("Error", `Error updating resource attribute: ${error instanceof Error ? error.message : "Unknown error"}`);
+            $app.notifications.showError(
+                notificationResources.errorTitle,
+                resourceAttributesJson.notifications.resourceAttributeUpdateErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resourceAttributesJson.notifications.unknownError,
+                ),
+            );
         }
     };
 
@@ -437,9 +532,9 @@ export function ResourcesPage() {
 
                 <Tabs value={activeTab} onChange={setActiveTab}>
                     <Tabs.List>
-                        <Tabs.Tab value="resources">Rooms</Tabs.Tab>
-                        <Tabs.Tab value="resource-types">Room Types</Tabs.Tab>
-                        <Tabs.Tab value="resource-attributes">Room Attributes</Tabs.Tab>
+                        <Tabs.Tab value="resources">{resources.tabs.rooms}</Tabs.Tab>
+                        <Tabs.Tab value="resource-types">{resources.tabs.roomTypes}</Tabs.Tab>
+                        <Tabs.Tab value="resource-attributes">{resources.tabs.roomAttributes}</Tabs.Tab>
                     </Tabs.List>
 
                     <Tabs.Panel value="resources" pt="md">

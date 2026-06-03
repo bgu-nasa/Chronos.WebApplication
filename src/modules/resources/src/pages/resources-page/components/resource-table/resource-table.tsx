@@ -3,8 +3,13 @@ import type { DataTableSelectionSingleChangeEvent } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Text, Stack } from "@mantine/core";
 import type { ResourceData } from "./types";
-import resources from "../../resources-page.resources.json";
+import resourcesJson from "../../resources-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/resources-page/resources-page.resources.json",
+    resourcesJson,
+);
 interface ResourceTableProps {
     resources: ResourceData[];
     selectedResource: ResourceData | null;

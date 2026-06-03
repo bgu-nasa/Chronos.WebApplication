@@ -1,5 +1,15 @@
 {
     "title": "ניהול קורסים",
+    "filters": {
+        "departmentLabel": "המחלקה",
+        "departmentPlaceholder": "מחלקה נבחרת",
+        "codeLabel": "קוד הקורס",
+        "codePlaceholder": "לדוגמה, CS101",
+        "nameLabel": "שם המסלול",
+        "namePlaceholder": "לדוגמה, מערכות הפעלה",
+        "clearButton": "פילטרים נקיים",
+        "noDepartmentsFound": "לא נמצאו מחלקות"
+    },
     "createButton": "יצור",
     "editButton": "עריכה",
     "deleteButton": "מחק",
@@ -17,10 +27,8 @@
     "unknownText": "לא ידוע",
     "unknownDepartment": "מחלקה לא ידועה",
     "notifications": {
-        "departmentRequired": {
-            "title": "מחלקה נדרשת",
-            "message": "אנא בחרו מחלקה לחיפוש קורסים"
-        }
+        "departmentRequired": "אנא בחרו מחלקה לחיפוש קורסים",
+        "loadSchedulingPeriodsFailed": "נכשל בטעינת תקופות תזמון"
     },
     "logger": {
         "loadedSchedulingPeriods": "תקופות תזמון עמוסות",

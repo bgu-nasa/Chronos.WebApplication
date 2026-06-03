@@ -4,8 +4,13 @@ import { Column } from "primereact/column";
 import { Text, Stack } from "@mantine/core";
 import type { ActivityData } from "./types";
 import { formatMinutes } from "@/common/components/time-spinner";
-import resources from "../../activities-page.resources.json";
+import resourcesJson from "../../activities-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/activities-page/activities-page.resources.json",
+    resourcesJson,
+);
 interface ActivityTableProps {
     activities: ActivityData[];
     selectedActivity: ActivityData | null;

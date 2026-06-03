@@ -1,6 +1,11 @@
 import { Button, Group } from "@mantine/core";
-import resources from "../resource-types-page.resources.json";
+import resourcesJson from "../resource-types-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
 
+const resources = translatedResources(
+    "src/modules/resources/src/pages/resource-types-page/resource-types-page.resources.json",
+    resourcesJson,
+);
 interface ResourceTypeActionsProps {
     selectedResourceType: any | null;
     onCreateClick: () => void;

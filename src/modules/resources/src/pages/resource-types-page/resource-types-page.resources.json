@@ -19,5 +19,16 @@
     "editorTypePlaceholder": "e.g. Laboratory, Classroom, Auditorium",
     "editorCancelButton": "Cancel",
     "editorSaveButton": "Save",
-    "editorCreateButton": "Create"
+    "editorCreateButton": "Create",
+    "notifications": {
+        "organizationContextMissing": "Organization context missing. Please refresh and try again.",
+        "resourceTypeCreateSuccess": "Resource type created successfully",
+        "resourceTypeCreateFailed": "Failed to create resource type. Check console for details.",
+        "resourceTypeCreateErrorWithDetails": "Error creating resource type: {{details}}",
+        "missingResourceTypeEditContext": "Missing resource type context for edit.",
+        "resourceTypeUpdateSuccess": "Resource type updated successfully",
+        "resourceTypeUpdateFailed": "Failed to update resource type. Check console for details.",
+        "resourceTypeUpdateErrorWithDetails": "Error updating resource type: {{details}}",
+        "unknownError": "Unknown error"
+    }
 }

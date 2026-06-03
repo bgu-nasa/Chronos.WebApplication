@@ -1,5 +1,15 @@
 {
     "title": "Courses Management",
+    "filters": {
+        "departmentLabel": "Department",
+        "departmentPlaceholder": "Select department",
+        "codeLabel": "Course Code",
+        "codePlaceholder": "e.g. CS101",
+        "nameLabel": "Course Name",
+        "namePlaceholder": "e.g. Operating Systems",
+        "clearButton": "Clear Filters",
+        "noDepartmentsFound": "No departments found"
+    },
     "createButton": "Create",
     "editButton": "Edit",
     "deleteButton": "Delete",
@@ -17,10 +27,8 @@
     "unknownText": "Unknown",
     "unknownDepartment": "Unknown Department",
     "notifications": {
-        "departmentRequired": {
-            "title": "Department Required",
-            "message": "Please select a department to search for courses"
-        }
+        "departmentRequired": "Please select a department to search for courses",
+        "loadSchedulingPeriodsFailed": "Failed to load scheduling periods"
     },
     "logger": {
         "loadedSchedulingPeriods": "Loaded scheduling periods",
