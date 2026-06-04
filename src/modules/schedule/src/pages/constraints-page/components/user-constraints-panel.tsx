@@ -60,14 +60,18 @@ export function UserConstraintsPanel({ isAdmin, openConfirmation }: UserConstrai
         }
 
         if (isAdmin) {
-            fetchUserConstraints();
-            fetchUserPreferences();
-            fetchUsers();
-            fetchSchedulingPeriods();
+            Promise.all([
+                fetchUserConstraints(),
+                fetchUserPreferences(),
+                fetchUsers(),
+                fetchSchedulingPeriods(),
+            ]);
         } else if (userId) {
-            fetchUserConstraintsByUser(userId);
-            fetchUserPreferencesByUser(userId);
-            fetchSchedulingPeriods();
+            Promise.all([
+                fetchUserConstraintsByUser(userId),
+                fetchUserPreferencesByUser(userId),
+                fetchSchedulingPeriods(),
+            ]);
         }
     }, [isAdmin]);
 

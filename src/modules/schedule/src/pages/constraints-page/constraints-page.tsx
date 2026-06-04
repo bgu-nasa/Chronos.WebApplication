@@ -27,7 +27,7 @@ export function ConstraintsPage() {
     } = useConfirmation();
 
     useEffect(() => {
-        const userIsAdmin = $app.organization.isAdministrator();
+        const userIsAdmin = $app.organization.isAdministrator() || $app.organization.isResourceManager();
         setIsAdmin(userIsAdmin);
     }, []);
 
