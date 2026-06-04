@@ -23,6 +23,9 @@ interface ConstraintStore {
     userConstraints: UserConstraintResponse[];
     userPreferences: UserPreferenceResponse[];
     activityConstraints: ActivityConstraintResponse[];
+    userConstraintsLoading: boolean;
+    userPreferencesLoading: boolean;
+    activityConstraintsLoading: boolean;
     isLoading: boolean;
     error: string | null;
 
@@ -57,7 +60,10 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
     userConstraints: [],
     userPreferences: [],
     activityConstraints: [],
-    isLoading: false,
+    userConstraintsLoading: false,
+    userPreferencesLoading: false,
+    activityConstraintsLoading: false,
+    isLoading: false, // Deprecated: use individual loading flags instead
     error: null,
 
     // ========================================================================
@@ -66,45 +72,45 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     fetchUserConstraints: async () => {
         $app.logger.info("[ConstraintStore] fetchUserConstraints called");
-        set({ isLoading: true, error: null });
+        set({ userConstraintsLoading: true, error: null });
         try {
             const data = await constraintDataRepository.getAllUserConstraints();
             $app.logger.info("[ConstraintStore] Fetched user constraints:", data.length);
-            set({ userConstraints: data, isLoading: false });
+            set({ userConstraints: data, userConstraintsLoading: false });
         } catch (err) {
             const errorMessage =
                 err instanceof Error
                     ? err.message
                     : "Failed to fetch user constraints";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error fetching user constraints:", err);
         }
     },
 
     fetchUserConstraintsByUser: async (userId: string) => {
         $app.logger.info("[ConstraintStore] fetchUserConstraintsByUser called", { userId });
-        set({ isLoading: true, error: null });
+        set({ userConstraintsLoading: true, error: null });
         try {
             const data = await constraintDataRepository.getUserConstraintsByUser(userId);
             $app.logger.info("[ConstraintStore] Fetched user constraints:", data.length);
-            set({ userConstraints: data, isLoading: false });
+            set({ userConstraints: data, userConstraintsLoading: false });
         } catch (err) {
             const errorMessage =
                 err instanceof Error
                     ? err.message
                     : "Failed to fetch user constraints";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error fetching user constraints by user:", err);
         }
     },
 
     createUserConstraint: async (request: CreateUserConstraintRequest) => {
         $app.logger.info("[ConstraintStore] createUserConstraint called", { request });
-        set({ isLoading: true, error: null });
+        set({ userConstraintsLoading: true, error: null });
         try {
             const newConstraint = await constraintDataRepository.createUserConstraint(request);
             $app.logger.info("[ConstraintStore] User constraint created successfully:", newConstraint);
-            set({ isLoading: false });
+            set({ userConstraintsLoading: false });
 
             // Refetch to update the list
             await get().fetchUserConstraints();
@@ -114,7 +120,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to create user constraint";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error creating user constraint:", err);
             return null;
         }
@@ -122,11 +128,11 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     updateUserConstraint: async (id: string, request: UpdateUserConstraintRequest) => {
         $app.logger.info("[ConstraintStore] updateUserConstraint called", { id, request });
-        set({ isLoading: true, error: null });
+        set({ userConstraintsLoading: true, error: null });
         try {
             await constraintDataRepository.updateUserConstraint(id, request);
             $app.logger.info("[ConstraintStore] User constraint updated successfully");
-            set({ isLoading: false });
+            set({ userConstraintsLoading: false });
 
             // Refetch to update the list
             await get().fetchUserConstraints();
@@ -136,7 +142,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to update user constraint";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error updating user constraint:", err);
             return false;
         }
@@ -144,11 +150,11 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     deleteUserConstraint: async (id: string) => {
         $app.logger.info("[ConstraintStore] deleteUserConstraint called", { id });
-        set({ isLoading: true, error: null });
+        set({ userConstraintsLoading: true, error: null });
         try {
             await constraintDataRepository.deleteUserConstraint(id);
             $app.logger.info("[ConstraintStore] User constraint deleted successfully");
-            set({ isLoading: false });
+            set({ userConstraintsLoading: false });
 
             // Refetch to update the list
             await get().fetchUserConstraints();
@@ -158,7 +164,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to delete user constraint";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error deleting user constraint:", err);
             return false;
         }
@@ -170,45 +176,45 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     fetchUserPreferences: async () => {
         $app.logger.info("[ConstraintStore] fetchUserPreferences called");
-        set({ isLoading: true, error: null });
+        set({ userPreferencesLoading: true, error: null });
         try {
             const data = await constraintDataRepository.getAllUserPreferences();
             $app.logger.info("[ConstraintStore] Fetched user preferences:", data.length);
-            set({ userPreferences: data, isLoading: false });
+            set({ userPreferences: data, userPreferencesLoading: false });
         } catch (err) {
             const errorMessage =
                 err instanceof Error
                     ? err.message
                     : "Failed to fetch user preferences";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userPreferencesLoading: false });
             $app.logger.error("[ConstraintStore] Error fetching user preferences:", err);
         }
     },
 
     fetchUserPreferencesByUser: async (userId: string) => {
         $app.logger.info("[ConstraintStore] fetchUserPreferencesByUser called", { userId });
-        set({ isLoading: true, error: null });
+        set({ userPreferencesLoading: true, error: null });
         try {
             const data = await constraintDataRepository.getUserPreferencesByUser(userId);
             $app.logger.info("[ConstraintStore] Fetched user preferences:", data.length);
-            set({ userPreferences: data, isLoading: false });
+            set({ userPreferences: data, userPreferencesLoading: false });
         } catch (err) {
             const errorMessage =
                 err instanceof Error
                     ? err.message
                     : "Failed to fetch user preferences";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userPreferencesLoading: false });
             $app.logger.error("[ConstraintStore] Error fetching user preferences by user:", err);
         }
     },
 
     createUserPreference: async (request: CreateUserPreferenceRequest) => {
         $app.logger.info("[ConstraintStore] createUserPreference called", { request });
-        set({ isLoading: true, error: null });
+        set({ userPreferencesLoading: true, error: null });
         try {
             const newPreference = await constraintDataRepository.createUserPreference(request);
             $app.logger.info("[ConstraintStore] User preference created successfully:", newPreference);
-            set({ isLoading: false });
+            set({ userPreferencesLoading: false });
 
             // Refetch to update the list
             await get().fetchUserPreferences();
@@ -218,7 +224,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to create user preference";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userPreferencesLoading: false });
             $app.logger.error("[ConstraintStore] Error creating user preference:", err);
             return null;
         }
@@ -229,11 +235,11 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
         request: UpdateUserPreferenceRequest
     ) => {
         $app.logger.info("[ConstraintStore] updateUserPreference called", { id, request });
-        set({ isLoading: true, error: null });
+        set({ userPreferencesLoading: true, error: null });
         try {
             await constraintDataRepository.updateUserPreference(id, request);
             $app.logger.info("[ConstraintStore] User preference updated successfully");
-            set({ isLoading: false });
+            set({ userPreferencesLoading: false });
 
             // Refetch to update the list
             await get().fetchUserPreferences();
@@ -243,7 +249,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to update user preference";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userPreferencesLoading: false });
             $app.logger.error("[ConstraintStore] Error updating user preference:", err);
             return false;
         }
@@ -251,11 +257,11 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     deleteUserPreference: async (id: string) => {
         $app.logger.info("[ConstraintStore] deleteUserPreference called", { id });
-        set({ isLoading: true, error: null });
+        set({ userPreferencesLoading: true, error: null });
         try {
             await constraintDataRepository.deleteUserPreference(id);
             $app.logger.info("[ConstraintStore] User preference deleted successfully");
-            set({ isLoading: false });
+            set({ userPreferencesLoading: false });
 
             // Refetch to update the list
             await get().fetchUserPreferences();
@@ -265,7 +271,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to delete user preference";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, userPreferencesLoading: false });
             $app.logger.error("[ConstraintStore] Error deleting user preference:", err);
             return false;
         }
@@ -277,45 +283,45 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     fetchActivityConstraints: async () => {
         $app.logger.info("[ConstraintStore] fetchActivityConstraints called");
-        set({ isLoading: true, error: null });
+        set({ activityConstraintsLoading: true, error: null });
         try {
             const data = await constraintDataRepository.getAllActivityConstraints();
             $app.logger.info("[ConstraintStore] Fetched activity constraints:", data.length);
-            set({ activityConstraints: data, isLoading: false });
+            set({ activityConstraints: data, activityConstraintsLoading: false });
         } catch (err) {
             const errorMessage =
                 err instanceof Error
                     ? err.message
                     : "Failed to fetch activity constraints";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, activityConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error fetching activity constraints:", err);
         }
     },
 
     fetchActivityConstraintsByActivity: async (activityId: string) => {
         $app.logger.info("[ConstraintStore] fetchActivityConstraintsByActivity called", { activityId });
-        set({ isLoading: true, error: null });
+        set({ activityConstraintsLoading: true, error: null });
         try {
             const data = await constraintDataRepository.getActivityConstraintsByActivity(activityId);
             $app.logger.info("[ConstraintStore] Fetched activity constraints:", data.length);
-            set({ activityConstraints: data, isLoading: false });
+            set({ activityConstraints: data, activityConstraintsLoading: false });
         } catch (err) {
             const errorMessage =
                 err instanceof Error
                     ? err.message
                     : "Failed to fetch activity constraints";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, activityConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error fetching activity constraints by activity:", err);
         }
     },
 
     createActivityConstraint: async (request: CreateActivityConstraintRequest) => {
         $app.logger.info("[ConstraintStore] createActivityConstraint called", { request });
-        set({ isLoading: true, error: null });
+        set({ activityConstraintsLoading: true, error: null });
         try {
             const newConstraint = await constraintDataRepository.createActivityConstraint(request);
             $app.logger.info("[ConstraintStore] Activity constraint created successfully:", newConstraint);
-            set({ isLoading: false });
+            set({ activityConstraintsLoading: false });
 
             // Refetch to update the list
             await get().fetchActivityConstraints();
@@ -325,7 +331,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to create activity constraint";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, activityConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error creating activity constraint:", err);
             return null;
         }
@@ -333,11 +339,11 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     updateActivityConstraint: async (id: string, request: UpdateActivityConstraintRequest) => {
         $app.logger.info("[ConstraintStore] updateActivityConstraint called", { id, request });
-        set({ isLoading: true, error: null });
+        set({ activityConstraintsLoading: true, error: null });
         try {
             await constraintDataRepository.updateActivityConstraint(id, request);
             $app.logger.info("[ConstraintStore] Activity constraint updated successfully");
-            set({ isLoading: false });
+            set({ activityConstraintsLoading: false });
 
             // Refetch to update the list
             await get().fetchActivityConstraints();
@@ -347,7 +353,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to update activity constraint";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, activityConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error updating activity constraint:", err);
             return false;
         }
@@ -355,11 +361,11 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
 
     deleteActivityConstraint: async (id: string) => {
         $app.logger.info("[ConstraintStore] deleteActivityConstraint called", { id });
-        set({ isLoading: true, error: null });
+        set({ activityConstraintsLoading: true, error: null });
         try {
             await constraintDataRepository.deleteActivityConstraint(id);
             $app.logger.info("[ConstraintStore] Activity constraint deleted successfully");
-            set({ isLoading: false });
+            set({ activityConstraintsLoading: false });
 
             // Refetch to update the list
             await get().fetchActivityConstraints();
@@ -369,7 +375,7 @@ export const useConstraintStore = create<ConstraintStore>((set, get) => ({
                 err instanceof Error
                     ? err.message
                     : "Failed to delete activity constraint";
-            set({ error: errorMessage, isLoading: false });
+            set({ error: errorMessage, activityConstraintsLoading: false });
             $app.logger.error("[ConstraintStore] Error deleting activity constraint:", err);
             return false;
         }

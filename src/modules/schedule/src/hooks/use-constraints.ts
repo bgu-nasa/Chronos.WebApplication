@@ -10,7 +10,7 @@ import { useConstraintStore } from "@/modules/schedule/src/state/constraints.sto
  */
 export function useUserConstraints() {
     const userConstraints = useConstraintStore((state) => state.userConstraints);
-    const isLoading = useConstraintStore((state) => state.isLoading);
+    const isLoading = useConstraintStore((state) => state.userConstraintsLoading);
     const error = useConstraintStore((state) => state.error);
     const fetchUserConstraints = useConstraintStore((state) => state.fetchUserConstraints);
     const fetchUserConstraintsByUser = useConstraintStore((state) => state.fetchUserConstraintsByUser);
@@ -35,7 +35,7 @@ export function useUserConstraints() {
  */
 export function useUserPreferences() {
     const userPreferences = useConstraintStore((state) => state.userPreferences);
-    const isLoading = useConstraintStore((state) => state.isLoading);
+    const isLoading = useConstraintStore((state) => state.userPreferencesLoading);
     const error = useConstraintStore((state) => state.error);
     const fetchUserPreferences = useConstraintStore((state) => state.fetchUserPreferences);
     const fetchUserPreferencesByUser = useConstraintStore((state) => state.fetchUserPreferencesByUser);
@@ -60,7 +60,7 @@ export function useUserPreferences() {
  */
 export function useActivityConstraints() {
     const activityConstraints = useConstraintStore((state) => state.activityConstraints);
-    const isLoading = useConstraintStore((state) => state.isLoading);
+    const isLoading = useConstraintStore((state) => state.activityConstraintsLoading);
     const error = useConstraintStore((state) => state.error);
     const fetchActivityConstraints = useConstraintStore((state) => state.fetchActivityConstraints);
     const fetchActivityConstraintsByActivity = useConstraintStore((state) => state.fetchActivityConstraintsByActivity);
