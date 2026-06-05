@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 
 import { ActionIcon, Button, Group, Modal, MultiSelect, Select, Stack, Text, TextInput } from "@mantine/core";
@@ -189,6 +189,7 @@ export function UserConstraintEditor({
     const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
     const [constraintMode, setConstraintMode] = useState<ConstraintMode>("repeated");
     const [oneTimeDate, setOneTimeDate] = useState<string>("");
+    const wasOpenedRef = useRef(false);
 
     const defaultKey = isPreference ? "" : "forbidden_timerange";
 
@@ -300,12 +301,15 @@ export function UserConstraintEditor({
     };
 
     useEffect(() => {
-        if (opened) {
-            if (initialData) {
-                initializeEditData();
-            } else {
-                initializeNewData();
-            }
+        const justOpened = opened && !wasOpenedRef.current;
+        wasOpenedRef.current = opened;
+
+        if (!justOpened) return;
+
+        if (initialData) {
+            initializeEditData();
+        } else {
+            initializeNewData();
         }
     }, [opened, initialData, isAdmin, currentUserId, isPreference]);
 
