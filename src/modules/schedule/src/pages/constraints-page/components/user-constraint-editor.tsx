@@ -190,22 +190,16 @@ export function UserConstraintEditor({
     const [constraintMode, setConstraintMode] = useState<ConstraintMode>("repeated");
     const [oneTimeDate, setOneTimeDate] = useState<string>("");
 
-    const defaultConstraintKey = isPreference ? "preferred_weekdays" : "forbidden_timerange";
-
     const [formValues, setFormValues] = useState({
         userId: initialData?.userId || currentUserId || "",
         schedulingPeriodId: initialData?.schedulingPeriodId || "",
-        key: initialData?.key || defaultConstraintKey,
+        key: initialData?.key || "",
         isPreference: initialData?.isPreference ?? isPreference,
     });
 
     const constraintKey = useMemo(() => {
-        if (initialData?.key) {
-            return initialData.key;
-        }
-
-        return formValues.key || defaultConstraintKey;
-    }, [initialData?.key, formValues.key, defaultConstraintKey]);
+        return initialData?.key || formValues.key;
+    }, [initialData?.key, formValues.key]);
 
     const constraintTypeOptions = useMemo(() => {
         return isPreference
@@ -289,18 +283,14 @@ export function UserConstraintEditor({
         setFormValues({
             userId: !isAdmin && currentUserId ? currentUserId : "",
             schedulingPeriodId: "",
-            key: constraintKey,
+            key: "",
             isPreference,
         });
         setFormErrors({});
         setConstraintMode("repeated");
         setOneTimeDate("");
-
-        if (constraintKey === "forbidden_timerange" || constraintKey === "preferred_timerange") {
-            setTimeRangeEntries([createEmptyTimeRangeEntry()]);
-        } else if (constraintKey === "preferred_weekdays") {
-            setSelectedWeekdays([]);
-        }
+        setTimeRangeEntries([]);
+        setSelectedWeekdays([]);
     };
 
     useEffect(() => {
@@ -499,7 +489,7 @@ export function UserConstraintEditor({
                         label={resources.labels.key}
                         placeholder={resources.placeholders.selectConstraintType}
                         data={constraintTypeOptions}
-                        value={constraintKey}
+                        value={formValues.key || null}
                         onChange={(value) => {
                             if (!value) {
                                 return;
@@ -524,7 +514,7 @@ export function UserConstraintEditor({
                     />
                 )}
 
-                {constraintKey === "forbidden_timerange" && (
+                {constraintKey === "forbidden_timerange" && !isPreference && (
                     <Stack gap="md" mb="md">
                         <Select
                             label={resources.labels.constraintMode}
