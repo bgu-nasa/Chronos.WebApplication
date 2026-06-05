@@ -311,7 +311,7 @@ export function UserConstraintEditor({
                 initializeNewData();
             }
         }
-    }, [opened, initialData, isAdmin, currentUserId, isPreference, constraintKey]);
+    }, [opened, initialData, isAdmin, currentUserId, isPreference]);
 
     const validateForm = (): { value?: string; date?: string } | null => {
         if (constraintKey === "forbidden_timerange") {
