@@ -190,10 +190,12 @@ export function UserConstraintEditor({
     const [constraintMode, setConstraintMode] = useState<ConstraintMode>("repeated");
     const [oneTimeDate, setOneTimeDate] = useState<string>("");
 
+    const defaultKey = isPreference ? "" : "forbidden_timerange";
+
     const [formValues, setFormValues] = useState({
         userId: initialData?.userId || currentUserId || "",
         schedulingPeriodId: initialData?.schedulingPeriodId || "",
-        key: initialData?.key || "",
+        key: initialData?.key || defaultKey,
         isPreference: initialData?.isPreference ?? isPreference,
     });
 
@@ -283,13 +285,17 @@ export function UserConstraintEditor({
         setFormValues({
             userId: !isAdmin && currentUserId ? currentUserId : "",
             schedulingPeriodId: "",
-            key: "",
+            key: defaultKey,
             isPreference,
         });
         setFormErrors({});
         setConstraintMode("repeated");
         setOneTimeDate("");
-        setTimeRangeEntries([]);
+        if (defaultKey === "forbidden_timerange") {
+            setTimeRangeEntries([createEmptyTimeRangeEntry()]);
+        } else {
+            setTimeRangeEntries([]);
+        }
         setSelectedWeekdays([]);
     };
 
