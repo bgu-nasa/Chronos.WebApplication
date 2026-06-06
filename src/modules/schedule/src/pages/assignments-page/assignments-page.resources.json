@@ -41,6 +41,7 @@
     "weekNumColumn": "Week",
     "weekNumFilterLabel": "Week",
     "weekNumFilterPlaceholder": "All weeks",
+    "weekNumRangeError": "Week number must be between 1 and 53",
     "notifications": {
         "fetchError": "Failed to fetch assignments",
         "deleteSuccess": "Assignment deleted successfully",

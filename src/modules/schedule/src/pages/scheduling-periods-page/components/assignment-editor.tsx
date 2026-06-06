@@ -80,6 +80,8 @@ export function AssignmentEditor() {
         }
         if (weekNum === '' || weekNum === null || weekNum === undefined) {
             newErrors.weekNum = resources.validation.weekNumRequired;
+        } else if (Number(weekNum) < 1 || Number(weekNum) > 53) {
+            newErrors.weekNum = resources.validation.weekNumRange;
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -219,6 +221,7 @@ export function AssignmentEditor() {
                         required
                         min={1}
                         max={53}
+                        clampBehavior="none"
                         disabled={isLoading}
                     />
 

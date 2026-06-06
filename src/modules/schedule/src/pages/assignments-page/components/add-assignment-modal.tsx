@@ -124,7 +124,11 @@ export function AddAssignmentModal({
         if (!selectedSlotId) newErrors.slot = "Slot is required";
         if (!selectedActivityId) newErrors.activity = "Activity is required";
         if (!selectedResourceId) newErrors.resource = "Resource is required";
-        if (weekNum === '' || weekNum === null || weekNum === undefined) newErrors.weekNum = "Week number is required";
+        if (weekNum === '' || weekNum === null || weekNum === undefined) {
+            newErrors.weekNum = "Week number is required";
+        } else if (Number(weekNum) < 1 || Number(weekNum) > 53) {
+            newErrors.weekNum = resources.weekNumRangeError;
+        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -235,6 +239,7 @@ export function AddAssignmentModal({
                         required
                         min={1}
                         max={53}
+                        clampBehavior="none"
                         disabled={isSubmitting}
                     />
 

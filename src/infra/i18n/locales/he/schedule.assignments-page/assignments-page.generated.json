@@ -41,6 +41,7 @@
     "weekNumColumn": "שבוע",
     "weekNumFilterLabel": "שבוע",
     "weekNumFilterPlaceholder": "כל השבועות",
+    "weekNumRangeError": "מספר השבוע חייב להיות בין 1 ל-53",
     "notifications": {
         "fetchError": "נכשל בשליפת משימות",
         "deleteSuccess": "ההקצאה נמחקה בהצלחה",

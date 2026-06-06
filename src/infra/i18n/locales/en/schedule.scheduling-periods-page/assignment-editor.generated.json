@@ -21,7 +21,8 @@
     "validation": {
         "resourceRequired": "Resource is required",
         "activityRequired": "Activity is required",
-        "weekNumRequired": "Week number is required"
+        "weekNumRequired": "Week number is required",
+        "weekNumRange": "Week number must be between 1 and 53"
     },
     "notifications": {
         "createSuccess": "Assignment created successfully",
