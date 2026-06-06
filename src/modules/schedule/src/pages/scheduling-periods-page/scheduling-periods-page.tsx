@@ -76,9 +76,9 @@ export function SchedulingPeriodsPage() {
 
         return schedulingPeriods
             .map((period) => {
-                const fromDate = new Date(period.fromDate);
-                fromDate.setHours(0, 0, 0, 0);
-                const isExpired = fromDate <= today;
+                const toDate = new Date(period.toDate);
+                toDate.setHours(0, 0, 0, 0);
+                const isExpired = toDate < today;
 
                 return {
                     id: period.id,
