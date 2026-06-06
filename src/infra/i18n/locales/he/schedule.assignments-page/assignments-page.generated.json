@@ -39,6 +39,8 @@
     "weekNumLabel": "מספר שבוע",
     "weekNumPlaceholder": "הכנס את מספר השבוע",
     "weekNumColumn": "שבוע",
+    "weekNumFilterLabel": "שבוע",
+    "weekNumFilterPlaceholder": "כל השבועות",
     "notifications": {
         "fetchError": "נכשל בשליפת משימות",
         "deleteSuccess": "ההקצאה נמחקה בהצלחה",
