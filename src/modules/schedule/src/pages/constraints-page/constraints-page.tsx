@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Container, Divider, Title, Tabs } from "@mantine/core";
 import { translatedResources } from "@/infra/i18n";
 
 const resources = translatedResources("src/modules/schedule/src/pages/constraints-page/constraints-page.resources.json", resourcesJson);
 
 import { ConfirmationDialog, useConfirmation } from "@/common";
-import { $app } from "@/infra/service";
+import { useOrganization } from "@/infra/service";
 
 import {
     UserConstraintsPanel,
@@ -16,7 +16,12 @@ import styles from "./constraints-page.module.css";
 
 export function ConstraintsPage() {
     const [activeTab, setActiveTab] = useState<string | null>(resources.other.defaultActiveTab);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { organization } = useOrganization();
+    const isAdmin = Boolean(
+        organization?.userRoles.some(
+            (r) => r.role === "Administrator" || r.role === "ResourceManager"
+        )
+    );
 
     const {
         confirmationState,
@@ -25,11 +30,6 @@ export function ConstraintsPage() {
         handleConfirm,
         isLoading: isConfirming,
     } = useConfirmation();
-
-    useEffect(() => {
-        const userIsAdmin = $app.organization.isAdministrator() || $app.organization.isResourceManager();
-        setIsAdmin(userIsAdmin);
-    }, []);
 
     return (
         <Container size={resources.other.containerSize} className={styles.pageContainer}>

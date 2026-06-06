@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 
 import { ActionIcon, Button, Group, Modal, MultiSelect, Select, Stack, Text, TextInput } from "@mantine/core";
@@ -189,23 +189,20 @@ export function UserConstraintEditor({
     const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
     const [constraintMode, setConstraintMode] = useState<ConstraintMode>("repeated");
     const [oneTimeDate, setOneTimeDate] = useState<string>("");
+    const wasOpenedRef = useRef(false);
 
-    const defaultConstraintKey = isPreference ? "preferred_weekdays" : "forbidden_timerange";
+    const defaultKey = isPreference ? "" : "forbidden_timerange";
 
     const [formValues, setFormValues] = useState({
         userId: initialData?.userId || currentUserId || "",
         schedulingPeriodId: initialData?.schedulingPeriodId || "",
-        key: initialData?.key || defaultConstraintKey,
+        key: initialData?.key || defaultKey,
         isPreference: initialData?.isPreference ?? isPreference,
     });
 
     const constraintKey = useMemo(() => {
-        if (initialData?.key) {
-            return initialData.key;
-        }
-
-        return formValues.key || defaultConstraintKey;
-    }, [initialData?.key, formValues.key, defaultConstraintKey]);
+        return initialData?.key || formValues.key;
+    }, [initialData?.key, formValues.key]);
 
     const constraintTypeOptions = useMemo(() => {
         return isPreference
@@ -289,29 +286,32 @@ export function UserConstraintEditor({
         setFormValues({
             userId: !isAdmin && currentUserId ? currentUserId : "",
             schedulingPeriodId: "",
-            key: constraintKey,
+            key: defaultKey,
             isPreference,
         });
         setFormErrors({});
         setConstraintMode("repeated");
         setOneTimeDate("");
-
-        if (constraintKey === "forbidden_timerange" || constraintKey === "preferred_timerange") {
+        if (defaultKey === "forbidden_timerange") {
             setTimeRangeEntries([createEmptyTimeRangeEntry()]);
-        } else if (constraintKey === "preferred_weekdays") {
-            setSelectedWeekdays([]);
+        } else {
+            setTimeRangeEntries([]);
         }
+        setSelectedWeekdays([]);
     };
 
     useEffect(() => {
-        if (opened) {
-            if (initialData) {
-                initializeEditData();
-            } else {
-                initializeNewData();
-            }
+        const justOpened = opened && !wasOpenedRef.current;
+        wasOpenedRef.current = opened;
+
+        if (!justOpened) return;
+
+        if (initialData) {
+            initializeEditData();
+        } else {
+            initializeNewData();
         }
-    }, [opened, initialData, isAdmin, currentUserId, isPreference, constraintKey]);
+    }, [opened, initialData, isAdmin, currentUserId, isPreference]);
 
     const validateForm = (): { value?: string; date?: string } | null => {
         if (constraintKey === "forbidden_timerange") {
@@ -499,7 +499,7 @@ export function UserConstraintEditor({
                         label={resources.labels.key}
                         placeholder={resources.placeholders.selectConstraintType}
                         data={constraintTypeOptions}
-                        value={constraintKey}
+                        value={formValues.key || null}
                         onChange={(value) => {
                             if (!value) {
                                 return;
@@ -524,7 +524,7 @@ export function UserConstraintEditor({
                     />
                 )}
 
-                {constraintKey === "forbidden_timerange" && (
+                {constraintKey === "forbidden_timerange" && !isPreference && (
                     <Stack gap="md" mb="md">
                         <Select
                             label={resources.labels.constraintMode}
