@@ -37,6 +37,7 @@ export function AssignmentsPage() {
     const [filterUserId, setFilterUserId] = useState<string | null>(null);
     const [filterActivityId, setFilterActivityId] = useState<string | null>(null);
     const [filterResourceId, setFilterResourceId] = useState<string | null>(null);
+    const [filterWeekNum, setFilterWeekNum] = useState<number | null>(null);
     const [users, setUsers] = useState<UserResponse[]>([]);
 
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
@@ -130,6 +131,18 @@ export function AssignmentsPage() {
         }));
     }, [resourceList]);
 
+    const weekNumFilterOptions = useMemo(() => {
+        return Array.from({ length: 53 }, (_, i) => ({
+            value: String(i + 1),
+            label: String(i + 1),
+        }));
+    }, []);
+
+    const filteredAssignments = useMemo(() => {
+        if (filterWeekNum === null) return assignments;
+        return assignments.filter((a) => a.weekNum === filterWeekNum);
+    }, [assignments, filterWeekNum]);
+
     const fetchAssignments = useCallback(async (
         periodId: string,
         userId?: string | null,
@@ -169,6 +182,7 @@ export function AssignmentsPage() {
         setSelectedPeriodId(value);
         setSelectedAssignment(null);
         setFilterActivityId(null);
+        setFilterWeekNum(null);
     };
 
     const handleAddClick = () => {
@@ -291,12 +305,23 @@ export function AssignmentsPage() {
                                 clearable
                             />
                         </div>
+                        <div className={styles.filterSelect}>
+                            <Select
+                                label={resources.weekNumFilterLabel}
+                                placeholder={resources.weekNumFilterPlaceholder}
+                                data={weekNumFilterOptions}
+                                value={filterWeekNum !== null ? String(filterWeekNum) : null}
+                                onChange={(v) => setFilterWeekNum(v !== null ? Number(v) : null)}
+                                searchable
+                                clearable
+                            />
+                        </div>
                     </div>
                 )}
 
                 {selectedPeriodId && (
                     <AssignmentsDataTable
-                        assignments={assignments}
+                        assignments={filteredAssignments}
                         slots={slots}
                         activities={activities}
                         resourceList={resourceList}

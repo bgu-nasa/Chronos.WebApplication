@@ -21,7 +21,8 @@
     "validation": {
         "resourceRequired": "נדרש משאב",
         "activityRequired": "נדרשת פעילות",
-        "weekNumRequired": "נדרש מספר שבוע"
+        "weekNumRequired": "נדרש מספר שבוע",
+        "weekNumRange": "מספר השבוע חייב להיות בין 1 ל-53"
     },
     "notifications": {
         "createSuccess": "הקצאה נוצרה בהצלחה",
