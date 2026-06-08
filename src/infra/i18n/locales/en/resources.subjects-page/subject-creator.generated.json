@@ -1,5 +1,8 @@
 {
     "modalTitle": "Create Course",
+    "departmentLabel": "Department",
+    "departmentPlaceholder": "Select department",
+    "noDepartmentsFound": "No departments found",
     "codeLabel": "Course Code",
     "codePlaceholder": "e.g. CS101",
     "nameLabel": "Course Name",

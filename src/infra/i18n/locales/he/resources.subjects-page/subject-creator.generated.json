@@ -1,5 +1,8 @@
 {
     "modalTitle": "יצירת קורס",
+    "departmentLabel": "המחלקה",
+    "departmentPlaceholder": "בחר מחלקה",
+    "noDepartmentsFound": "לא נמצאו מחלקות",
     "codeLabel": "קוד הקורס",
     "codePlaceholder": "לדוגמה, CS101",
     "nameLabel": "שם הקורס",

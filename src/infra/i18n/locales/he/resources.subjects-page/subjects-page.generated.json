@@ -8,7 +8,8 @@
         "nameLabel": "שם המסלול",
         "namePlaceholder": "לדוגמה, מערכות הפעלה",
         "clearButton": "פילטרים נקיים",
-        "noDepartmentsFound": "לא נמצאו מחלקות"
+        "noDepartmentsFound": "לא נמצאו מחלקות",
+        "allDepartmentsOption": "כל המחלקות"
     },
     "createButton": "יצור",
     "editButton": "עריכה",

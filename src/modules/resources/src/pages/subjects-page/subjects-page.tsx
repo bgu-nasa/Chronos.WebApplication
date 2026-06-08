@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { ConfirmationDialog, useConfirmation } from "@/common";
 import { SubjectActions } from "./components/subject-actions";
 import { SubjectTable } from "./components/subject-table/subject-table";
-import { SubjectSearch, type SubjectSearchFilters } from "./components/subject-search";
+import { ALL_DEPARTMENTS, SubjectSearch, type SubjectSearchFilters } from "./components/subject-search";
 import { SubjectCreator } from "./components/subject-creator";
 import { SubjectEditor } from "./components/subject-editor";
 import type { SubjectData } from "./components/subject-table/types";
@@ -19,12 +19,6 @@ import resourcesJson from "./subjects-page.resources.json";
 import styles from "./subjects-page.module.css";
 import { schedulingPeriodRepository, departmentRepository } from "@/modules/resources/src/data";
 import { translatedResources } from "@/infra/i18n";
-import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
-
-const notificationResources = translatedResources(
-    "src/infra/service/notification/notification.resources.json",
-    notificationResourcesJson,
-);
 
 const resources = translatedResources("src/modules/resources/src/pages/subjects-page/subjects-page.resources.json", resourcesJson);
 
@@ -38,6 +32,7 @@ export function SubjectsPage() {
     const [codeFilter, setCodeFilter] = useState<string>("");
     const [nameFilter, setNameFilter] = useState<string>("");
     const [schedulingPeriods, setSchedulingPeriods] = useState<Map<string, string>>(new Map());
+    const [departmentsMap, setDepartmentsMap] = useState<Map<string, string>>(new Map());
     
     const { subjects, fetchSubjects, setCurrentDepartment } = useSubjects();
     const { createSubject, isLoading: isCreating } = useCreateSubject();
@@ -52,7 +47,7 @@ export function SubjectsPage() {
         isLoading: isDeleting,
     } = useConfirmation();
 
-    // Fetch scheduling periods on mount
+    // Fetch scheduling periods and build departments map on mount
     useEffect(() => {
         const loadSchedulingPeriods = async () => {
             try {
@@ -65,43 +60,49 @@ export function SubjectsPage() {
             }
         };
         loadSchedulingPeriods();
+
+        const org = $app.organization.getOrganization();
+        if (org?.departments) {
+            const deptsMap = new Map(
+                org.departments.filter((d) => !d.deleted).map((d) => [d.id, d.name])
+            );
+            setDepartmentsMap(deptsMap);
+        }
     }, []);
 
     const handleSearch = async (filters: SubjectSearchFilters) => {
-        // TODO: Backend endpoint needed for filtered search
-        // Expected endpoint: GET /api/department/{departmentId}/resources/subjects/subject
-        // Query params: ?code={code}&name={name}
-        
-        if (!filters.departmentId) {
-            $app.logger.warn(resources.logger.departmentIdRequired);
-            $app.notifications.showWarning(
-                notificationResources.warningTitle,
-                resources.notifications.departmentRequired
-            );
-            return;
+        const isAllDepartments = filters.departmentId === ALL_DEPARTMENTS;
+
+        if (isAllDepartments) {
+            setCurrentDepartmentId(ALL_DEPARTMENTS);
+            setCurrentDepartmentName(null);
+
+            const org = $app.organization.getOrganization();
+            const apiDepartmentId = org?.departments?.find((d) => !d.deleted)?.id;
+            if (!apiDepartmentId) {
+                return;
+            }
+            setCurrentDepartment(apiDepartmentId);
+        } else {
+            try {
+                const department = await departmentRepository.getById(filters.departmentId);
+                setCurrentDepartmentName(department.name);
+                $app.logger.info(resources.logger.fetchedDepartment, { id: department.id, name: department.name });
+            } catch (error) {
+                $app.logger.error(resources.logger.errorFetchingDepartment, error);
+                setCurrentDepartmentName(resources.unknownDepartment);
+            }
+
+            setCurrentDepartmentId(filters.departmentId);
+            setCurrentDepartment(filters.departmentId);
         }
 
-        // Fetch department name
-        try {
-            const department = await departmentRepository.getById(filters.departmentId);
-            setCurrentDepartmentName(department.name);
-            $app.logger.info(resources.logger.fetchedDepartment, { id: department.id, name: department.name });
-        } catch (error) {
-            $app.logger.error(resources.logger.errorFetchingDepartment, error);
-            setCurrentDepartmentName(resources.unknownDepartment);
-        }
-
-        setCurrentDepartmentId(filters.departmentId);
-        setCurrentDepartment(filters.departmentId);
         setCodeFilter(filters.code);
         setNameFilter(filters.name);
         fetchSubjects();
     };
 
     const handleClearFilters = () => {
-        // Reset all state - clear department context and selected subject
-        setCurrentDepartmentId(null);
-        setCurrentDepartmentName(null);
         setCodeFilter("");
         setNameFilter("");
         setSelectedSubject(null);
@@ -111,11 +112,12 @@ export function SubjectsPage() {
         setCreateModalOpened(true);
     };
 
-    const handleCreateSubmit = async (data: { code: string; name: string; schedulingPeriodId: string }) => {
+    const handleCreateSubmit = async (data: { code: string; name: string; schedulingPeriodId: string; departmentId?: string }) => {
         $app.logger.info(resources.logger.handleCreateSubmitCalled, data);
         $app.logger.info(resources.logger.currentDepartmentId, currentDepartmentId);
-        
-        if (!currentDepartmentId) {
+
+        const departmentId = data.departmentId ?? (currentDepartmentId !== ALL_DEPARTMENTS ? currentDepartmentId : null);
+        if (!departmentId) {
             $app.logger.error(resources.logger.noDepartmentIdSet);
             return;
         }
@@ -130,7 +132,7 @@ export function SubjectsPage() {
 
         const request = {
             organizationId: org.id,
-            departmentId: currentDepartmentId,
+            departmentId,
             schedulingPeriodId: data.schedulingPeriodId,
             code: data.code,
             name: data.name,
@@ -164,7 +166,15 @@ export function SubjectsPage() {
         $app.logger.info(resources.logger.selectedSubject, selectedSubject);
         $app.logger.info(resources.logger.currentDepartmentId, currentDepartmentId);
         
-        if (!selectedSubject || !currentDepartmentId) {
+        if (!selectedSubject) {
+            $app.logger.error(resources.logger.missingSubjectOrDepartment);
+            return;
+        }
+
+        const departmentId = currentDepartmentId === ALL_DEPARTMENTS
+            ? selectedSubject.departmentId
+            : currentDepartmentId;
+        if (!departmentId) {
             $app.logger.error(resources.logger.missingSubjectOrDepartment);
             return;
         }
@@ -179,7 +189,7 @@ export function SubjectsPage() {
 
         const request: UpdateSubjectRequest = {
             organizationId: org.id,
-            departmentId: currentDepartmentId,
+            departmentId,
             schedulingPeriodId: data.schedulingPeriodId,
             code: data.code,
             name: data.name,
@@ -223,39 +233,42 @@ export function SubjectsPage() {
     };
 
     const handleViewActivitiesClick = () => {
-        if (selectedSubject && currentDepartmentId) {
+        if (!selectedSubject) return;
+
+        const departmentId = currentDepartmentId === ALL_DEPARTMENTS
+            ? selectedSubject.departmentId
+            : currentDepartmentId;
+        if (departmentId) {
             navigate(
-                `/resources/activities?subjectId=${selectedSubject.id}&departmentId=${currentDepartmentId}`
+                `/resources/activities?subjectId=${selectedSubject.id}&departmentId=${departmentId}`
             );
         }
     };
 
-    // Convert SubjectResponse to SubjectData with display names
-    // Only show subjects if department context is set
-    // Filter subjects by department ID, code, and name
+    const isAllDepartments = currentDepartmentId === ALL_DEPARTMENTS;
+
     const subjectData: SubjectData[] = currentDepartmentId
         ? subjects
             .filter((subject) => {
-                // Filter by department
-                if (subject.departmentId !== currentDepartmentId) return false;
-                
-                // Filter by code if specified
+                if (!isAllDepartments && subject.departmentId !== currentDepartmentId) return false;
+
                 if (codeFilter && !subject.code.toLowerCase().includes(codeFilter.toLowerCase())) {
                     return false;
                 }
-                
-                // Filter by name if specified
+
                 if (nameFilter && !subject.name.toLowerCase().includes(nameFilter.toLowerCase())) {
                     return false;
                 }
-                
+
                 return true;
             })
              .map((subject) => ({
                  id: subject.id,
                  code: subject.code,
                  name: subject.name,
-                 departmentName: currentDepartmentName || resources.loadingText,
+                 departmentName: isAllDepartments
+                     ? departmentsMap.get(subject.departmentId) || resources.unknownDepartment
+                     : currentDepartmentName || resources.loadingText,
                  schedulingPeriodName: schedulingPeriods.get(subject.schedulingPeriodId) || resources.unknownText,
                  departmentId: subject.departmentId,
                  schedulingPeriodId: subject.schedulingPeriodId,
@@ -293,6 +306,7 @@ export function SubjectsPage() {
                     onClose={() => setCreateModalOpened(false)}
                     onSubmit={handleCreateSubmit}
                     loading={isCreating}
+                    showDepartmentPicker={isAllDepartments}
                 />
 
                 <SubjectEditor

@@ -76,12 +76,11 @@ export const useSubjectStore = create<SubjectStore>((set, get) => ({
         $app.logger.info("[SubjectStore] createSubject called");
         set({ isLoading: true, error: null });
         try {
-            const departmentId = get().getDepartmentId();
-            $app.logger.info("[SubjectStore] Department ID:", departmentId);
+            $app.logger.info("[SubjectStore] Department ID:", request.departmentId);
             $app.logger.info("[SubjectStore] Request:", JSON.stringify(request, null, 2));
             
             const newSubject = await subjectDataRepository.createSubject(
-                departmentId,
+                request.departmentId,
                 request
             );
             
@@ -115,11 +114,10 @@ export const useSubjectStore = create<SubjectStore>((set, get) => ({
         
         set({ isLoading: true, error: null });
         try {
-            const departmentId = get().getDepartmentId();
-            $app.logger.info("[SubjectStore] Department ID:", departmentId);
+            $app.logger.info("[SubjectStore] Department ID:", request.departmentId);
             
             await subjectDataRepository.updateSubject(
-                departmentId,
+                request.departmentId,
                 subjectId,
                 request
             );
