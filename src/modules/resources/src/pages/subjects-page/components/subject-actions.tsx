@@ -30,21 +30,21 @@ export function SubjectActions({
             </Button>
             <Button 
                 onClick={onEditClick} 
-                disabled={!selectedSubject || !hasDepartmentContext}
+                disabled={!selectedSubject}
                 variant="outline"
             >
                 {resources.editButton}
             </Button>
             <Button 
                 onClick={onDeleteClick} 
-                disabled={!selectedSubject || !hasDepartmentContext}
+                disabled={!selectedSubject}
                 variant="outline"
             >
                 {resources.deleteButton}
             </Button>
             <Button 
                 onClick={onViewActivitiesClick} 
-                disabled={!selectedSubject || !hasDepartmentContext}
+                disabled={!selectedSubject}
                 variant="light"
             >
                 {resources.viewActivitiesButton}

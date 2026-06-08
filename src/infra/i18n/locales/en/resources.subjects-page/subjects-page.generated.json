@@ -8,7 +8,8 @@
         "nameLabel": "Course Name",
         "namePlaceholder": "e.g. Operating Systems",
         "clearButton": "Clear Filters",
-        "noDepartmentsFound": "No departments found"
+        "noDepartmentsFound": "No departments found",
+        "allDepartmentsOption": "All Departments"
     },
     "createButton": "Create",
     "editButton": "Edit",

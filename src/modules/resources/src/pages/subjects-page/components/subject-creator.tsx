@@ -1,5 +1,6 @@
 import { Modal, TextInput, Button, Stack, Select } from "@mantine/core";
 import { useState, useEffect } from "react";
+import { DepartmentSelect } from "@/common/components/department-select";
 import { schedulingPeriodRepository } from "@/modules/resources/src/data";
 import resourcesJson from "./subject-creator.resources.json";
 import { translatedResources } from "@/infra/i18n";
@@ -17,8 +18,9 @@ const resources = translatedResources(
 interface SubjectCreatorProps {
     opened: boolean;
     onClose: () => void;
-    onSubmit: (data: { code: string; name: string; schedulingPeriodId: string }) => Promise<void>;
+    onSubmit: (data: { code: string; name: string; schedulingPeriodId: string; departmentId?: string }) => Promise<void>;
     loading?: boolean;
+    showDepartmentPicker?: boolean;
 }
 
 export function SubjectCreator({
@@ -26,9 +28,11 @@ export function SubjectCreator({
     onClose,
     onSubmit,
     loading = false,
+    showDepartmentPicker = false,
 }: SubjectCreatorProps) {
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
+    const [departmentId, setDepartmentId] = useState<string | null>(null);
     const [schedulingPeriodId, setSchedulingPeriodId] = useState<string | null>(null);
     const [schedulingPeriods, setSchedulingPeriods] = useState<{ value: string; label: string }[]>([]);
     const [isLoadingPeriods, setIsLoadingPeriods] = useState(false);
@@ -64,23 +68,30 @@ export function SubjectCreator({
     const handleSubmit = async () => {
         $app.logger.info(resources.logger.handleSubmitCalled, { code, name, schedulingPeriodId });
         
-        if (!code.trim() || !name.trim() || !schedulingPeriodId) {
+        if (!code.trim() || !name.trim() || !schedulingPeriodId || (showDepartmentPicker && !departmentId)) {
             $app.logger.warn(resources.logger.validationFailed);
             return;
         }
         
         $app.logger.info(resources.logger.callingOnSubmit);
-        await onSubmit({ code, name, schedulingPeriodId });
+        await onSubmit({
+            code,
+            name,
+            schedulingPeriodId,
+            ...(showDepartmentPicker && departmentId ? { departmentId } : {}),
+        });
         
         $app.logger.info(resources.logger.onSubmitCompleted);
         setCode("");
         setName("");
+        setDepartmentId(null);
         setSchedulingPeriodId(null);
     };
 
     const handleClose = () => {
         setCode("");
         setName("");
+        setDepartmentId(null);
         setSchedulingPeriodId(null);
         onClose();
     };
@@ -93,6 +104,16 @@ export function SubjectCreator({
             centered
         >
             <Stack>
+                {showDepartmentPicker && (
+                    <DepartmentSelect
+                        value={departmentId}
+                        onChange={setDepartmentId}
+                        label={resources.departmentLabel}
+                        placeholder={resources.departmentPlaceholder}
+                        nothingFoundMessage={resources.noDepartmentsFound}
+                        required
+                    />
+                )}
                 <TextInput
                     label={resources.codeLabel}
                     placeholder={resources.codePlaceholder}
@@ -120,7 +141,7 @@ export function SubjectCreator({
                 <Button
                     onClick={handleSubmit}
                     loading={loading}
-                    disabled={!code.trim() || !name.trim() || !schedulingPeriodId || isLoadingPeriods}
+                    disabled={!code.trim() || !name.trim() || !schedulingPeriodId || isLoadingPeriods || (showDepartmentPicker && !departmentId)}
                     fullWidth
                 >
                     {resources.submitButton}

@@ -22,9 +22,13 @@ interface DepartmentSelectProps {
     error?: string;
     clearable?: boolean;
     includeDeleted?: boolean; // Whether to show deleted departments
+    includeAllOption?: boolean;
+    allOptionLabel?: string;
     style?: React.CSSProperties;
     className?: string;
 }
+
+export const ALL_DEPARTMENTS = "__all__";
 
 interface DepartmentSelectItemProps
     extends React.ComponentPropsWithoutRef<"div"> {
@@ -60,6 +64,8 @@ export function DepartmentSelect({
     error,
     clearable = true,
     includeDeleted = false,
+    includeAllOption = false,
+    allOptionLabel = "All Departments",
     style,
     className,
 }: DepartmentSelectProps) {
@@ -79,12 +85,16 @@ export function DepartmentSelect({
     }, [includeDeleted]);
 
     // Transform departments to Mantine Select data format
-    const selectData: (ComboboxItem & Partial<DepartmentSelectItemProps>)[] =
-        departments.map((dept) => ({
+    const selectData: (ComboboxItem & Partial<DepartmentSelectItemProps>)[] = [
+        ...(includeAllOption
+            ? [{ value: ALL_DEPARTMENTS, label: allOptionLabel, deleted: false }]
+            : []),
+        ...departments.map((dept) => ({
             value: dept.id,
             label: dept.name,
             deleted: dept.deleted,
-        }));
+        })),
+    ];
 
     return (
         <Select
