@@ -61,7 +61,7 @@ export function AssignmentEditor() {
             if (mode === "edit" && assignment) {
                 setResourceId(assignment.resourceId);
                 setActivityId(assignment.activityId);
-                setWeekNum(assignment.weekNum);
+                setWeekNum(assignment.weekNum ?? '');
             } else {
                 setResourceId(null);
                 setActivityId(null);
@@ -78,10 +78,11 @@ export function AssignmentEditor() {
         if (!activityId) {
             newErrors.activityId = resources.validation.activityRequired;
         }
-        if (weekNum === '' || weekNum === null || weekNum === undefined) {
-            newErrors.weekNum = resources.validation.weekNumRequired;
-        } else if (Number(weekNum) < 1 || Number(weekNum) > 53) {
-            newErrors.weekNum = resources.validation.weekNumRange;
+        if (weekNum !== '' && weekNum !== null && weekNum !== undefined) {
+            const parsedWeekNum = Number(weekNum);
+            if (parsedWeekNum < 1 || parsedWeekNum > 53) {
+                newErrors.weekNum = resources.validation.weekNumRange;
+            }
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -92,6 +93,7 @@ export function AssignmentEditor() {
 
         if (!validate()) return;
 
+        const parsedWeekNum = weekNum === '' ? null : Number(weekNum);
         let success = false;
 
         if (mode === "create" && slotId && resourceId && activityId) {
@@ -99,7 +101,7 @@ export function AssignmentEditor() {
                 slotId,
                 resourceId,
                 activityId,
-                weekNum: weekNum as number,
+                weekNum: parsedWeekNum,
             });
             success = result !== null;
             if (success) {
@@ -118,7 +120,7 @@ export function AssignmentEditor() {
                 slotId: assignment.slotId,
                 resourceId,
                 activityId,
-                weekNum: weekNum as number,
+                weekNum: parsedWeekNum,
             });
             if (success) {
                 $app.notifications.showSuccess(
@@ -218,7 +220,6 @@ export function AssignmentEditor() {
                             });
                         }}
                         error={errors.weekNum}
-                        required
                         min={1}
                         max={53}
                         clampBehavior="none"
