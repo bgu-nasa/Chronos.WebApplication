@@ -2,6 +2,6 @@
     "notifications": {
         "updating": "מעדכן סיסמה...",
         "updateSuccess": "הסיסמה עודכנה בהצלחה",
-        "updateError": "נכשל לעדכן את הסיסמה"
+        "updateError": "נכשל בעדכון הסיסמה"
     }
 }

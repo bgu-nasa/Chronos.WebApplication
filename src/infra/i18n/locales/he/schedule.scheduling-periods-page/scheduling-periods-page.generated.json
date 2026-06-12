@@ -25,10 +25,38 @@
     "deleteConfirmButton": "מחיקה",
     "deleteCancelButton": "ביטול",
     "emptyStateMessage": "לא נמצאו סמסטרים. לחצו על \"יצירה\" כדי להוסיף.",
-    "runBatchAssignmentButton": "הרצת שיבוץ אצווה",
-    "batchAssignmentConfirmTitle": "הרצת שיבוץ אצווה",
-    "batchAssignmentConfirmMessage": "כל השיבוצים הקיימים בסמסטר זה יימחקו, ולאחר מכן יורץ שיבוץ אצווה ליצירת שיבוצים חדשים. לא ניתן לבטל. להמשיך?",
+    "viewSlotsButton": "הצגת משבצות זמן",
+    "slotsPanelTitle": "משבצות זמן - {name}",
+    "slotsPanelCloseAriaLabel": "סגירת פאנל משבצות זמן",
+    "slotsPanelExpiredMessage": "סמסטר זה פג תוקף. לא ניתן לערוך משבצות זמן.",
+    "assignmentsPanelTitle": "שיבוצים",
+    "assignmentsPanelCloseButton": "סגור",
+    "assignmentsPanelSlotHeader": "{weekday} • {fromTime} - {toTime}",
+    "assignmentDeleteConfirmTitle": "מחיקת שיבוץ",
+    "assignmentDeleteConfirmMessage": "האם אתה בטוח שברצונך למחוק שיבוץ זה?",
+    "runBatchAssignmentButton": "הרצת שיבוץ אוטומטי",
+    "batchAssignmentConfirmTitle": "הרצת שיבוץ אוטומטי",
+    "batchAssignmentConfirmMessage": "כל השיבוצים הקיימים בסמסטר זה יימחקו, ולאחר מכן יורץ שיבוץ אוטומטי ליצירת שיבוצים חדשים. לא ניתן לבטל. להמשיך?",
     "batchAssignmentConfirmButton": "הרצה",
-    "batchAssignmentSuccess": "בקשת שיבוץ האצווה נשלחה. השיבוצים ייווצרו בקרוב.",
-    "batchAssignmentFailed": "שליחת בקשת שיבוץ האצווה נכשלה."
+    "batchAssignmentSuccess": "בקשת השיבוץ האוטומטי נשלחה. השיבוצים ייווצרו בקרוב.",
+    "batchAssignmentFailed": "שליחת בקשת שיבוץ אוטומטי נכשלה.",
+    "assignmentTable": {
+        "loading": "טוען שיבוצים...",
+        "empty": "לא נמצאו שיבוצים למשבצת זמן זו",
+        "week": "שבוע:",
+        "resource": "חדר:",
+        "activity": "פעילות:"
+    },
+    "notifications": {
+        "semesterDeleteSuccess": "הסמסטר נמחק בהצלחה",
+        "semesterDeleteError": "מחיקת הסמסטר נכשלה",
+        "slotDeleteSuccess": "המשבצת זמן נמחקה בהצלחה",
+        "slotDeleteError": "מחיקת המשבצת זמן נכשלה",
+        "semesterCreateSuccess": "הסמסטר נוצר בהצלחה",
+        "semesterCreateError": "יצירת הסמסטר נכשלה",
+        "semesterUpdateSuccess": "הסמסטר עודכן בהצלחה",
+        "semesterUpdateError": "עדכון הסמסטר נכשל",
+        "assignmentDeleteSuccess": "השיבוץ נמחק בהצלחה",
+        "assignmentDeleteError": "מחיקת השיבוץ נכשלה"
+    }
 }

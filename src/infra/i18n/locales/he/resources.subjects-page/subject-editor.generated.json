@@ -8,14 +8,11 @@
     "schedulingPeriodPlaceholder": "בחר סמסטר",
     "submitButton": "שמירת שינויים",
     "notifications": {
-        "loadSchedulingPeriodsError": {
-            "title": "שגיאה",
-            "message": "טעינת הסמסטרים נכשלה"
-        }
+        "loadSchedulingPeriodsFailed": "טעינת הסמסטרים נכשלה"
     },
     "logger": {
-        "fetchedSchedulingPeriods": "תקופות תזמון שנשלחו",
-        "errorFetchingSchedulingPeriods": "תקופות תזמון שגיאות בשיאה:",
+        "fetchedSchedulingPeriods": "סמסטרים שנשלחו",
+        "errorFetchingSchedulingPeriods": "סמסטרים שגיאות בשיאה:",
         "handleSubmitCalled": "handleSubmit נקרא",
         "validationFailed": "האימות נכשל - שדות ריקים",
         "callingOnSubmit": "קורא להגשה...",

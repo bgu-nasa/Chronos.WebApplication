@@ -1,17 +1,17 @@
 {
     "notifications": {
-        "creating": "מחלקת יצירה...",
-        "updating": "מחלקת עדכון...",
-        "deleting": "מחק את המחלקה...",
-        "restoring": "מחלקת שיקום...",
-        "createSuccess": "המחלקה שנוצרה בהצלחה",
+        "creating": "יוצר את המחלקה...",
+        "updating": "מעדכן את המחלקה...",
+        "deleting": "מוחק את המחלקה...",
+        "restoring": "משחזר את מחלקה...",
+        "createSuccess": "המחלקה נוצרה בהצלחה",
         "updateSuccess": "המחלקה עודכנה בהצלחה",
         "deleteSuccess": "המחלקה נמחקה בהצלחה",
-        "restoreSuccess": "המחלקה שוקמה בהצלחה",
+        "restoreSuccess": "המחלקה שוחזרה בהצלחה",
         "createError": "נכשל ביצירת מחלקה",
-        "updateError": "נכשל לעדכן את המחלקה",
+        "updateError": "נכשל בעדכון המחלקה",
         "deleteError": "נכשל במחיקת המחלקה",
-        "restoreError": "נכשל בשיקום המחלקה",
+        "restoreError": "נכשל בשחזור המחלקה",
         "fetchError": "נכשל באיסוף מחלקות"
     }
 }

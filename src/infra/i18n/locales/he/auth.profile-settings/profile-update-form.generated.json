@@ -2,10 +2,10 @@
     "successMessage": "הפרופיל עודכן בהצלחה!",
     "form": {
         "firstName": "שם פרטי",
-        "firstNamePlaceholder": "John",
+        "firstNamePlaceholder": "ג'ון",
         "lastName": "שם משפחה",
         "lastNamePlaceholder": "דו",
-        "avatarUrl": "כתובת URL של אווטאר"
+        "avatarUrl": "כתובת URL של האווטאר"
     },
     "buttons": {
         "save": "שמירת שינויים"

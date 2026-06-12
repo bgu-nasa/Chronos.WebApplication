@@ -1,8 +1,8 @@
 {
     "title": "ניהול מחלקות",
-    "createButton": "יצור",
+    "createButton": "יצירה",
     "editButton": "עריכה",
-    "deleteButton": "מחק",
+    "deleteButton": "מחיקה",
     "nameColumn": "שם",
     "statusColumn": "סטטוס",
     "active": "פעיל",
@@ -14,11 +14,11 @@
     "editorNamePlaceholder": "הזן את שם המחלקה",
     "editorCancelButton": "ביטול",
     "editorSaveButton": "שמור",
-    "editorCreateButton": "יצור",
+    "editorCreateButton": "יצירה",
     "editorNameRequired": "שם המחלקה נדרש",
     "emptyStateMessage": "עדיין אין מחלקות. התחילו בהקמת המחלקה הראשונה שלכם!",
     "deleteConfirmTitle": "מחיקת המחלקה",
     "deleteConfirmMessage": "האם למחוק את המחלקה \"{name}\"? המחלקה תסומן כמחוקה וניתן לשחזר אותה מאוחר יותר.",
-    "deleteConfirmButton": "מחק",
+    "deleteConfirmButton": "מחיקה",
     "deleteCancelButton": "ביטול"
 }

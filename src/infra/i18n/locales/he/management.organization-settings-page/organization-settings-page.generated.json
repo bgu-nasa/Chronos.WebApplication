@@ -22,7 +22,7 @@
     "deleteDialog": {
         "title": "אישור מחיקת ארגון",
         "message": "האם למחוק את הארגון? הוא יסומן למחיקה והגישה תוגבל. ניתן לשחזר מאוחר יותר.",
-        "confirmButton": "מחק",
+        "confirmButton": "מחיקה",
         "cancelButton": "ביטול"
     },
     "restoreDialog": {
