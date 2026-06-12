@@ -38,9 +38,11 @@
         "placeholder": "Select user to view constraints",
         "nothingFoundMessage": "No users found"
     },
+    "userSelectDisclaimer": "Select a user to view calendar activities.",
     "schedulingPeriodSelect": {
-        "label": "Scheduling Period",
+        "label": "Semester",
         "placeholder": "Select period",
         "nothingFoundMessage": "No periods found"
-    }
+    },
+    "sidebarTitle": "View Options"
 }

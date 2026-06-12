@@ -1,9 +1,9 @@
 {
     "title": "My Assignments",
-    "schedulingPeriodLabel": "Scheduling Period",
-    "schedulingPeriodPlaceholder": "Select a scheduling period",
+    "schedulingPeriodLabel": "Semester",
+    "schedulingPeriodPlaceholder": "Select a semester",
     "emptyStateMessage": "No assignments found.",
-    "noPeriodsMessage": "No scheduling periods found.",
+    "noPeriodsMessage": "No semesters found.",
     "resourceColumn": "Resource",
     "activityColumn": "Activity",
     "userColumn": "User",
@@ -11,6 +11,17 @@
     "timeColumn": "Time",
     "resourceFilterLabel": "Resource",
     "resourceFilterPlaceholder": "All resources",
+    "createAppealModal": {
+        "title": "Create Appeal",
+        "titleLabel": "Title",
+        "titlePlaceholder": "Enter appeal title",
+        "titleRequired": "Title is required",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Describe your appeal reason",
+        "descriptionRequired": "Description is required",
+        "cancelButton": "Cancel",
+        "submitButton": "Submit Appeal"
+    },
     "notifications": {
         "fetchError": "Failed to fetch assignments",
         "appealSuccess": "Appeal submitted",
