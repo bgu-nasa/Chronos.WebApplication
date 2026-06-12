@@ -1,6 +1,13 @@
 import { useEffect } from "react";
 import { Select, Stack, Text } from "@mantine/core";
 import { useSchedulingPeriods } from "@/modules/schedule/src/hooks/use-scheduling-periods";
+import { translatedResources } from "@/infra/i18n";
+import resourcesJson from "../calendar-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/calendar-page/calendar-page.resources.json",
+    resourcesJson,
+);
 
 interface SchedulingPeriodSelectProps {
     readonly value: string | null;
@@ -22,18 +29,19 @@ export function SchedulingPeriodSelect({ value, onChange }: SchedulingPeriodSele
     return (
         <Stack gap="xs">
             <Text size="sm" fw={500}>
-                Scheduling Period
+                {resources.schedulingPeriodSelect.label}
             </Text>
             <Select
-                placeholder="Select period"
+                placeholder={resources.schedulingPeriodSelect.placeholder}
                 data={data}
                 value={value}
                 onChange={onChange}
                 disabled={isLoading}
-                nothingFoundMessage="No periods found"
+                nothingFoundMessage={resources.schedulingPeriodSelect.nothingFoundMessage}
                 searchable
                 clearable
             />
         </Stack>
     );
 }
+

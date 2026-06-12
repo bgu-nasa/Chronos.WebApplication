@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Box, Flex, Paper, Group } from "@mantine/core";
+import { Box, Flex, Paper, Group, Title, Divider, Text } from "@mantine/core";
 import { translatedResources } from "@/infra/i18n";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
@@ -94,10 +94,8 @@ export function CalendarPage() {
 
     if (userId) {
       setCurrentUserId(userId);
-      // For non-admin users, set and lock the user selection
-      if (!userIsAdmin) {
-        setSelectedUserId(userId);
-      }
+      // Always set selected user to current user initially
+      setSelectedUserId(userId);
     }
     setIsAdmin(userIsAdmin);
 
@@ -344,28 +342,7 @@ export function CalendarPage() {
   };
 
   return (
-    <Flex className={styles.calendarPageContainer} direction="column" gap="md">
-      <Paper withBorder p="md" className={styles.topBar}>
-        <Group
-          gap="md"
-          align="flex-start"
-          className={styles.controlsGroup}
-          wrap="wrap"
-        >
-          <Box className={styles.controlItem}>
-            <SchedulingPeriodSelect value={selectedPeriodId} onChange={setSelectedPeriodId} />
-          </Box>
-          {isAdmin ? (
-            <Box className={styles.controlItem}>
-              <UserSelect value={selectedUserId} onChange={setSelectedUserId} />
-            </Box>
-          ) : (
-            <Box className={styles.controlItem}>
-              <UserSelect value={selectedUserId} onChange={() => { }} disabled />
-            </Box>
-          )}
-        </Group>
-      </Paper>
+    <Flex className={styles.calendarPageContainer} direction="row" gap="md">
       <Box className={styles.content}>
         <WeekView
           initialDate={initialCalendarDate}
@@ -381,6 +358,31 @@ export function CalendarPage() {
           }}
         />
       </Box>
+      <Paper withBorder p="md" className={styles.sideBar}>
+        <Flex direction="column" gap="md" className={styles.sideBarContent}>
+          <Title order={4} fw={600}>{resources.sidebarTitle}</Title>
+          <Divider />
+          <Box className={styles.controlItem}>
+            <SchedulingPeriodSelect value={selectedPeriodId} onChange={setSelectedPeriodId} />
+          </Box>
+          <Box className={styles.controlItem}>
+            <UserSelect
+              value={isAdmin ? selectedUserId : currentUserId}
+              onChange={(value: string | null) => {
+                // Only allow admin to change user and never allow clearing the selection
+                if (isAdmin && value) {
+                  setSelectedUserId(value);
+                }
+              }}
+              disabled={!isAdmin}
+            />
+            {/* Disclaimer for user selector */}
+            <Text size="xs" c="dimmed" className={styles.disclaimer}>
+              {resources.userSelectDisclaimer}
+            </Text>
+          </Box>
+        </Flex>
+      </Paper>
 
       {timeRangeSelection && (
         <TimeRangeSelectionModal
