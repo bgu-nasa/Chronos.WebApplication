@@ -10,6 +10,13 @@ import { Select, Text } from "@mantine/core";
 import type { ComboboxItem } from "@mantine/core";
 import { $app } from "@/infra/service";
 import type { Department } from "./department.types";
+import { translatedResources } from "@/infra/i18n";
+import resourcesJson from "./department-select.resources.json";
+
+const resources = translatedResources(
+    "src/common/components/department-select/department-select.resources.json",
+    resourcesJson,
+);
 
 interface DepartmentSelectProps {
     value?: string | null;
@@ -56,16 +63,16 @@ function SelectItem({ label, deleted, ...others }: DepartmentSelectItemProps) {
 export function DepartmentSelect({
     value,
     onChange,
-    label = "Department",
-    placeholder = "Select a department",
-    nothingFoundMessage = "No departments found",
+    label = resources.label,
+    placeholder = resources.placeholder,
+    nothingFoundMessage = resources.nothingFoundMessage,
     disabled = false,
     required = false,
     error,
     clearable = true,
     includeDeleted = false,
     includeAllOption = false,
-    allOptionLabel = "All Departments",
+    allOptionLabel = resources.allOptionLabel,
     style,
     className,
 }: DepartmentSelectProps) {

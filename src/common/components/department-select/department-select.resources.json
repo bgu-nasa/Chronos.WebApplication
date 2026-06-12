@@ -1,0 +1,6 @@
+{
+    "label": "Department",
+    "placeholder": "Select a department",
+    "nothingFoundMessage": "No departments found",
+    "allOptionLabel": "All Departments"
+}
