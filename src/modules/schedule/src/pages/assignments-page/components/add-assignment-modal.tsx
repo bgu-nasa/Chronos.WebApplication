@@ -207,9 +207,9 @@ export function AddAssignmentModal({
                         label={resources.slotLabel}
                         placeholder={
                             !selectedDay
-                                ? "Select a day first"
+                                ? resources.selectDayFirst
                                 : filteredSlots.length === 0
-                                    ? "No slots for this day"
+                                    ? resources.noSlotsForDay
                                     : resources.slotPlaceholder
                         }
                         data={filteredSlots}
@@ -249,7 +249,7 @@ export function AddAssignmentModal({
                         label={resources.activityLabel}
                         placeholder={
                             activityOptions.length === 0
-                                ? "No activities available"
+                                ? resources.noActivitiesAvailable
                                 : resources.activityPlaceholder
                         }
                         data={activityOptions}

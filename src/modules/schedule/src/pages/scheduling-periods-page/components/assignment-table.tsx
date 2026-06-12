@@ -9,6 +9,13 @@ import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import { useResources } from "@/modules/schedule/src/hooks/use-resources";
 import { useActivities } from "@/modules/schedule/src/hooks/use-activities";
+import { translatedResources } from "@/infra/i18n";
+import resourcesJson from "../scheduling-periods-page.resources.json";
+
+const resources = translatedResources(
+    "src/modules/schedule/src/pages/scheduling-periods-page/scheduling-periods-page.resources.json",
+    resourcesJson,
+);
 
 interface AssignmentTableProps {
     assignments: AssignmentResponse[];
@@ -25,15 +32,15 @@ export function AssignmentTable({
     isLoading = false,
     slot,
 }: AssignmentTableProps) {
-    const { resources } = useResources();
+    const { resources: roomsList } = useResources();
     const { activities } = useActivities(slot?.schedulingPeriodId);
 
     // Create lookup maps for display names
     const resourceDisplayMap = useMemo(() => {
         return new Map(
-            resources.map((r) => [r.id, `${r.location} / ${r.identifier}`])
+            roomsList.map((r) => [r.id, `${r.location} / ${r.identifier}`])
         );
-    }, [resources]);
+    }, [roomsList]);
 
     const activityDisplayMap = useMemo(() => {
         return new Map(
@@ -54,7 +61,7 @@ export function AssignmentTable({
     if (isLoading) {
         return (
             <Paper p="xl" withBorder>
-                <Text c="dimmed" ta="center">Loading assignments...</Text>
+                <Text c="dimmed" ta="center">{resources.assignmentTable.loading}</Text>
             </Paper>
         );
     }
@@ -62,7 +69,7 @@ export function AssignmentTable({
     if (assignments.length === 0) {
         return (
             <Paper p="xl" withBorder>
-                <Text c="dimmed" ta="center">No assignments found for this slot</Text>
+                <Text c="dimmed" ta="center">{resources.assignmentTable.empty}</Text>
             </Paper>
         );
     }
@@ -89,13 +96,13 @@ export function AssignmentTable({
                 >
                     <Stack gap={4}>
                         <Text size="sm">
-                            <Text span fw={500}>Week:</Text> {assignment.weekNum}
+                            <Text span fw={500}>{resources.assignmentTable.week}</Text> {assignment.weekNum}
                         </Text>
                         <Text size="sm">
-                            <Text span fw={500}>Resource:</Text> {getResourceDisplay(assignment.resourceId)}
+                            <Text span fw={500}>{resources.assignmentTable.resource}</Text> {getResourceDisplay(assignment.resourceId)}
                         </Text>
                         <Text size="sm">
-                            <Text span fw={500}>Activity:</Text> {getActivityDisplay(assignment.activityId)}
+                            <Text span fw={500}>{resources.assignmentTable.activity}</Text> {getActivityDisplay(assignment.activityId)}
                         </Text>
                     </Stack>
                 </Paper>

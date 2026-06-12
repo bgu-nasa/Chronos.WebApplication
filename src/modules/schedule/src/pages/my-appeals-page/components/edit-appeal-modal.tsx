@@ -37,8 +37,8 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
 
     const validate = () => {
         const newErrors: Record<string, string> = {};
-        if (!title.trim()) newErrors.title = "Title is required";
-        if (!description.trim()) newErrors.description = "Description is required";
+        if (!title.trim()) newErrors.title = resources.titleRequired;
+        if (!description.trim()) newErrors.description = resources.descriptionRequired;
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -82,7 +82,7 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
                 <Stack gap="md">
                     <TextInput
                         label={resources.titleColumn}
-                        placeholder="Enter appeal title"
+                        placeholder={resources.titlePlaceholder}
                         value={title}
                         onChange={(e) => {
                             setTitle(e.currentTarget.value);
@@ -98,7 +98,7 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
 
                     <Textarea
                         label={resources.descriptionColumn}
-                        placeholder="Describe your appeal reason"
+                        placeholder={resources.descriptionPlaceholder}
                         value={description}
                         onChange={(e) => {
                             setDescription(e.currentTarget.value);
@@ -116,10 +116,10 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
 
                     <Group justify="flex-end" mt="md">
                         <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-                            Cancel
+                            {resources.cancelButton}
                         </Button>
                         <Button type="submit" loading={isSubmitting}>
-                            Save
+                            {resources.saveButton}
                         </Button>
                     </Group>
                 </Stack>

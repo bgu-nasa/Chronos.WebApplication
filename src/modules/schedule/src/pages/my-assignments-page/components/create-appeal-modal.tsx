@@ -43,8 +43,8 @@ export function CreateAppealModal({
 
     const validate = () => {
         const newErrors: Record<string, string> = {};
-        if (!title.trim()) newErrors.title = "Title is required";
-        if (!description.trim()) newErrors.description = "Description is required";
+        if (!title.trim()) newErrors.title = resources.createAppealModal.titleRequired;
+        if (!description.trim()) newErrors.description = resources.createAppealModal.descriptionRequired;
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -78,12 +78,12 @@ export function CreateAppealModal({
     };
 
     return (
-        <Modal opened={opened} onClose={onClose} title="Create Appeal" centered size="md">
+        <Modal opened={opened} onClose={onClose} title={resources.createAppealModal.title} centered size="md">
             <form onSubmit={handleSubmit}>
                 <Stack gap="md">
                     <TextInput
-                        label="Title"
-                        placeholder="Enter appeal title"
+                        label={resources.createAppealModal.titleLabel}
+                        placeholder={resources.createAppealModal.titlePlaceholder}
                         value={title}
                         onChange={(e) => {
                             setTitle(e.currentTarget.value);
@@ -98,8 +98,8 @@ export function CreateAppealModal({
                     />
 
                     <Textarea
-                        label="Description"
-                        placeholder="Describe your appeal reason"
+                        label={resources.createAppealModal.descriptionLabel}
+                        placeholder={resources.createAppealModal.descriptionPlaceholder}
                         value={description}
                         onChange={(e) => {
                             setDescription(e.currentTarget.value);
@@ -117,10 +117,10 @@ export function CreateAppealModal({
 
                     <Group justify="flex-end" mt="md">
                         <Button variant="subtle" onClick={onClose} disabled={isSubmitting}>
-                            Cancel
+                            {resources.createAppealModal.cancelButton}
                         </Button>
                         <Button type="submit" loading={isSubmitting}>
-                            Submit Appeal
+                            {resources.createAppealModal.submitButton}
                         </Button>
                     </Group>
                 </Stack>

@@ -1,15 +1,7 @@
 /** @author noamarg */
 import React from 'react';
 import { Box, Text } from '@mantine/core';
-
-import { translatedResources } from "@/infra/i18n";
 import styles from './time-column.module.css';
-import resourcesJson from './time-column.resources.json';
-
-const resources = translatedResources(
-    "src/common/components/calendar/week-view/time-column.resources.json",
-    resourcesJson,
-);
 
 interface TimeColumnProps {
   hourHeight?: number;
@@ -27,12 +19,10 @@ export const TimeColumn: React.FC<TimeColumnProps> = ({
     const hour = i + dayStartHour;
     let displayHour;
 
-    // Simple 12-hour format logic
-    const h = hour % 24;
-    if (h === 0) displayHour = resources.labels.midnight;
-    else if (h < 12) displayHour = `${h} ${resources.labels.am}`;
-    else if (h === 12) displayHour = resources.labels.noon;
-    else displayHour = `${h - 12} ${resources.labels.pm}`;
+    // Military (24‑hour) format HH:00
+    const hour24 = hour % 24;
+    const paddedHour = hour24.toString().padStart(2, "0");
+    displayHour = `${paddedHour}:00`;
 
     return (
       <Box

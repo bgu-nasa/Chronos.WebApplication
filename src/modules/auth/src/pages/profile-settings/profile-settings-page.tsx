@@ -14,10 +14,11 @@ import { UpdatePasswordModal } from "./components/update-password-modal";
 import resourcesJson from "./profile-settings-page.resources.json";
 import styles from "./profile-settings-page.module.css";
 import { translatedResources } from "@/infra/i18n";
-
-const resources = translatedResources("src/modules/auth/src/pages/profile-settings/profile-settings-page.resources.json", resourcesJson);
+import { useLocaleStore } from "@/infra/theme/state";
 
 export function ProfileSettingsPage() {
+    const language = useLocaleStore(state => state.language);
+    const resources = translatedResources("src/modules/auth/src/pages/profile-settings/profile-settings-page.resources.json", resourcesJson);
     const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
     return (

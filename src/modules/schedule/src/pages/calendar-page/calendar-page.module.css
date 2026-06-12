@@ -2,31 +2,44 @@
   height: calc(100vh - 70px);
   padding: var(--mantine-spacing-md);
   overflow: hidden;
-}
-
-.topBar {
-  flex-shrink: 0;
-  width: 100%;
-}
-
-.controlsGroup {
-  width: 100%;
-}
-
-.controlItem {
-  flex: 1;
-  min-width: 200px;
-}
-
-@media (max-width: 768px) {
-  .controlItem {
-    min-width: 100%;
-    width: 100%;
-  }
+  display: flex;
+  flex-direction: row;
 }
 
 .content {
   flex-grow: 1;
-  overflow: auto;
+  overflow: hidden;
   min-height: 0;
+  height: 100%;
 }
+
+.sideBar {
+  flex-shrink: 0;
+  width: 280px;
+  height: 100%;
+}
+
+.sideBarContent {
+  height: 100%;
+}
+
+.controlItem {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .calendarPageContainer {
+    flex-direction: column;
+    height: auto;
+    overflow: auto;
+  }
+  
+  .sideBar {
+    width: 100%;
+    height: auto;
+  }
+  
+  .content {
+    height: auto;
+  }
+}

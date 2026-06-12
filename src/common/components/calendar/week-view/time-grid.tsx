@@ -1,6 +1,7 @@
 /** @author noamarg */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box, ScrollArea } from '@mantine/core';
+import { useElementSize } from '@mantine/hooks';
 
 import type { CalendarEvent } from "@/common/types";
 
@@ -47,17 +48,30 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
   periodFromDate,
   periodToDate,
   periodWeekIndex = null,
-  hourHeight,
+  hourHeight: propHourHeight,
   dayStartHour = 0,
   hoursPerDay = 24,
   onTimeRangeSelect,
   onEventBlockClick
 }) => {
+  const { ref, height } = useElementSize();
+
+  const dynamicHourHeight = useMemo(() => {
+    if (height > 0) {
+      // Calculate height to fit the viewport exactly
+      // ScrollArea has height = container height.
+      // Padding is 20px (10px top, 10px bottom).
+      const calculated = Math.floor((height - 20) / hoursPerDay);
+      return Math.max(30, calculated); // Fallback to a minimum height of 30px
+    }
+    return propHourHeight || 60;
+  }, [height, hoursPerDay, propHourHeight]);
+
   return (
-    <ScrollArea className={styles.scrollArea} type="auto">
+    <ScrollArea ref={ref} className={styles.scrollArea} type="auto">
       <Box className={styles.gridContent}>
         <TimeColumn
-          hourHeight={hourHeight}
+          hourHeight={dynamicHourHeight}
           dayStartHour={dayStartHour}
           hoursPerDay={hoursPerDay}
         />
@@ -72,7 +86,7 @@ export const TimeGrid: React.FC<TimeGridProps> = ({
             periodFromDate={periodFromDate}
             periodToDate={periodToDate}
             periodWeekIndex={periodWeekIndex}
-            hourHeight={hourHeight}
+            hourHeight={dynamicHourHeight}
             dayStartHour={dayStartHour}
             hoursPerDay={hoursPerDay}
             onTimeRangeSelect={onTimeRangeSelect}
