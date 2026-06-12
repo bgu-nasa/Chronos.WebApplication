@@ -140,7 +140,7 @@ export function AssignmentsPage() {
 
     const filteredAssignments = useMemo(() => {
         if (filterWeekNum === null) return assignments;
-        return assignments.filter((a) => a.weekNum === filterWeekNum);
+        return assignments.filter((a) => a.weekNum === filterWeekNum || a.weekNum == null);
     }, [assignments, filterWeekNum]);
 
     const fetchAssignments = useCallback(async (

@@ -101,7 +101,7 @@ export function AddAssignmentModal({
                 setSelectedSlotId(editingAssignment.slotId);
                 setSelectedActivityId(editingAssignment.activityId);
                 setSelectedResourceId(editingAssignment.resourceId);
-                setWeekNum(editingAssignment.weekNum);
+                setWeekNum(editingAssignment.weekNum ?? '');
             } else {
                 setSelectedDay(null);
                 setSelectedSlotId(null);
@@ -124,10 +124,11 @@ export function AddAssignmentModal({
         if (!selectedSlotId) newErrors.slot = "Slot is required";
         if (!selectedActivityId) newErrors.activity = "Activity is required";
         if (!selectedResourceId) newErrors.resource = "Resource is required";
-        if (weekNum === '' || weekNum === null || weekNum === undefined) {
-            newErrors.weekNum = "Week number is required";
-        } else if (Number(weekNum) < 1 || Number(weekNum) > 53) {
-            newErrors.weekNum = resources.weekNumRangeError;
+        if (weekNum !== '' && weekNum !== null && weekNum !== undefined) {
+            const parsedWeekNum = Number(weekNum);
+            if (parsedWeekNum < 1 || parsedWeekNum > 53) {
+                newErrors.weekNum = resources.weekNumRangeError;
+            }
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -137,6 +138,8 @@ export function AddAssignmentModal({
         e.preventDefault();
         if (!validate()) return;
 
+        const parsedWeekNum = weekNum === '' ? null : Number(weekNum);
+
         setIsSubmitting(true);
         try {
             if (isEditMode && editingAssignment) {
@@ -144,7 +147,7 @@ export function AddAssignmentModal({
                     slotId: selectedSlotId!,
                     resourceId: selectedResourceId!,
                     activityId: selectedActivityId!,
-                    weekNum: weekNum as number,
+                    weekNum: parsedWeekNum,
                 });
                 $app.notifications.showSuccess(
                     notificationResources.successTitle,
@@ -155,7 +158,7 @@ export function AddAssignmentModal({
                     slotId: selectedSlotId!,
                     resourceId: selectedResourceId!,
                     activityId: selectedActivityId!,
-                    weekNum: weekNum as number,
+                    weekNum: parsedWeekNum,
                 });
                 $app.notifications.showSuccess(
                     notificationResources.successTitle,
@@ -236,7 +239,6 @@ export function AddAssignmentModal({
                             });
                         }}
                         error={errors.weekNum}
-                        required
                         min={1}
                         max={53}
                         clampBehavior="none"
