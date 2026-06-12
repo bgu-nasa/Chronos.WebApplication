@@ -35,6 +35,17 @@
     "editorCancelButton": "Cancel",
     "editorSaveButton": "Save",
     "editorCreateButton": "Create",
+    "assignmentModal": {
+        "title": "Assign Attributes to Resource \"{identifier}\"",
+        "currentlyAssigned": "Currently Assigned Attributes",
+        "noAttributes": "No attributes assigned yet",
+        "removeButton": "Remove",
+        "assignNew": "Assign New Attribute",
+        "noMoreAttributes": "No more attributes available to assign",
+        "selectPlaceholder": "Select an attribute",
+        "assignButton": "Assign",
+        "closeButton": "Close"
+    },
     "notifications": {
         "organizationContextMissing": "Organization context missing. Please refresh and try again.",
         "resourceCreateSuccess": "Resource created successfully",

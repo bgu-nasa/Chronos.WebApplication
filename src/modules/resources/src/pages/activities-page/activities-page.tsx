@@ -302,7 +302,7 @@ export function ActivitiesPage() {
     if (!subjectId) {
         return (
             <Container size="xl" py="xl">
-                <Title order={1}>No course selected</Title>
+                <Title order={1}>{resources.noCourseSelectedTitle}</Title>
                 <Button onClick={handleBackClick} mt="md">
                     {resources.backToSubjects}
                 </Button>
@@ -313,8 +313,8 @@ export function ActivitiesPage() {
     if (!departmentId) {
         return (
             <Container size="xl" py="xl">
-                <Title order={1}>Missing Department Context</Title>
-                <Text>Department ID is required to load groups.</Text>
+                <Title order={1}>{resources.missingDepartmentTitle}</Title>
+                <Text>{resources.missingDepartmentDescription}</Text>
                 <Button onClick={handleBackClick} mt="md">
                     {resources.backToSubjects}
                 </Button>

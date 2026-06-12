@@ -16,7 +16,7 @@
     "deleteButton": "Delete",
     "viewActivitiesButton": "View Groups",
     "departmentColumn": "Department",
-    "schedulingPeriodColumn": "Scheduling Period",
+    "schedulingPeriodColumn": "Semester",
     "codeColumn": "Code",
     "nameColumn": "Name",
     "emptyStateMessage": "No courses yet. Get started by creating your first course!",
@@ -29,11 +29,11 @@
     "unknownDepartment": "Unknown Department",
     "notifications": {
         "departmentRequired": "Please select a department to search for courses",
-        "loadSchedulingPeriodsFailed": "Failed to load scheduling periods"
+        "loadSchedulingPeriodsFailed": "Failed to load semesters"
     },
     "logger": {
-        "loadedSchedulingPeriods": "Loaded scheduling periods",
-        "errorLoadingSchedulingPeriods": "Error loading scheduling periods:",
+        "loadedSchedulingPeriods": "Loaded semesters",
+        "errorLoadingSchedulingPeriods": "Error loading semesters:",
         "departmentIdRequired": "Department ID is required for search",
         "fetchedDepartment": "Fetched department:",
         "errorFetchingDepartment": "Error fetching department:",

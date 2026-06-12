@@ -16,9 +16,8 @@ import resourcesJson from "./organization-settings-page.resources.json";
 import styles from "./organization-settings-page.module.css";
 import { translatedResources } from "@/infra/i18n";
 
-const resources = translatedResources("src/modules/management/src/pages/organization-settings-page/organization-settings-page.resources.json", resourcesJson);
-
 export function OrganizationSettingsPage() {
+    const resources = translatedResources("src/modules/management/src/pages/organization-settings-page/organization-settings-page.resources.json", resourcesJson);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
