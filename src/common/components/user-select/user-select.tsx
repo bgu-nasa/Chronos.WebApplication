@@ -9,6 +9,13 @@ import { Select, Group, Avatar, Text, Stack } from "@mantine/core";
 import type { ComboboxItem } from "@mantine/core";
 import { fetchUsersInOrganization } from "./fetch-users";
 import type { User } from "./user.types";
+import { translatedResources } from "@/infra/i18n";
+import resourcesJson from "./user-select.resources.json";
+
+const resources = translatedResources(
+    "src/common/components/user-select/user-select.resources.json",
+    resourcesJson,
+);
 
 interface UserSelectProps {
     value?: string | null;
@@ -54,8 +61,8 @@ function SelectItem({
 export function UserSelect({
     value,
     onChange,
-    label = "User",
-    placeholder = "Select a user",
+    label = resources.label,
+    placeholder = resources.placeholder,
     disabled = false,
     required = false,
     error,
@@ -108,7 +115,7 @@ export function UserSelect({
             error={error || fetchError}
             clearable={clearable}
             searchable
-            nothingFoundMessage="No users found"
+            nothingFoundMessage={resources.nothingFoundMessage}
             renderOption={(item) => (
                 <SelectItem
                     label={item.option.label}

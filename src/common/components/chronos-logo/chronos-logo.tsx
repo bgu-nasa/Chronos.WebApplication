@@ -1,5 +1,6 @@
 /** @author aaron-iz */
 import { Box, useMantineTheme } from "@mantine/core";
+import { useLocaleStore } from "@/infra/theme/state";
 
 interface ChronosLogoProps {
     height?: number;
@@ -7,6 +8,7 @@ interface ChronosLogoProps {
 
 export function ChronosLogo({ height = 40 }: ChronosLogoProps) {
     const theme = useMantineTheme();
+    const direction = useLocaleStore(state => state.direction);
     const primaryColor = theme.colors[theme.primaryColor][6];
     const lightColor = theme.colors[theme.primaryColor][3];
     const darkColor = theme.colors[theme.primaryColor][8];
@@ -75,7 +77,7 @@ export function ChronosLogo({ height = 40 }: ChronosLogoProps) {
 
             {/* "CHRONOS" text with modern styling */}
             <text
-                x={height * 1.1}
+                x={direction === 'rtl' ? height * 3.75 : height * 1.1}
                 y={height / 2 + fontSize * 0.35}
                 fontFamily="system-ui, -apple-system, 'Segoe UI', Arial, sans-serif"
                 fontSize={fontSize}

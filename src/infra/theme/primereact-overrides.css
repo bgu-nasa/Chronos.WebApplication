@@ -81,3 +81,27 @@
 .p-datatable .p-paginator {
     background-color: transparent !important;
 }
+
+/* RTL overrides for PrimeReact DataTable */
+[dir="rtl"] .p-datatable .p-datatable-table,
+[dir="rtl"] .p-datatable .p-datatable-thead,
+[dir="rtl"] .p-datatable .p-datatable-tbody,
+[dir="rtl"] .p-datatable .p-datatable-tfoot,
+[dir="rtl"] .p-datatable .p-datatable-thead > tr,
+[dir="rtl"] .p-datatable .p-datatable-tbody > tr {
+    direction: rtl !important;
+}
+
+[dir="rtl"] .p-datatable .p-datatable-thead > tr > th {
+    text-align: right !important;
+}
+
+[dir="rtl"] .p-datatable .p-datatable-tbody > tr > td {
+    text-align: right !important;
+}
+
+/* Align sorting icons and content correctly inside headers */
+[dir="rtl"] .p-datatable .p-column-header-content {
+    direction: rtl !important;
+}
+
