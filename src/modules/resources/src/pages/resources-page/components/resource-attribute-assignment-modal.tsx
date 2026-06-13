@@ -95,8 +95,11 @@ export function ResourceAttributeAssignmentModal({
         } catch (error) {
             $app.logger.error("[ResourceAttributeAssignmentModal] Error assigning attribute:", error);
             $app.notifications.showError(
-                "Error",
-                `Error assigning attribute: ${error instanceof Error ? error.message : "Unknown error"}`
+                notificationResources.errorTitle,
+                resources.notifications.attributeAssignErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resources.notifications.unknownError,
+                ),
             );
         }
     };
@@ -127,8 +130,11 @@ export function ResourceAttributeAssignmentModal({
         } catch (error) {
             $app.logger.error("[ResourceAttributeAssignmentModal] Error removing assignment:", error);
             $app.notifications.showError(
-                "Error",
-                `Error removing assignment: ${error instanceof Error ? error.message : "Unknown error"}`
+                notificationResources.errorTitle,
+                resources.notifications.assignmentRemoveErrorWithDetails.replace(
+                    "{{details}}",
+                    error instanceof Error ? error.message : resources.notifications.unknownError,
+                ),
             );
         }
     };
@@ -155,7 +161,7 @@ export function ResourceAttributeAssignmentModal({
         <Modal
             opened={opened}
             onClose={onClose}
-            title={`Assign Attributes to Resource ${resourceIdentifier ? `"${resourceIdentifier}"` : ""}`}
+            title={resources.assignmentModal.title.replace("{identifier}", resourceIdentifier || "")}
             size="lg"
         >
             <Stack gap="md">
@@ -168,11 +174,11 @@ export function ResourceAttributeAssignmentModal({
                         {/* Currently Assigned Attributes */}
                         <div>
                             <Text fw={600} size="sm" mb="xs">
-                                Currently Assigned Attributes
+                                {resources.assignmentModal.currentlyAssigned}
                             </Text>
                             {assignedAttributes.length === 0 ? (
                                 <Text size="sm" c="dimmed">
-                                    No attributes assigned yet
+                                    {resources.assignmentModal.noAttributes}
                                 </Text>
                             ) : (
                                 <Stack gap="xs">
@@ -186,7 +192,7 @@ export function ResourceAttributeAssignmentModal({
                                                 variant="subtle"
                                                 onClick={() => handleDelete(assignment.resourceAttributeId)}
                                             >
-                                                Remove
+                                                {resources.assignmentModal.removeButton}
                                             </Button>
                                         </Group>
                                     ))}
@@ -199,16 +205,16 @@ export function ResourceAttributeAssignmentModal({
                         {/* Assign New Attribute */}
                         <div>
                             <Text fw={600} size="sm" mb="xs">
-                                Assign New Attribute
+                                {resources.assignmentModal.assignNew}
                             </Text>
                             {availableAttributes.length === 0 ? (
                                 <Text size="sm" c="dimmed">
-                                    No more attributes available to assign
+                                    {resources.assignmentModal.noMoreAttributes}
                                 </Text>
                             ) : (
                                 <>
                                     <Select
-                                        placeholder="Select an attribute"
+                                        placeholder={resources.assignmentModal.selectPlaceholder}
                                         data={availableAttributes.map((attr) => ({
                                             value: attr.id,
                                             label: attr.title,
@@ -223,7 +229,7 @@ export function ResourceAttributeAssignmentModal({
                                         disabled={!selectedAttributeId}
                                         fullWidth
                                     >
-                                        Assign Attribute
+                                        {resources.assignmentModal.assignButton}
                                     </Button>
                                 </>
                             )}
@@ -233,7 +239,7 @@ export function ResourceAttributeAssignmentModal({
 
                 <Group justify="flex-end" mt="md">
                     <Button variant="default" onClick={onClose}>
-                        Close
+                        {resources.assignmentModal.closeButton}
                     </Button>
                 </Group>
             </Stack>

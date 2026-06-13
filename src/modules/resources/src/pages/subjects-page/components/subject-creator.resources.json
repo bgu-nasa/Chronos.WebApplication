@@ -7,15 +7,15 @@
     "codePlaceholder": "e.g. CS101",
     "nameLabel": "Course Name",
     "namePlaceholder": "e.g. Operating Systems",
-    "schedulingPeriodLabel": "Scheduling Period",
-    "schedulingPeriodPlaceholder": "Select scheduling period",
+    "schedulingPeriodLabel": "Semester",
+    "schedulingPeriodPlaceholder": "Select semester",
     "submitButton": "Create Course",
     "notifications": {
-        "loadSchedulingPeriodsFailed": "Failed to load scheduling periods"
+        "loadSchedulingPeriodsFailed": "Failed to load semesters"
     },
     "logger": {
-        "fetchedSchedulingPeriods": "Fetched scheduling periods",
-        "errorFetchingSchedulingPeriods": "Error fetching scheduling periods:",
+        "fetchedSchedulingPeriods": "Fetched semesters",
+        "errorFetchingSchedulingPeriods": "Error fetching semesters:",
         "handleSubmitCalled": "handleSubmit called",
         "validationFailed": "Validation failed - empty fields",
         "callingOnSubmit": "Calling onSubmit...",

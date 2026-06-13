@@ -120,18 +120,18 @@ export function ActivityCreator({
     };
 
     return (
-        <Modal opened={opened} onClose={handleClose} title="Create Group" centered>
+        <Modal opened={opened} onClose={handleClose} title={resources.creatorTitle} centered>
             <Stack>
                 <TextInput
-                    label="Activity Type"
-                    placeholder="e.g. Lecture, Practice, Lab"
+                    label={resources.activityTypeLabel}
+                    placeholder={resources.activityTypePlaceholder}
                     value={activityType}
                     onChange={(e) => setActivityType(e.currentTarget.value)}
                     required
                 />
                 <Select
-                    label="Assigned User (Optional)"
-                    placeholder="Select user or leave unassigned"
+                    label={resources.assignedUserLabel}
+                    placeholder={resources.assignedUserPlaceholder}
                     data={users}
                     value={assignedUserId}
                     onChange={setAssignedUserId}
@@ -140,14 +140,14 @@ export function ActivityCreator({
                     clearable
                 />
                 <NumberInput
-                    label="Expected Students"
-                    placeholder="Number of students"
+                    label={resources.expectedStudentsLabel}
+                    placeholder={resources.expectedStudentsPlaceholder}
                     value={expectedStudents ?? undefined}
                     onChange={(value) => setExpectedStudents(value === "" ? null : Number(value))}
                     min={0}
                 />
                 <TimeSpinner
-                    label="Duration"
+                    label={resources.durationLabel}
                     totalMinutes={duration}
                     onChange={(value) => {
                         setDuration(value);
@@ -158,7 +158,7 @@ export function ActivityCreator({
                     max={24 * 60}
                     wrap={false}
                     orientation="horizontal"
-                    error={durationTouched && duration <= 0 ? "Duration must be greater than 0" : undefined}
+                    error={durationTouched && duration <= 0 ? resources.durationError : undefined}
                 />
                 <Button
                     onClick={handleSubmit}
@@ -166,7 +166,7 @@ export function ActivityCreator({
                     disabled={!activityType.trim() || isLoadingUsers || duration <= 0}
                     fullWidth
                 >
-                    Create Group
+                    {resources.submitButton}
                 </Button>
             </Stack>
         </Modal>

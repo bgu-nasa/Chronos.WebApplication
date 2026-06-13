@@ -8,10 +8,10 @@ const notificationResources = translatedResources(
     "src/infra/service/notification/notification.resources.json",
     notificationResourcesJson,
 );
-import resourcesJson from "../subjects-page.resources.json";
+import resourcesJson from "./subject-editor.resources.json";
 
 const resources = translatedResources(
-    "src/modules/resources/src/pages/subjects-page/subjects-page.resources.json",
+    "src/modules/resources/src/pages/subjects-page/components/subject-editor.resources.json",
     resourcesJson,
 );
 
@@ -101,27 +101,27 @@ export function SubjectEditor({
         <Modal
             opened={opened}
             onClose={handleClose}
-            title="Edit Course"
+            title={resources.modalTitle}
             centered
         >
             <Stack>
                 <TextInput
-                    label="Course Code"
-                    placeholder="e.g. CS101"
+                    label={resources.codeLabel}
+                    placeholder={resources.codePlaceholder}
                     value={code}
                     onChange={(e) => setCode(e.currentTarget.value)}
                     required
                 />
                 <TextInput
-                    label="Course Name"
-                    placeholder="e.g. Operating Systems"
+                    label={resources.nameLabel}
+                    placeholder={resources.namePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.currentTarget.value)}
                     required
                 />
                 <Select
-                    label="Scheduling Period"
-                    placeholder="Select scheduling period"
+                    label={resources.schedulingPeriodLabel}
+                    placeholder={resources.schedulingPeriodPlaceholder}
                     data={schedulingPeriods}
                     value={schedulingPeriodId}
                     onChange={setSchedulingPeriodId}
@@ -135,7 +135,7 @@ export function SubjectEditor({
                     disabled={!code.trim() || !name.trim() || !schedulingPeriodId || isLoadingPeriods}
                     fullWidth
                 >
-                    Save Changes
+                    {resources.submitButton}
                 </Button>
             </Stack>
         </Modal>
