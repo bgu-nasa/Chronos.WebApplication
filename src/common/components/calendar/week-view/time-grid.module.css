@@ -1,5 +1,7 @@
 .scrollArea {
-  height: calc(100vh - 220px);
+  flex: 1;
+  min-height: 0;
+  height: 100%;
 }
 
 .gridContent {

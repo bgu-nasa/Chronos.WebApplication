@@ -5,7 +5,9 @@
 
 import { Button, Group } from "@mantine/core";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
-
+import resourcesJson from "../../assignments-page/assignments-page.resources.json";
+import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 interface AssignmentActionsProps {
     selectedAssignment: AssignmentResponse | null;
     onCreateClick: () => void;
@@ -19,10 +21,15 @@ export function AssignmentActions({
     onEditClick,
     onDeleteClick,
 }: AssignmentActionsProps) {
+    const language = useLocaleStore((state) => state.language);
+    const resources = translatedResources(
+        "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
+        resourcesJson
+    );
     return (
         <Group mb="md">
             <Button onClick={onCreateClick} size="sm">
-                Add Assignment
+                {resources.addAssignmentButton}
             </Button>
             <Button
                 variant="light"
@@ -30,7 +37,7 @@ export function AssignmentActions({
                 onClick={onEditClick}
                 size="sm"
             >
-                Edit
+                {resources.editButton}
             </Button>
             <Button
                 variant="light"
@@ -38,7 +45,7 @@ export function AssignmentActions({
                 onClick={onDeleteClick}
                 size="sm"
             >
-                Delete
+                {resources.deleteButton}
             </Button>
         </Group>
     );
