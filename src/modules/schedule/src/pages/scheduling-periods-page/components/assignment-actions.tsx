@@ -21,7 +21,7 @@ export function AssignmentActions({
     onEditClick,
     onDeleteClick,
 }: AssignmentActionsProps) {
-    const language = useLocaleStore((state) => state.language);
+    useLocaleStore((state) => state.language);
     const resources = translatedResources(
         "src/modules/schedule/src/pages/assignments-page/assignments-page.resources.json",
         resourcesJson
