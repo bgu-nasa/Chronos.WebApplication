@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
-import { Box, Flex, Paper, Group, Title, Divider, Text } from "@mantine/core";
+import { Box, Flex, Paper, Title, Divider, Text } from "@mantine/core";
 import { translatedResources } from "@/infra/i18n";
+import { useLocaleStore } from "@/infra/theme/state";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
 
 const notificationResources = translatedResources(
@@ -29,6 +30,7 @@ interface TimeRangeSelection {
 }
 
 export function CalendarPage() {
+  useLocaleStore((state) => state.language);
   const [selectedPeriodId, setSelectedPeriodId] = useState<string | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [timeRangeSelection, setTimeRangeSelection] = useState<TimeRangeSelection | null>(null);
