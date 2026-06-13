@@ -1,4 +1,4 @@
 {
-    "loadPeriodsError": "Failed to load scheduling periods",
-    "noPeriodsAvailable": "No scheduling periods available."
+    "loadPeriodsError": "Failed to load semesters",
+    "noPeriodsAvailable": "No semesters available."
 }

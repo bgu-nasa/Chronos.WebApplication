@@ -40,6 +40,13 @@
     "batchAssignmentConfirmButton": "Run Batch",
     "batchAssignmentSuccess": "Batch scheduling has been queued. You will get a notification when it finishes.",
     "batchAssignmentFailed": "Failed to submit batch assignment.",
+    "assignmentTable": {
+        "loading": "Loading assignments...",
+        "empty": "No assignments found for this slot",
+        "week": "Week:",
+        "resource": "Resource:",
+        "activity": "Activity:"
+    },
     "notifications": {
         "semesterDeleteSuccess": "Semester deleted successfully",
         "semesterDeleteError": "Failed to delete semester",

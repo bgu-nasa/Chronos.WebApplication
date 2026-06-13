@@ -1,33 +1,33 @@
 {
-    "titleCreate": "הוספת הקצאה",
+    "titleCreate": "הוספת שיבוץ",
     "titleEdit": "משימת עריכה",
-    "submitCreate": "יצור",
+    "submitCreate": "יצירה",
     "submitSave": "שמור",
     "cancel": "ביטול",
     "labels": {
-        "resource": "משאב (מיקום)",
+        "resource": "חדר (מיקום)",
         "activity": "פעילות",
         "weekNumber": "מספר שבוע"
     },
     "placeholders": {
-        "loadingResources": "טוענת משאבים...",
-        "noResources": "עדיין אין משאבים",
-        "selectResource": "בחר משאב",
-        "loadingActivities": "טוענים פעילויות...",
+        "loadingResources": "טוען חדרים...",
+        "noResources": "עדיין אין חדרים",
+        "selectResource": "בחר חדר",
+        "loadingActivities": "טוען פעילויות...",
         "noActivities": "עדיין אין פעילויות",
         "selectActivity": "בחר פעילות",
         "weekNumber": "הכנס את מספר השבוע"
     },
     "validation": {
-        "resourceRequired": "נדרש משאב",
+        "resourceRequired": "נדרש חדר",
         "activityRequired": "נדרשת פעילות",
         "weekNumRequired": "נדרש מספר שבוע",
         "weekNumRange": "מספר השבוע חייב להיות בין 1 ל-53"
     },
     "notifications": {
-        "createSuccess": "הקצאה נוצרה בהצלחה",
-        "createError": "נכשל ביצירת הקצאה",
-        "updateSuccess": "המשימה עודכנה בהצלחה",
-        "updateError": "נכשל לעדכן את ההקצאה"
+        "createSuccess": "שיבוץ נוצר בהצלחה",
+        "createError": "נכשל ביצירת שיבוץ",
+        "updateSuccess": "השיבוץ עודכן בהצלחה",
+        "updateError": "נכשל לעדכן את השיבוץ"
     }
 }

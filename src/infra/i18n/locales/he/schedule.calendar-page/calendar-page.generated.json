@@ -39,9 +39,11 @@
         "placeholder": "בחר משתמש לצפייה באילוצים",
         "nothingFoundMessage": "לא נמצאו משתמשים"
     },
+    "userSelectDisclaimer": "בחר משתמש על מנת לראות שיבוצים על הלוח.",
     "schedulingPeriodSelect": {
         "label": "סמסטר",
         "placeholder": "בחר סמסטר",
         "nothingFoundMessage": "לא נמצאו סמסטרים"
-    }
+    },
+    "sidebarTitle": "אפשרויות תצוגה"
 }

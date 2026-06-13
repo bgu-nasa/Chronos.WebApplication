@@ -19,6 +19,12 @@
     "deleteCancelButton": "Cancel",
     "deleteSuccess": "Appeal deleted successfully",
     "deleteError": "Failed to delete appeal",
+    "titlePlaceholder": "Enter appeal title",
+    "descriptionPlaceholder": "Describe your appeal reason",
+    "titleRequired": "Title is required",
+    "descriptionRequired": "Description is required",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
     "notifications": {
         "fetchError": "Failed to fetch appeals"
     }

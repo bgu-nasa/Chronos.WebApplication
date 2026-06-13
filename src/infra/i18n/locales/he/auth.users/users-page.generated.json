@@ -1,8 +1,8 @@
 {
     "title": "ניהול משתמשים",
-    "createButton": "יצור",
+    "createButton": "יצירה",
     "editButton": "עריכה",
-    "deleteButton": "מחק",
+    "deleteButton": "מחיקה",
     "profileColumn": "פרופיל",
     "firstNameColumn": "שם פרטי",
     "lastNameColumn": "שם משפחה",
@@ -11,7 +11,7 @@
     "verified": "מאומת",
     "unverified": "לא מאומת",
     "underDevelopmentTooltip": "תכונה זו עדיין בפיתוח",
-    "deleteConfirmTitle": "למחוק {firstName} {lastName}?",
+    "deleteConfirmTitle": "למחוק את {firstName} {lastName}?",
     "deleteConfirmMessage": "פעולה זו אינה ניתנת לביטול. המשתמש יוסר לצמיתות מהארגון.",
-    "deleteConfirmButton": "מחק משתמש"
+    "deleteConfirmButton": "מחיקת משתמש"
 }
