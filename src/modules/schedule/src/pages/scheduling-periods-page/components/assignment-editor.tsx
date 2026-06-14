@@ -11,6 +11,7 @@ import {
     useUpdateAssignment,
     useResources,
     useActivities,
+    useSchedulingPeriods,
 } from "@/modules/schedule/src/hooks";
 import { translatedResources } from "@/infra/i18n";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
@@ -32,6 +33,16 @@ export function AssignmentEditor() {
     const { updateAssignment, isLoading: isUpdating, clearError: clearUpdateError } = useUpdateAssignment();
     const { resources: roomResources, isLoading: isLoadingResources } = useResources();
     const { activities, isLoading: isLoadingActivities } = useActivities(schedulingPeriodId ?? undefined);
+    const { schedulingPeriods } = useSchedulingPeriods();
+
+    const maxWeeks = useMemo(() => {
+        const period = schedulingPeriods.find((p) => p.id === schedulingPeriodId);
+        if (!period) return 53;
+        const start = new Date(period.fromDate);
+        const end = new Date(period.toDate);
+        const diffDays = Math.floor((end.getTime() - start.getTime()) / 86400000) + 1;
+        return Math.ceil(diffDays / 7);
+    }, [schedulingPeriods, schedulingPeriodId]);
 
     const [resourceId, setResourceId] = useState<string | null>(null);
     const [activityId, setActivityId] = useState<string | null>(null);
@@ -80,7 +91,7 @@ export function AssignmentEditor() {
         }
         if (weekNum !== '' && weekNum !== null && weekNum !== undefined) {
             const parsedWeekNum = Number(weekNum);
-            if (parsedWeekNum < 1 || parsedWeekNum > 53) {
+            if (parsedWeekNum < 1 || parsedWeekNum > maxWeeks) {
                 newErrors.weekNum = resources.validation.weekNumRange;
             }
         }
@@ -221,7 +232,7 @@ export function AssignmentEditor() {
                         }}
                         error={errors.weekNum}
                         min={1}
-                        max={53}
+                        max={maxWeeks}
                         clampBehavior="none"
                         disabled={isLoading}
                     />
