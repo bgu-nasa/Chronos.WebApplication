@@ -235,6 +235,7 @@ export function SchedulingPeriodEditor() {
                         {resources.editorToDateLabel} <span style={{ color: "var(--mantine-color-error)" }}>*</span>
                     </Text>
                     <Calendar
+                        key={fromDate?.toISOString() ?? "no-from-date"}
                         value={toDate}
                         onChange={(e) => setToDate(e.value as Date | null)}
                         minDate={minToDate}
