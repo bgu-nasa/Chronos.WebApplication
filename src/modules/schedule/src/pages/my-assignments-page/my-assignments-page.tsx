@@ -25,6 +25,12 @@ const resources = translatedResources(
 );
 import styles from "./my-assignments-page.module.css";
 
+function getWeekOfYear(date: Date): number {
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const dayOfYear = Math.floor((date.getTime() - startOfYear.getTime()) / 86400000);
+    return Math.floor(dayOfYear / 7) + 1;
+}
+
 export function MyAssignmentsPage() {
     const currentUserId = $app.organization.getOrganization()?.userRoles?.[0]?.userId ?? null;
 
@@ -34,6 +40,7 @@ export function MyAssignmentsPage() {
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
 
     const [filterResourceId, setFilterResourceId] = useState<string | null>(null);
+    const [filterWeekNum, setFilterWeekNum] = useState<number | null>(null);
     const [isAppealModalOpen, setIsAppealModalOpen] = useState(false);
 
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
@@ -93,6 +100,38 @@ export function MyAssignmentsPage() {
         }));
     }, [resourceList]);
 
+    const weekNumFilterOptions = useMemo(() => {
+        const period = sortedPeriods.find((p) => p.id === selectedPeriodId);
+        if (!period) return [];
+
+        const weeks: { value: string; label: string }[] = [];
+        const seen = new Set<number>();
+        const current = new Date(period.fromDate);
+        const end = new Date(period.toDate);
+
+        while (current <= end) {
+            const weekNum = getWeekOfYear(current);
+            if (!seen.has(weekNum)) {
+                seen.add(weekNum);
+                weeks.push({ value: String(weekNum), label: String(weekNum) });
+            }
+            current.setDate(current.getDate() + 7);
+        }
+
+        const endWeekNum = getWeekOfYear(end);
+        if (!seen.has(endWeekNum)) {
+            seen.add(endWeekNum);
+            weeks.push({ value: String(endWeekNum), label: String(endWeekNum) });
+        }
+
+        return weeks;
+    }, [selectedPeriodId, sortedPeriods]);
+
+    const filteredAssignments = useMemo(() => {
+        if (filterWeekNum === null) return assignments;
+        return assignments.filter((a) => a.weekNum === filterWeekNum || a.weekNum == null);
+    }, [assignments, filterWeekNum]);
+
     const fetchAssignments = useCallback(async (
         periodId: string,
         userId: string | null,
@@ -129,6 +168,7 @@ export function MyAssignmentsPage() {
     const handlePeriodChange = (value: string | null) => {
         setSelectedPeriodId(value);
         setSelectedAssignment(null);
+        setFilterWeekNum(null);
     };
 
     return (
@@ -174,12 +214,23 @@ export function MyAssignmentsPage() {
                                 clearable
                             />
                         </div>
+                        <div className={styles.filterSelect}>
+                            <Select
+                                label={resources.weekNumFilterLabel}
+                                placeholder={resources.weekNumFilterPlaceholder}
+                                data={weekNumFilterOptions}
+                                value={filterWeekNum !== null ? String(filterWeekNum) : null}
+                                onChange={(v) => setFilterWeekNum(v !== null ? Number(v) : null)}
+                                searchable
+                                clearable
+                            />
+                        </div>
                     </div>
                 )}
 
                 {selectedPeriodId && (
                     <AssignmentsDataTable
-                        assignments={assignments}
+                        assignments={filteredAssignments}
                         slots={slots}
                         activities={activities}
                         resourceList={resourceList}
