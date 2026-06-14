@@ -9,6 +9,7 @@ import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment
 import { activityDataRepository } from "@/modules/schedule/src/data/activity-data-repository";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import type { UserResponse } from "@/modules/schedule/src/data/activity.types";
+import type { SchedulingPeriodResponse } from "@/modules/schedule/src/data/scheduling-period.types";
 import { AssignmentsDataTable } from "./components/assignments-data-table";
 import { AddAssignmentModal } from "./components/add-assignment-modal";
 import resourcesJson from "./assignments-page.resources.json";
@@ -25,6 +26,7 @@ const resources = translatedResources(
     resourcesJson,
 );
 import styles from "./assignments-page.module.css";
+import { getIsoWeekNumber } from "@/common/components/calendar/week-view/iso-week";
 
 export function AssignmentsPage() {
     const [selectedPeriodId, setSelectedPeriodId] = useState<string | null>(null);
@@ -132,11 +134,31 @@ export function AssignmentsPage() {
     }, [resourceList]);
 
     const weekNumFilterOptions = useMemo(() => {
-        return Array.from({ length: 53 }, (_, i) => ({
-            value: String(i + 1),
-            label: String(i + 1),
-        }));
-    }, []);
+        const period = sortedPeriods.find((p: SchedulingPeriodResponse) => p.id === selectedPeriodId);
+        if (!period) return [];
+
+        const weeks: { value: string; label: string }[] = [];
+        const seen = new Set<number>();
+        const current = new Date(period.fromDate);
+        const end = new Date(period.toDate);
+
+        while (current <= end) {
+            const weekNum = getIsoWeekNumber(current);
+            if (!seen.has(weekNum)) {
+                seen.add(weekNum);
+                weeks.push({ value: String(weekNum), label: String(weekNum) });
+            }
+            current.setDate(current.getDate() + 7);
+        }
+
+        const endWeekNum = getIsoWeekNumber(end);
+        if (!seen.has(endWeekNum)) {
+            seen.add(endWeekNum);
+            weeks.push({ value: String(endWeekNum), label: String(endWeekNum) });
+        }
+
+        return weeks;
+    }, [selectedPeriodId, sortedPeriods]);
 
     const filteredAssignments = useMemo(() => {
         if (filterWeekNum === null) return assignments;
