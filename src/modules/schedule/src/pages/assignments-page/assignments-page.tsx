@@ -26,7 +26,12 @@ const resources = translatedResources(
     resourcesJson,
 );
 import styles from "./assignments-page.module.css";
-import { getIsoWeekNumber } from "@/common/components/calendar/week-view/iso-week";
+
+function getWeekOfYear(date: Date): number {
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const dayOfYear = Math.floor((date.getTime() - startOfYear.getTime()) / 86400000);
+    return Math.floor(dayOfYear / 7) + 1;
+}
 
 export function AssignmentsPage() {
     const [selectedPeriodId, setSelectedPeriodId] = useState<string | null>(null);
@@ -143,7 +148,7 @@ export function AssignmentsPage() {
         const end = new Date(period.toDate);
 
         while (current <= end) {
-            const weekNum = getIsoWeekNumber(current);
+            const weekNum = getWeekOfYear(current);
             if (!seen.has(weekNum)) {
                 seen.add(weekNum);
                 weeks.push({ value: String(weekNum), label: String(weekNum) });
@@ -151,7 +156,7 @@ export function AssignmentsPage() {
             current.setDate(current.getDate() + 7);
         }
 
-        const endWeekNum = getIsoWeekNumber(end);
+        const endWeekNum = getWeekOfYear(end);
         if (!seen.has(endWeekNum)) {
             seen.add(endWeekNum);
             weeks.push({ value: String(endWeekNum), label: String(endWeekNum) });
@@ -362,6 +367,7 @@ export function AssignmentsPage() {
                     slots={slots}
                     activities={activities}
                     resourceList={resourceList}
+                    weekNumOptions={weekNumFilterOptions}
                     onCreated={handleAssignmentCreated}
                     editingAssignment={editingAssignment}
                 />
