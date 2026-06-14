@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState, useMemo } from "react";
-import { Modal, Select, Button, Group, Stack, NumberInput } from "@mantine/core";
+import { Modal, Select, Button, Group, Stack } from "@mantine/core";
 import { useAssignmentEditorStore } from "@/modules/schedule/src/stores";
 import {
     useCreateAssignment,
@@ -35,18 +35,22 @@ export function AssignmentEditor() {
     const { activities, isLoading: isLoadingActivities } = useActivities(schedulingPeriodId ?? undefined);
     const { schedulingPeriods } = useSchedulingPeriods();
 
-    const maxWeeks = useMemo(() => {
+    const weekNumOptions = useMemo(() => {
         const period = schedulingPeriods.find((p) => p.id === schedulingPeriodId);
-        if (!period) return 53;
+        if (!period) return [];
         const start = new Date(period.fromDate);
         const end = new Date(period.toDate);
         const diffDays = Math.floor((end.getTime() - start.getTime()) / 86400000) + 1;
-        return Math.ceil(diffDays / 7);
+        const totalWeeks = Math.ceil(diffDays / 7);
+        return Array.from({ length: totalWeeks }, (_, i) => ({
+            value: String(i + 1),
+            label: String(i + 1),
+        }));
     }, [schedulingPeriods, schedulingPeriodId]);
 
     const [resourceId, setResourceId] = useState<string | null>(null);
     const [activityId, setActivityId] = useState<string | null>(null);
-    const [weekNum, setWeekNum] = useState<number | string>('');
+    const [weekNum, setWeekNum] = useState<string | null>(null);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const resourceOptions = useMemo(() => {
@@ -72,11 +76,11 @@ export function AssignmentEditor() {
             if (mode === "edit" && assignment) {
                 setResourceId(assignment.resourceId);
                 setActivityId(assignment.activityId);
-                setWeekNum(assignment.weekNum ?? '');
+                setWeekNum(assignment.weekNum != null ? String(assignment.weekNum) : null);
             } else {
                 setResourceId(null);
                 setActivityId(null);
-                setWeekNum('');
+                setWeekNum(null);
             }
         }
     }, [isOpen, mode, assignment, clearCreateError, clearUpdateError]);
@@ -89,12 +93,6 @@ export function AssignmentEditor() {
         if (!activityId) {
             newErrors.activityId = resources.validation.activityRequired;
         }
-        if (weekNum !== '' && weekNum !== null && weekNum !== undefined) {
-            const parsedWeekNum = Number(weekNum);
-            if (parsedWeekNum < 1 || parsedWeekNum > maxWeeks) {
-                newErrors.weekNum = resources.validation.weekNumRange;
-            }
-        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -104,7 +102,7 @@ export function AssignmentEditor() {
 
         if (!validate()) return;
 
-        const parsedWeekNum = weekNum === '' ? null : Number(weekNum);
+        const parsedWeekNum = weekNum !== null ? Number(weekNum) : null;
         let success = false;
 
         if (mode === "create" && slotId && resourceId && activityId) {
@@ -155,7 +153,7 @@ export function AssignmentEditor() {
         close();
         setResourceId(null);
         setActivityId(null);
-        setWeekNum('');
+        setWeekNum(null);
         setErrors({});
         clearCreateError();
         clearUpdateError();
@@ -219,9 +217,10 @@ export function AssignmentEditor() {
                         clearable
                     />
 
-                    <NumberInput
+                    <Select
                         label={resources.labels.weekNumber}
                         placeholder={resources.placeholders.weekNumber}
+                        data={weekNumOptions}
                         value={weekNum}
                         onChange={(value) => {
                             setWeekNum(value);
@@ -231,10 +230,9 @@ export function AssignmentEditor() {
                             });
                         }}
                         error={errors.weekNum}
-                        min={1}
-                        max={maxWeeks}
-                        clampBehavior="none"
-                        disabled={isLoading}
+                        disabled={isLoading || weekNumOptions.length === 0}
+                        searchable
+                        clearable
                     />
 
                     <Group justify="flex-end" mt="md">
