@@ -17,7 +17,7 @@
     "editorNameRequired": "שם נדרש",
     "editorFromDateRequired": "נדרש תאריך התחלה",
     "editorToDateRequired": "נדרש תאריך סיום",
-    "editorDateRangeError": "סמסטר לא יכול להיות ארוך מ-1 שנה",
+    "editorDateRangeError": "סמסטר לא יכול להיות ארוך משנה שלמה",
     "editorCreateButton": "יצירה",
     "editorSaveButton": "שמירה",
     "editorCancelButton": "ביטול",

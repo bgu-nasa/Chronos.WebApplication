@@ -17,7 +17,7 @@
     "editorNameRequired": "Name is required",
     "editorFromDateRequired": "From date is required",
     "editorToDateRequired": "To date is required",
-    "editorDateRangeError": "Semester cannot be longer than 1 year",
+    "editorDateRangeError": "Semester cannot be longer than a year",
     "editorCreateButton": "Create",
     "editorSaveButton": "Save",
     "editorCancelButton": "Cancel",
