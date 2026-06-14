@@ -11,6 +11,9 @@
     "timeColumn": "זמן",
     "resourceFilterLabel": "חדר",
     "resourceFilterPlaceholder": "כל החדרים",
+    "weekNumFilterLabel": "שבוע",
+    "weekNumFilterPlaceholder": "כל השבועות",
+    "appealButton": "ערעור",
     "createAppealModal": {
         "title": "יצירת ערעור",
         "titleLabel": "כותרת",

@@ -11,6 +11,9 @@
     "timeColumn": "Time",
     "resourceFilterLabel": "Resource",
     "resourceFilterPlaceholder": "All resources",
+    "weekNumFilterLabel": "Week",
+    "weekNumFilterPlaceholder": "All weeks",
+    "appealButton": "Appeal",
     "createAppealModal": {
         "title": "Create Appeal",
         "titleLabel": "Title",

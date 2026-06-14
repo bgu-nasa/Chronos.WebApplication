@@ -34,6 +34,7 @@ export function MyAssignmentsPage() {
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
 
     const [filterResourceId, setFilterResourceId] = useState<string | null>(null);
+    const [filterWeekNum, setFilterWeekNum] = useState<number | null>(null);
     const [isAppealModalOpen, setIsAppealModalOpen] = useState(false);
 
     const { schedulingPeriods, fetchSchedulingPeriods } = useSchedulingPeriods();
@@ -93,6 +94,26 @@ export function MyAssignmentsPage() {
         }));
     }, [resourceList]);
 
+    const weekNumFilterOptions = useMemo(() => {
+        const period = sortedPeriods.find((p) => p.id === selectedPeriodId);
+        if (!period) return [];
+
+        const start = new Date(period.fromDate);
+        const end = new Date(period.toDate);
+        const diffDays = Math.floor((end.getTime() - start.getTime()) / 86400000) + 1;
+        const totalWeeks = Math.ceil(diffDays / 7);
+
+        return Array.from({ length: totalWeeks }, (_, i) => ({
+            value: String(i + 1),
+            label: String(i + 1),
+        }));
+    }, [selectedPeriodId, sortedPeriods]);
+
+    const filteredAssignments = useMemo(() => {
+        if (filterWeekNum === null) return assignments;
+        return assignments.filter((a) => a.weekNum === filterWeekNum || a.weekNum == null);
+    }, [assignments, filterWeekNum]);
+
     const fetchAssignments = useCallback(async (
         periodId: string,
         userId: string | null,
@@ -129,6 +150,7 @@ export function MyAssignmentsPage() {
     const handlePeriodChange = (value: string | null) => {
         setSelectedPeriodId(value);
         setSelectedAssignment(null);
+        setFilterWeekNum(null);
     };
 
     return (
@@ -156,7 +178,7 @@ export function MyAssignmentsPage() {
                             onClick={() => setIsAppealModalOpen(true)}
                             disabled={!selectedAssignment}
                         >
-                            Appeal
+                            {resources.appealButton}
                         </Button>
                     </Group>
                 </div>
@@ -174,12 +196,23 @@ export function MyAssignmentsPage() {
                                 clearable
                             />
                         </div>
+                        <div className={styles.filterSelect}>
+                            <Select
+                                label={resources.weekNumFilterLabel}
+                                placeholder={resources.weekNumFilterPlaceholder}
+                                data={weekNumFilterOptions}
+                                value={filterWeekNum !== null ? String(filterWeekNum) : null}
+                                onChange={(v) => setFilterWeekNum(v !== null ? Number(v) : null)}
+                                searchable
+                                clearable
+                            />
+                        </div>
                     </div>
                 )}
 
                 {selectedPeriodId && (
                     <AssignmentsDataTable
-                        assignments={assignments}
+                        assignments={filteredAssignments}
                         slots={slots}
                         activities={activities}
                         resourceList={resourceList}
