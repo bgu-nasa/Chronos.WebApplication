@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Modal, Select, Button, Group, Stack, NumberInput } from "@mantine/core";
+import { Modal, Select, Button, Group, Stack } from "@mantine/core";
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
 import type { EnrichedActivity } from "@/modules/schedule/src/data/activity.types";
 import type { ResourceResponse } from "@/modules/schedule/src/data/resource.types";
@@ -27,6 +27,7 @@ interface AddAssignmentModalProps {
     slots: SlotResponse[];
     activities: EnrichedActivity[];
     resourceList: ResourceResponse[];
+    weekNumOptions: { value: string; label: string }[];
     onCreated: () => void;
     editingAssignment?: AssignmentResponse | null;
 }
@@ -37,6 +38,7 @@ export function AddAssignmentModal({
     slots,
     activities,
     resourceList,
+    weekNumOptions,
     onCreated,
     editingAssignment,
 }: AddAssignmentModalProps) {
@@ -45,7 +47,7 @@ export function AddAssignmentModal({
     const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
     const [selectedActivityId, setSelectedActivityId] = useState<string | null>(null);
     const [selectedResourceId, setSelectedResourceId] = useState<string | null>(null);
-    const [weekNum, setWeekNum] = useState<number | string>('');
+    const [weekNum, setWeekNum] = useState<string | null>(null);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -101,13 +103,13 @@ export function AddAssignmentModal({
                 setSelectedSlotId(editingAssignment.slotId);
                 setSelectedActivityId(editingAssignment.activityId);
                 setSelectedResourceId(editingAssignment.resourceId);
-                setWeekNum(editingAssignment.weekNum ?? '');
+                setWeekNum(editingAssignment.weekNum != null ? String(editingAssignment.weekNum) : null);
             } else {
                 setSelectedDay(null);
                 setSelectedSlotId(null);
                 setSelectedActivityId(null);
                 setSelectedResourceId(null);
-                setWeekNum('');
+                setWeekNum(null);
             }
         }
     }, [opened, editingAssignment]);
@@ -124,12 +126,6 @@ export function AddAssignmentModal({
         if (!selectedSlotId) newErrors.slot = "Slot is required";
         if (!selectedActivityId) newErrors.activity = "Activity is required";
         if (!selectedResourceId) newErrors.resource = "Resource is required";
-        if (weekNum !== '' && weekNum !== null && weekNum !== undefined) {
-            const parsedWeekNum = Number(weekNum);
-            if (parsedWeekNum < 1 || parsedWeekNum > 53) {
-                newErrors.weekNum = resources.weekNumRangeError;
-            }
-        }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -138,7 +134,7 @@ export function AddAssignmentModal({
         e.preventDefault();
         if (!validate()) return;
 
-        const parsedWeekNum = weekNum === '' ? null : Number(weekNum);
+        const parsedWeekNum = weekNum !== null ? Number(weekNum) : null;
 
         setIsSubmitting(true);
         try {
@@ -227,9 +223,10 @@ export function AddAssignmentModal({
                         searchable
                     />
 
-                    <NumberInput
+                    <Select
                         label={resources.weekNumLabel}
-                        placeholder={resources.weekNumPlaceholder}
+                        placeholder={resources.weekNumFilterPlaceholder}
+                        data={weekNumOptions}
                         value={weekNum}
                         onChange={(value) => {
                             setWeekNum(value);
@@ -239,10 +236,9 @@ export function AddAssignmentModal({
                             });
                         }}
                         error={errors.weekNum}
-                        min={1}
-                        max={53}
-                        clampBehavior="none"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || weekNumOptions.length === 0}
+                        searchable
+                        clearable
                     />
 
                     <Select

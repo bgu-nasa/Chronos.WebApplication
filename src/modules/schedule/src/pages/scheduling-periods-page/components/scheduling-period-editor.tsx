@@ -71,6 +71,12 @@ export function SchedulingPeriodEditor() {
             return;
         }
 
+        const maxToDate = new Date(fromDate.getFullYear() + 1, fromDate.getMonth(), fromDate.getDate());
+        if (toDate > maxToDate) {
+            setError(resources.editorDateRangeError);
+            return;
+        }
+
         setError(null);
         let success = false;
 
@@ -168,15 +174,21 @@ export function SchedulingPeriodEditor() {
         return dayAfterFromDate > tomorrow ? dayAfterFromDate : tomorrow;
     }, [fromDate, today]);
 
+    // Maximum "To Date" is exactly 1 year after "From Date"
+    const maxToDate = useMemo(() => {
+        if (!fromDate) return undefined;
+        return new Date(fromDate.getFullYear() + 1, fromDate.getMonth(), fromDate.getDate());
+    }, [fromDate]);
+
     // Handle From Date change - clear To Date if it's now invalid
     const handleFromDateChange = (value: Date | null) => {
         setFromDate(value);
 
-        // If the new from date makes to date invalid (to date must be > from date)
         if (value && toDate) {
             const dayAfterFromDate = new Date(value);
             dayAfterFromDate.setDate(dayAfterFromDate.getDate() + 1);
-            if (toDate < dayAfterFromDate) {
+            const oneYearAfter = new Date(value.getFullYear() + 1, value.getMonth(), value.getDate());
+            if (toDate < dayAfterFromDate || toDate > oneYearAfter) {
                 setToDate(null);
             }
         }
@@ -223,9 +235,11 @@ export function SchedulingPeriodEditor() {
                         {resources.editorToDateLabel} <span style={{ color: "var(--mantine-color-error)" }}>*</span>
                     </Text>
                     <Calendar
+                        key={fromDate?.toISOString() ?? "no-from-date"}
                         value={toDate}
                         onChange={(e) => setToDate(e.value as Date | null)}
                         minDate={minToDate}
+                        maxDate={maxToDate}
                         viewDate={minToDate}
                         dateFormat="M dd, yy"
                         placeholder={resources.editorToDatePlaceholder}
@@ -235,7 +249,7 @@ export function SchedulingPeriodEditor() {
                         panelClassName={styles.calendarPanel}
                         touchUI
                     />
-                    {error && error === resources.editorToDateRequired && (
+                    {error && (error === resources.editorToDateRequired || error === resources.editorDateRangeError) && (
                         <Text size="xs" c="var(--mantine-color-error)">{error}</Text>
                     )}
                 </Stack>
