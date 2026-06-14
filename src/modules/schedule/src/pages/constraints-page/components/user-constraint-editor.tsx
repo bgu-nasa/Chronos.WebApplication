@@ -346,6 +346,10 @@ export function UserConstraintEditor({
             errors.schedulingPeriodId = resources.validationMessages.schedulingPeriodRequired;
         }
 
+        if (!formValues.key) {
+            errors.key = resources.validationMessages.keyRequired;
+        }
+
         const validationErrors = validateForm();
         if (validationErrors?.value) {
             errors.value = validationErrors.value;
@@ -500,6 +504,7 @@ export function UserConstraintEditor({
                         placeholder={resources.placeholders.selectConstraintType}
                         data={constraintTypeOptions}
                         value={formValues.key || null}
+                        required
                         onChange={(value) => {
                             if (!value) {
                                 return;
@@ -516,10 +521,13 @@ export function UserConstraintEditor({
                                 setSelectedWeekdays([]);
                             }
 
-                            if (formErrors.value) {
+                            if (formErrors.key) {
+                                setFormErrors({ ...formErrors, key: "", value: "" });
+                            } else if (formErrors.value) {
                                 setFormErrors({ ...formErrors, value: "" });
                             }
                         }}
+                        error={formErrors.key}
                         mb="md"
                     />
                 )}

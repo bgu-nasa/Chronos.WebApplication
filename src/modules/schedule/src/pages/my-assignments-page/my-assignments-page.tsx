@@ -156,7 +156,7 @@ export function MyAssignmentsPage() {
                             onClick={() => setIsAppealModalOpen(true)}
                             disabled={!selectedAssignment}
                         >
-                            Appeal
+                            {resources.appealButton}
                         </Button>
                     </Group>
                 </div>

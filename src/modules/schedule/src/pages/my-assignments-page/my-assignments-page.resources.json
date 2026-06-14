@@ -11,6 +11,7 @@
     "timeColumn": "Time",
     "resourceFilterLabel": "Resource",
     "resourceFilterPlaceholder": "All resources",
+    "appealButton": "Appeal",
     "createAppealModal": {
         "title": "Create Appeal",
         "titleLabel": "Title",

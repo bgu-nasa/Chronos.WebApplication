@@ -11,6 +11,7 @@
     "timeColumn": "זמן",
     "resourceFilterLabel": "חדר",
     "resourceFilterPlaceholder": "כל החדרים",
+    "appealButton": "ערעור",
     "createAppealModal": {
         "title": "יצירת ערעור",
         "titleLabel": "כותרת",
