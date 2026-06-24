@@ -37,7 +37,6 @@ export function AssignmentsPage() {
     const [selectedAssignment, setSelectedAssignment] = useState<AssignmentResponse | null>(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [editingAssignments, setEditingAssignments] = useState<AssignmentResponse[] | null>(null);
-    const [isAllWeeksMode, setIsAllWeeksMode] = useState(false);
 
     const [isEditMultiWeekModalOpen, setIsEditMultiWeekModalOpen] = useState(false);
     const [isDeleteMultiWeekModalOpen, setIsDeleteMultiWeekModalOpen] = useState(false);
@@ -347,7 +346,6 @@ export function AssignmentsPage() {
 
     const handleAddClick = () => {
         setEditingAssignments(null);
-        setIsAllWeeksMode(false);
         setIsAddModalOpen(true);
     };
 
@@ -356,7 +354,6 @@ export function AssignmentsPage() {
 
         if (selectedGroup.weeks.length <= 1) {
             setEditingAssignments(selectedGroup.assignments);
-            setIsAllWeeksMode(false);
             setIsAddModalOpen(true);
         } else {
             setMultiWeekActionOption("all");
@@ -371,13 +368,11 @@ export function AssignmentsPage() {
 
         if (multiWeekActionOption === "all") {
             setEditingAssignments(selectedGroup.assignments);
-            setIsAllWeeksMode(true);
             setIsAddModalOpen(true);
         } else {
             const selectedWeekVal = selectedActionWeekNum === "null" || selectedActionWeekNum === null ? null : Number(selectedActionWeekNum);
             const filtered = selectedGroup.assignments.filter((a) => a.weekNum === selectedWeekVal);
             setEditingAssignments(filtered);
-            setIsAllWeeksMode(false);
             setIsAddModalOpen(true);
         }
     };
@@ -568,7 +563,6 @@ export function AssignmentsPage() {
                     weekNumOptions={weekNumFilterOptions}
                     onCreated={handleAssignmentCreated}
                     editingAssignments={editingAssignments}
-                    isAllWeeksMode={isAllWeeksMode}
                     fromDate={currentPeriod?.fromDate}
                     toDate={currentPeriod?.toDate}
                 />

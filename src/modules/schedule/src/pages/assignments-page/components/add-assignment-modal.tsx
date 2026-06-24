@@ -30,7 +30,6 @@ interface AddAssignmentModalProps {
     weekNumOptions: { value: string; label: string }[];
     onCreated: () => void;
     editingAssignments?: AssignmentResponse[] | null;
-    isAllWeeksMode?: boolean;
     fromDate?: string;
     toDate?: string;
 }
@@ -68,7 +67,6 @@ export function AddAssignmentModal({
     weekNumOptions,
     onCreated,
     editingAssignments,
-    isAllWeeksMode = false,
     fromDate,
     toDate,
 }: AddAssignmentModalProps) {
