@@ -5,6 +5,7 @@
     "titleColumn": "כותרת",
     "descriptionColumn": "תיאור",
     "dayColumn": "יום",
+    "weekColumn": "שבוע",
     "timeColumn": "זמן",
     "activityColumn": "פעילות",
     "resourceColumn": "חדר",

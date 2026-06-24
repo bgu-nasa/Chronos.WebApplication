@@ -5,6 +5,7 @@
     "titleColumn": "Title",
     "descriptionColumn": "Description",
     "dayColumn": "Day",
+    "weekColumn": "Week",
     "timeColumn": "Time",
     "activityColumn": "Activity",
     "resourceColumn": "Resource",

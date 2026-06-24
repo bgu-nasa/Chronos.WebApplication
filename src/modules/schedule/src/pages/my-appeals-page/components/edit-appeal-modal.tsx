@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, TextInput, Textarea, Button, Group, Stack } from "@mantine/core";
 import { appealDataRepository } from "@/modules/schedule/src/data/appeal-data-repository";
 import type { AppealResponse } from "@/modules/schedule/src/data/appeal.types";
+import { $app } from "@/infra/service";
 import resourcesJson from "../my-appeals-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
@@ -15,25 +16,26 @@ const resources = translatedResources(
     "src/modules/schedule/src/pages/my-appeals-page/my-appeals-page.resources.json",
     resourcesJson,
 );
+
 interface EditAppealModalProps {
-    appeal: AppealResponse | null;
+    appeals: AppealResponse[];
     onClose: () => void;
     onUpdated: () => void;
 }
 
-export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalProps) {
+export function EditAppealModal({ appeals, onClose, onUpdated }: EditAppealModalProps) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        if (appeal) {
-            setTitle(appeal.title);
-            setDescription(appeal.description);
+        if (appeals.length > 0) {
+            setTitle(appeals[0].title);
+            setDescription(appeals[0].description);
             setErrors({});
         }
-    }, [appeal]);
+    }, [appeals]);
 
     const validate = () => {
         const newErrors: Record<string, string> = {};
@@ -45,14 +47,16 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!validate() || !appeal) return;
+        if (!validate() || appeals.length === 0) return;
 
         setIsSubmitting(true);
         try {
-            await appealDataRepository.updateAppeal(appeal.id, {
-                title: title.trim(),
-                description: description.trim(),
-            });
+            for (const appeal of appeals) {
+                await appealDataRepository.updateAppeal(appeal.id, {
+                    title: title.trim(),
+                    description: description.trim(),
+                });
+            }
             $app.notifications.showSuccess(
                 notificationResources.successTitle,
                 resources.editSuccess,
@@ -72,7 +76,7 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
 
     return (
         <Modal
-            opened={!!appeal}
+            opened={appeals.length > 0}
             onClose={onClose}
             title={resources.editModalTitle}
             centered
@@ -127,3 +131,4 @@ export function EditAppealModal({ appeal, onClose, onUpdated }: EditAppealModalP
         </Modal>
     );
 }
+
