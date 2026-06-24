@@ -23,7 +23,13 @@
         "descriptionPlaceholder": "תאר את סיבת הערעור שלך",
         "descriptionRequired": "תיאור נדרש",
         "cancelButton": "ביטול",
-        "submitButton": "שלח ערעור"
+        "submitButton": "שלח ערעור",
+        "appealModeLabel": "טווח ערעור",
+        "appealAllWeeksLabel": "ערער על כל השבועות",
+        "appealSelectedWeeksLabel": "בחר שבועות ספציפיים לערעור",
+        "weeksLabel": "שבועות",
+        "weeksPlaceholder": "בחר שבועות לערעור",
+        "weeksRequired": "יש לבחור לפחות שבוע אחד"
     },
     "notifications": {
         "fetchError": "נכשל בשליפת משימות",

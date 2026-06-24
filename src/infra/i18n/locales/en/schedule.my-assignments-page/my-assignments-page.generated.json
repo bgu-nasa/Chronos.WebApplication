@@ -11,6 +11,9 @@
     "timeColumn": "Time",
     "resourceFilterLabel": "Resource",
     "resourceFilterPlaceholder": "All resources",
+    "weekNumFilterLabel": "Week",
+    "weekNumFilterPlaceholder": "All weeks",
+    "appealButton": "Appeal",
     "createAppealModal": {
         "title": "Create Appeal",
         "titleLabel": "Title",
@@ -20,7 +23,13 @@
         "descriptionPlaceholder": "Describe your appeal reason",
         "descriptionRequired": "Description is required",
         "cancelButton": "Cancel",
-        "submitButton": "Submit Appeal"
+        "submitButton": "Submit Appeal",
+        "appealModeLabel": "Appeal Range",
+        "appealAllWeeksLabel": "Appeal all weeks",
+        "appealSelectedWeeksLabel": "Select specific weeks to appeal",
+        "weeksLabel": "Weeks",
+        "weeksPlaceholder": "Select week(s) to appeal",
+        "weeksRequired": "At least one week must be selected"
     },
     "notifications": {
         "fetchError": "Failed to fetch assignments",

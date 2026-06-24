@@ -10,6 +10,7 @@ import { assignmentDataRepository } from "@/modules/schedule/src/data/assignment
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import { AssignmentsDataTable } from "@/modules/schedule/src/pages/assignments-page/components/assignments-data-table";
 import { CreateAppealModal } from "./components/create-appeal-modal";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import resourcesJson from "./my-assignments-page.resources.json";
 import { translatedResources } from "@/infra/i18n";
 import notificationResourcesJson from "@/infra/service/notification/notification.resources.json";
@@ -52,6 +53,11 @@ export function MyAssignmentsPage() {
         );
     }, [schedulingPeriods]);
 
+    const currentPeriod = useMemo(
+        () => schedulingPeriods.find((p) => p.id === selectedPeriodId),
+        [schedulingPeriods, selectedPeriodId]
+    );
+
     useEffect(() => {
         if (sortedPeriods.length > 0 && !selectedPeriodId) {
             const today = new Date();
@@ -66,7 +72,7 @@ export function MyAssignmentsPage() {
             if (closestActive) {
                 setSelectedPeriodId(closestActive.id);
             } else {
-                setSelectedPeriodId(sortedPeriods[sortedPeriods.length - 1].id);
+                setSelectedPeriodId(sortedPeriods.at(-1)!.id);
             }
         }
     }, [sortedPeriods]);
@@ -113,6 +119,137 @@ export function MyAssignmentsPage() {
         if (filterWeekNum === null) return assignments;
         return assignments.filter((a) => a.weekNum === filterWeekNum || a.weekNum == null);
     }, [assignments, filterWeekNum]);
+
+    const slotMap = useMemo(() => new Map(slots.map((s) => [s.id, s])), [slots]);
+    const activityMap = useMemo(() => new Map(activities.map((a) => [a.id, a])), [activities]);
+    const resourceMap = useMemo(
+        () => new Map(resourceList.map((r) => [r.id, `${r.location} / ${r.identifier}`])),
+        [resourceList]
+    );
+
+    const selectedGroup = useMemo(() => {
+        if (!selectedAssignment || assignments.length === 0 || slots.length === 0) return null;
+
+        const enriched = assignments.map((a) => {
+            const slot = slotMap.get(a.slotId);
+            const activity = activityMap.get(a.activityId);
+            const resourceDisplay = resourceMap.get(a.resourceId) || a.resourceId;
+            const activityDisplay = activity?.displayLabel || a.activityId;
+
+            let localWeekday = "—";
+            let localFromTime = "—";
+            let localToTime = "—";
+
+            if (slot) {
+                const fromTime = slot.fromTime.split(":").slice(0, 2).join(":");
+                const toTime = slot.toTime.split(":").slice(0, 2).join(":");
+                const local = convertSlotUtcToLocal(slot.weekday, fromTime, toTime)[0];
+                localWeekday = local.weekday;
+                localFromTime = local.fromTime;
+                localToTime = local.toTime;
+            }
+
+            return {
+                raw: a,
+                localWeekday,
+                localFromTime,
+                localToTime,
+                activityDisplay,
+                resourceDisplay,
+            };
+        });
+
+        const byWeek: Record<string, typeof enriched> = {};
+        for (const item of enriched) {
+            const wKey = item.raw.weekNum === null ? "null" : String(item.raw.weekNum);
+            if (!byWeek[wKey]) byWeek[wKey] = [];
+            byWeek[wKey].push(item);
+        }
+
+        interface WeeklyBlock {
+            activityId: string;
+            resourceId: string;
+            localWeekday: string;
+            localFromTime: string;
+            localToTime: string;
+            weekNum: number | null;
+            assignments: AssignmentResponse[];
+        }
+        const weeklyGroups: WeeklyBlock[] = [];
+
+        const createBlock = (items: typeof enriched): WeeklyBlock => {
+            const first = items[0];
+            const last = items.at(-1)!;
+            return {
+                activityId: first.raw.activityId,
+                resourceId: first.raw.resourceId,
+                localWeekday: first.localWeekday,
+                localFromTime: first.localFromTime,
+                localToTime: last.localToTime,
+                weekNum: first.raw.weekNum,
+                assignments: items.map((i) => i.raw),
+            };
+        };
+
+        for (const wKey in byWeek) {
+            const weekItems = byWeek[wKey];
+            const subgroups: Record<string, typeof enriched> = {};
+            for (const item of weekItems) {
+                const key = `${item.raw.activityId}_${item.raw.resourceId}_${item.localWeekday}`;
+                if (!subgroups[key]) subgroups[key] = [];
+                subgroups[key].push(item);
+            }
+            for (const key in subgroups) {
+                const items = subgroups[key];
+                items.sort((a, b) => a.localFromTime.localeCompare(b.localFromTime));
+                let currentBlock: typeof enriched = [];
+                for (const item of items) {
+                    if (currentBlock.length === 0) {
+                        currentBlock.push(item);
+                    } else {
+                        const lastItem = currentBlock.at(-1);
+                        if (lastItem?.localToTime === item.localFromTime) {
+                            currentBlock.push(item);
+                        } else {
+                            weeklyGroups.push(createBlock(currentBlock));
+                            currentBlock = [item];
+                        }
+                    }
+                }
+                if (currentBlock.length > 0) {
+                    weeklyGroups.push(createBlock(currentBlock));
+                }
+            }
+        }
+
+        const multiWeekGroups: Record<string, WeeklyBlock[]> = {};
+        for (const block of weeklyGroups) {
+            const key = `${block.activityId}_${block.resourceId}_${block.localWeekday}_${block.localFromTime}_${block.localToTime}`;
+            if (!multiWeekGroups[key]) multiWeekGroups[key] = [];
+            multiWeekGroups[key].push(block);
+        }
+
+        for (const key in multiWeekGroups) {
+            const blocks = multiWeekGroups[key];
+            const allAssignments = blocks.flatMap((b) => b.assignments);
+            if (allAssignments.some((a) => a.id === selectedAssignment.id)) {
+                blocks.sort((a, b) => {
+                    if (a.weekNum === null) return -1;
+                    if (b.weekNum === null) return 1;
+                    return a.weekNum - b.weekNum;
+                });
+                const weeksList = blocks.map((b) => b.weekNum);
+                const firstBlock = blocks[0];
+                return {
+                    weeks: weeksList,
+                    assignments: allAssignments,
+                    localWeekday: firstBlock?.localWeekday || "—",
+                };
+            }
+        }
+
+        return null;
+    }, [selectedAssignment, assignments, slots, slotMap, activityMap, resourceMap]);
 
     const fetchAssignments = useCallback(async (
         periodId: string,
@@ -201,8 +338,8 @@ export function MyAssignmentsPage() {
                                 label={resources.weekNumFilterLabel}
                                 placeholder={resources.weekNumFilterPlaceholder}
                                 data={weekNumFilterOptions}
-                                value={filterWeekNum !== null ? String(filterWeekNum) : null}
-                                onChange={(v) => setFilterWeekNum(v !== null ? Number(v) : null)}
+                                value={filterWeekNum === null ? null : String(filterWeekNum)}
+                                onChange={(v) => setFilterWeekNum(v === null ? null : Number(v))}
                                 searchable
                                 clearable
                             />
@@ -225,12 +362,18 @@ export function MyAssignmentsPage() {
                 <CreateAppealModal
                     opened={isAppealModalOpen}
                     onClose={() => setIsAppealModalOpen(false)}
-                    assignmentId={selectedAssignment?.id ?? null}
+                    selectedGroup={selectedGroup}
+                    fromDate={currentPeriod?.fromDate}
+                    toDate={currentPeriod?.toDate}
                     onCreated={() => {
                         $app.notifications.showSuccess(
                             notificationResources.successTitle,
                             resources.notifications.appealSuccess,
                         );
+                        setSelectedAssignment(null);
+                        if (selectedPeriodId) {
+                            fetchAssignments(selectedPeriodId, currentUserId, filterResourceId);
+                        }
                     }}
                 />
             </div>

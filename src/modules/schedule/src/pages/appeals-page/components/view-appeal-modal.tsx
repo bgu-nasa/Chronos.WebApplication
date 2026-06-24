@@ -14,11 +14,13 @@ const resources = translatedResources(
     "src/modules/schedule/src/pages/appeals-page/appeals-page.resources.json",
     resourcesJson,
 );
+
 interface AppealDetails {
     assignment?: AssignmentResponse;
     slot?: SlotResponse;
     activity?: EnrichedActivity;
     resource?: ResourceResponse;
+    weekDisplay?: string;
 }
 
 interface ViewAppealModalProps {
@@ -100,6 +102,9 @@ export function ViewAppealModal({ appeal, details, onClose }: ViewAppealModalPro
                         </Badge>
                     </Group>
                     <Stack gap="xs">
+                        {details?.weekDisplay && (
+                            <DetailRow label={resources.weekColumn} value={details.weekDisplay} />
+                        )}
                         <DetailRow label={resources.dayColumn} value={day} />
                         <DetailRow label={resources.timeColumn} value={time} />
                         <DetailRow label={resources.activityColumn} value={activity} />
@@ -110,3 +115,4 @@ export function ViewAppealModal({ appeal, details, onClose }: ViewAppealModalPro
         </Modal>
     );
 }
+

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Container, Divider, Title, Button, Group, Text, Stack } from "@mantine/core";
 import { ConfirmationDialog, useConfirmation } from "@/common";
 import { $app } from "@/infra/service";
@@ -10,6 +10,7 @@ import { useResources } from "@/modules/schedule/src/hooks/use-resources";
 import type { AppealResponse } from "@/modules/schedule/src/data/appeal.types";
 import type { AssignmentResponse } from "@/modules/schedule/src/data/assignment.types";
 import type { SlotResponse } from "@/modules/schedule/src/data/slot.types";
+import { convertSlotUtcToLocal } from "@/modules/schedule/src/pages/constraints-page/utils/timezone-utils";
 import { MyAppealsDataTable } from "./components/my-appeals-data-table";
 import { EditAppealModal } from "./components/edit-appeal-modal";
 import resourcesJson from "./my-appeals-page.resources.json";
@@ -57,7 +58,7 @@ export function MyAppealsPage() {
     const [slots, setSlots] = useState<SlotResponse[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedAppeal, setSelectedAppeal] = useState<AppealResponse | null>(null);
-    const [editingAppeal, setEditingAppeal] = useState<AppealResponse | null>(null);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const { activities } = useActivities();
     const { resources: resourceList } = useResources();
@@ -110,9 +111,9 @@ export function MyAppealsPage() {
                 if (cancelled) return;
                 $app.logger.error("Failed to fetch appeals:", err);
                 $app.notifications.showError(
-                notificationResources.errorTitle,
-                resources.notifications.fetchError,
-            );
+                    notificationResources.errorTitle,
+                    resources.notifications.fetchError,
+                );
                 setAppeals([]);
             } finally {
                 if (!cancelled) setIsLoading(false);
@@ -123,15 +124,131 @@ export function MyAppealsPage() {
         return () => { cancelled = true; };
     }, [currentUserId]);
 
+    const selectedGroupAppeals = useMemo(() => {
+        if (!selectedAppeal || appeals.length === 0 || slots.length === 0) return [];
+
+        const enriched = appeals.map((appeal) => {
+            const assignment = assignments.find((a) => a.id === appeal.assignmentId);
+            const slot = assignment ? slots.find((s) => s.id === assignment.slotId) : undefined;
+
+            let localWeekday = "—";
+            let localFromTime = "—";
+            let localToTime = "—";
+
+            if (slot) {
+                const fromTime = slot.fromTime.split(":").slice(0, 2).join(":");
+                const toTime = slot.toTime.split(":").slice(0, 2).join(":");
+                const local = convertSlotUtcToLocal(slot.weekday, fromTime, toTime)[0];
+                localWeekday = local.weekday;
+                localFromTime = local.fromTime;
+                localToTime = local.toTime;
+            }
+
+            return {
+                raw: appeal,
+                assignment,
+                localWeekday,
+                localFromTime,
+                localToTime,
+            };
+        });
+
+        const byWeek: Record<string, typeof enriched> = {};
+        for (const item of enriched) {
+            const wKey = item.assignment?.weekNum === null || item.assignment?.weekNum === undefined ? "null" : String(item.assignment.weekNum);
+            if (!byWeek[wKey]) byWeek[wKey] = [];
+            byWeek[wKey].push(item);
+        }
+
+        interface WeeklyGroupedBlock {
+            activityId: string;
+            resourceId: string;
+            localWeekday: string;
+            localFromTime: string;
+            localToTime: string;
+            weekNum: number | null;
+            appeals: AppealResponse[];
+        }
+
+        const weeklyGroups: WeeklyGroupedBlock[] = [];
+
+        const createBlock = (items: typeof enriched): WeeklyGroupedBlock => {
+            const first = items[0];
+            const last = items.at(-1)!;
+            return {
+                activityId: first.assignment?.activityId || "",
+                resourceId: first.assignment?.resourceId || "",
+                localWeekday: first.localWeekday,
+                localFromTime: first.localFromTime,
+                localToTime: last.localToTime,
+                weekNum: first.assignment?.weekNum ?? null,
+                appeals: items.map((i) => i.raw),
+            };
+        };
+
+        for (const wKey in byWeek) {
+            const weekItems = byWeek[wKey];
+            const subgroups: Record<string, typeof enriched> = {};
+            for (const item of weekItems) {
+                if (!item.assignment) continue;
+                const key = `${item.assignment.activityId}_${item.assignment.resourceId}_${item.localWeekday}`;
+                if (!subgroups[key]) subgroups[key] = [];
+                subgroups[key].push(item);
+            }
+
+            for (const key in subgroups) {
+                const items = subgroups[key];
+                items.sort((a, b) => a.localFromTime.localeCompare(b.localFromTime));
+
+                let currentBlock: typeof enriched = [];
+                for (const item of items) {
+                    if (currentBlock.length === 0) {
+                        currentBlock.push(item);
+                    } else {
+                        const lastItem = currentBlock.at(-1);
+                        if (lastItem?.localToTime === item.localFromTime) {
+                            currentBlock.push(item);
+                        } else {
+                            weeklyGroups.push(createBlock(currentBlock));
+                            currentBlock = [item];
+                        }
+                    }
+                }
+                if (currentBlock.length > 0) {
+                    weeklyGroups.push(createBlock(currentBlock));
+                }
+            }
+        }
+
+        const multiWeekGroups: Record<string, WeeklyGroupedBlock[]> = {};
+        for (const block of weeklyGroups) {
+            const key = `${block.activityId}_${block.resourceId}_${block.localWeekday}_${block.localFromTime}_${block.localToTime}`;
+            if (!multiWeekGroups[key]) multiWeekGroups[key] = [];
+            multiWeekGroups[key].push(block);
+        }
+
+        for (const key in multiWeekGroups) {
+            const blocks = multiWeekGroups[key];
+            const allAppeals = blocks.flatMap((b) => b.appeals);
+            if (allAppeals.some((a) => a.id === selectedAppeal.id)) {
+                return allAppeals;
+            }
+        }
+
+        return [selectedAppeal];
+    }, [selectedAppeal, appeals, assignments, slots]);
+
     const handleDeleteClick = () => {
-        if (!selectedAppeal) return;
+        if (selectedGroupAppeals.length === 0) return;
 
         openConfirmation({
             title: resources.deleteConfirmTitle,
             message: resources.deleteConfirmMessage,
             onConfirm: async () => {
                 try {
-                    await appealDataRepository.deleteAppeal(selectedAppeal.id);
+                    for (const a of selectedGroupAppeals) {
+                        await appealDataRepository.deleteAppeal(a.id);
+                    }
                     setSelectedAppeal(null);
                     $app.notifications.showSuccess(
                         notificationResources.successTitle,
@@ -169,7 +286,7 @@ export function MyAppealsPage() {
                             <Group>
                                 <Button
                                     variant="light"
-                                    onClick={() => selectedAppeal && setEditingAppeal(selectedAppeal)}
+                                    onClick={() => setIsEditModalOpen(true)}
                                     disabled={!selectedAppeal}
                                 >
                                     {resources.editButton}
@@ -199,8 +316,8 @@ export function MyAppealsPage() {
                 )}
 
                 <EditAppealModal
-                    appeal={editingAppeal}
-                    onClose={() => setEditingAppeal(null)}
+                    appeals={isEditModalOpen ? selectedGroupAppeals : []}
+                    onClose={() => setIsEditModalOpen(false)}
                     onUpdated={() => {
                         setSelectedAppeal(null);
                         fetchAppeals();
@@ -221,3 +338,4 @@ export function MyAppealsPage() {
         </Container>
     );
 }
+

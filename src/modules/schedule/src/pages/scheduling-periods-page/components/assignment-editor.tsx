@@ -60,12 +60,24 @@ export function AssignmentEditor() {
         }));
     }, [roomResources]);
 
+    const resourcePlaceholder = useMemo(() => {
+        if (isLoadingResources) return resources.placeholders.loadingResources;
+        if (resourceOptions.length === 0) return resources.placeholders.noResources;
+        return resources.placeholders.selectResource;
+    }, [isLoadingResources, resourceOptions.length, resources]);
+
     const activityOptions = useMemo(() => {
         return activities.map((activity) => ({
             value: activity.id,
             label: activity.displayLabel,
         }));
     }, [activities]);
+
+    const activityPlaceholder = useMemo(() => {
+        if (isLoadingActivities) return resources.placeholders.loadingActivities;
+        if (activityOptions.length === 0) return resources.placeholders.noActivities;
+        return resources.placeholders.selectActivity;
+    }, [isLoadingActivities, activityOptions.length, resources]);
 
     useEffect(() => {
         if (isOpen) {
@@ -76,7 +88,7 @@ export function AssignmentEditor() {
             if (mode === "edit" && assignment) {
                 setResourceId(assignment.resourceId);
                 setActivityId(assignment.activityId);
-                setWeekNum(assignment.weekNum != null ? String(assignment.weekNum) : null);
+                setWeekNum(assignment.weekNum == null ? null : String(assignment.weekNum));
             } else {
                 setResourceId(null);
                 setActivityId(null);
@@ -102,7 +114,7 @@ export function AssignmentEditor() {
 
         if (!validate()) return;
 
-        const parsedWeekNum = weekNum !== null ? Number(weekNum) : null;
+        const parsedWeekNum = weekNum === null ? null : Number(weekNum);
         let success = false;
 
         if (mode === "create" && slotId && resourceId && activityId) {
@@ -169,13 +181,7 @@ export function AssignmentEditor() {
                 <Stack gap="md">
                     <Select
                         label={resources.labels.resource}
-                        placeholder={
-                            isLoadingResources
-                                ? resources.placeholders.loadingResources
-                                : resourceOptions.length === 0
-                                    ? resources.placeholders.noResources
-                                    : resources.placeholders.selectResource
-                        }
+                        placeholder={resourcePlaceholder}
                         data={resourceOptions}
                         value={resourceId}
                         onChange={(value) => {
@@ -194,13 +200,7 @@ export function AssignmentEditor() {
 
                     <Select
                         label={resources.labels.activity}
-                        placeholder={
-                            isLoadingActivities
-                                ? resources.placeholders.loadingActivities
-                                : activityOptions.length === 0
-                                    ? resources.placeholders.noActivities
-                                    : resources.placeholders.selectActivity
-                        }
+                        placeholder={activityPlaceholder}
                         data={activityOptions}
                         value={activityId}
                         onChange={(value) => {
